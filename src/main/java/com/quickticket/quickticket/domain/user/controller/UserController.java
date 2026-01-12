@@ -1,6 +1,6 @@
-package com.quickticket.quickticket.domain.account.controller;
+package com.quickticket.quickticket.domain.user.controller;
 
-import com.quickticket.quickticket.domain.account.service.AccountService;
+import com.quickticket.quickticket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class AccountController {
-    private final AccountService accountService;
+public class UserController {
+    private final UserService userService;
 
     @GetMapping("/account")
     public String account(Model model) {
