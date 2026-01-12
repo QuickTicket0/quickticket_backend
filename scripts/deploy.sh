@@ -1,6 +1,8 @@
 ##!/bin/bash
 source ~/.bashrc
 
+echo "$PROD_DB_URL" >> /home/ec2-user/deploy.log
+
 BUILD_JAR=$(ls /home/ec2-user/app/build/libs/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 echo ">>> build 파일명: $JAR_NAME" >> /home/ec2-user/deploy.log
