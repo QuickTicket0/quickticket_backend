@@ -1,5 +1,5 @@
 ##!/bin/bash
-source ~/.bashrc
+source /home/ec2-user/.env
 
 echo "$PROD_DB_URL" >> /home/ec2-user/deploy.log
 
