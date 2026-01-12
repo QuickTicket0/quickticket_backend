@@ -54,7 +54,7 @@ public class User {
     // 따라서 Enum에 code 필드를 기준으로 convert하도록 합니다.
     //
     // UserRoleConverter에 @Converter(autoApply = true)를 설정했기 때문에 별도의 어노테이션을 달 필요 없습니다.
-    @NotNull
+    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
     private UserRole role;
 
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
