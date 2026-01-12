@@ -9,7 +9,7 @@ DEPLOY_PATH=/home/ec2-user/app/
 cp $BUILD_JAR $DEPLOY_PATH
 
 echo ">>> 현재 실행중인 애플리케이션 pid 확인 후 일괄 종료" >> /home/ec2-user/deploy.log
-sudo ps -ef | grep java | awk '{print $2}' | xargs kill -15
+pgrep -fl java | xargs kill -15
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo ">>> DEPLOY_JAR 배포"    >> /home/ec2-user/deploy.log

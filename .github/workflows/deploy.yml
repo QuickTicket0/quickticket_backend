@@ -27,13 +27,6 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: make .env
-        run: |
-          touch .env
-          echo "PROD_DB_URL=${{ secrets.PROD_DB_URL }}" > .env
-          echo "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" > .env
-          echo "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" > .env          
-
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
