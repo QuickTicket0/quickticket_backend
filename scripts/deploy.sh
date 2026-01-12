@@ -1,4 +1,5 @@
 ##!/bin/bash
+source ~/.bashrc
 
 BUILD_JAR=$(ls /home/ec2-user/app/build/libs/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
@@ -14,4 +15,4 @@ pgrep -fl java | xargs kill -15
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo ">>> DEPLOY_JAR 배포"    >> /home/ec2-user/deploy.log
 echo ">>> $DEPLOY_JAR의 $JAR_NAME를 실행합니다" >> /home/ec2-user/deploy.log
-nohup java -jar $DEPLOY_JAR >> /home/ec2-user/deploy.log 2> /home/ec2-user/deploy_err.log &
+nohup java -jar $DEPLOY_JAR >> /home/ec2-user/deploy.log 2>> /home/ec2-user/deploy_err.log &
