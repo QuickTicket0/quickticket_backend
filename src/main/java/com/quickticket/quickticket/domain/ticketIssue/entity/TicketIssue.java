@@ -45,7 +45,7 @@ public class TicketIssue {
 
     @NotNull
     @Column(nullable = false)
-    private Long personNumber;
+    private Integer personNumber;
 
     @JdbcTypeCode(SqlTypes.JSON_ARRAY)
     @NotNull

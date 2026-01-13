@@ -25,7 +25,7 @@ public class CreditTransaction {
 
     @NotNull
     @Column(nullable = false)
-    private Integer changeAmount;
+    private Long changeAmount;
 
     @NotNull
     @Column(nullable = false)

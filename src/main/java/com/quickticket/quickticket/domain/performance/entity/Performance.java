@@ -33,7 +33,7 @@ public class Performance {
 
     @NotNull
     @Column(nullable = false)
-    private Long targetSeatNumber;
+    private Integer targetSeatNumber;
 
     @JdbcTypeCode(SqlTypes.JSON_ARRAY)
     @NotNull
