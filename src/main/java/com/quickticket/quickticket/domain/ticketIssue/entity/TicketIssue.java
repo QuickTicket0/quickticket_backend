@@ -21,16 +21,16 @@ import org.hibernate.type.SqlTypes;
 public class TicketIssue {
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "performance_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(name = "performance_id", nullable = false)
     private Performance performance;
 
     @ManyToOne
-    @JoinColumn(name = "payment_method_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
     @Column(columnDefinition = "INT UNSIGNED", nullable = false)

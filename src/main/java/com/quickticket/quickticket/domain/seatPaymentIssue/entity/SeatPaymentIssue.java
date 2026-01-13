@@ -16,7 +16,7 @@ import lombok.Setter;
 public class SeatPaymentIssue {
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Id
@@ -25,11 +25,11 @@ public class SeatPaymentIssue {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "performance_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(name = "performance_id", nullable = false)
     private Performance performance;
 
     @OneToOne
-    @JoinColumn(name = "credit_transaction_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(name = "credit_transaction_id", nullable = false)
     private CreditTransaction creditTransaction;
 
     @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)

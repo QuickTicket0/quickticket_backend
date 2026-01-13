@@ -18,10 +18,10 @@ public class Review {
     @Column(columnDefinition = "INT UNSIGNED", nullable = false)
     private Long reviewId;
 
-    @JoinColumn(columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(nullable = false)
     private Event event;
 
-    @JoinColumn(columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(nullable = false)
     private User user;
 
     @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)

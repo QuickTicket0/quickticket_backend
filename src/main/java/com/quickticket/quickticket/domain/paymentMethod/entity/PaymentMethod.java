@@ -18,7 +18,7 @@ public class PaymentMethod {
     private Long paymentMethodId;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(nullable = false)
     private User user;
 
     @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)

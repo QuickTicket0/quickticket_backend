@@ -20,7 +20,7 @@ public class Performance {
     private Long performanceId;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "INT UNSIGNED", nullable = false)
+    @JoinColumn(nullable = false)
     private Event event;
 
     @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
