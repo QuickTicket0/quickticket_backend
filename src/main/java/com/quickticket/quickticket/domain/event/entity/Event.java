@@ -52,7 +52,7 @@ public class Event {
 
     @NotNull
     @Column(nullable = false)
-    private BigInteger userRatingSum;
+    private Long userRatingSum;
 
     @NotNull
     @Column(nullable = false)
