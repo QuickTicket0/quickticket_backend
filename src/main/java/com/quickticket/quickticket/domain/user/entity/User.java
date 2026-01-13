@@ -20,6 +20,8 @@ public class User {
     @Column(nullable = false)
     private Long id;
 
+    // @NotNull은 서버 앱 단계에서 null인지 검증을 해주고
+    // @Column(nullable = false)는 DB 단계에서 NOT NULL 속성을 설정합니다
     @NotNull
     @Column(length = 30, nullable = false)
     private String username;
