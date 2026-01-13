@@ -3,6 +3,7 @@ package com.quickticket.quickticket.domain.event.entity;
 import com.quickticket.quickticket.domain.category.entity.Category;
 import com.quickticket.quickticket.domain.location.entity.Location;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -19,14 +20,17 @@ import java.util.Map;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private Long eventId;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(nullable = false)
     private Location location;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(nullable = false)
     private Category category1;
 
@@ -34,31 +38,39 @@ public class Event {
     @JoinColumn
     private Category category2;
 
-    @Column(columnDefinition = "VARCHAR(100)", length = 100, nullable = false)
+    @NotNull
+    @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @NotNull
+    @Column(length = 8000, nullable = false)
     private String description;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private AgeRating ageRating;
 
-    @Column(columnDefinition = "LONG UNSIGNED", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private BigInteger userRatingSum;
 
+    @NotNull
     @Column(nullable = false)
     private Blob thumbnailImage;
 
-    @Column(columnDefinition = "VARCHAR(30)", length = 30, nullable = false)
+    @NotNull
+    @Column(length = 30, nullable = false)
     private String agentName;
 
-    @Column(columnDefinition = "VARCHAR(30)", length = 30, nullable = false)
+    @NotNull
+    @Column(length = 30, nullable = false)
     private String hostName;
 
-    @Column(columnDefinition = "VARCHAR(30)", length = 30)
+    @Column(length = 30)
     private String contactData;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "JSON", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private Map<Long, Object> seatData;
 }

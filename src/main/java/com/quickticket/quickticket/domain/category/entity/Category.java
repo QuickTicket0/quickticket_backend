@@ -1,6 +1,7 @@
 package com.quickticket.quickticket.domain.category.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +12,11 @@ import lombok.Setter;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private Long categoryId;
 
-    @Column(columnDefinition = "VARCHAR(20)", length = 20, nullable = false)
+    @NotNull
+    @Column(length = 20, nullable = false)
     private String name;
 }

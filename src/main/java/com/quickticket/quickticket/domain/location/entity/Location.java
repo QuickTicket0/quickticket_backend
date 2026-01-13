@@ -1,6 +1,7 @@
 package com.quickticket.quickticket.domain.location.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,30 +12,32 @@ import lombok.Setter;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private Long locationId;
 
-    @Column(columnDefinition = "VARCHAR(5)", length = 5, nullable = false)
+    @NotNull
+    @Column(length = 5, nullable = false)
     private String zipNumber;
 
-    @Column(columnDefinition = "VARCHAR(20)", length = 20)
+    @Column(length = 20)
     private String sido;
 
-    @Column(columnDefinition = "VARCHAR(20)", length = 20)
+    @Column(length = 20)
     private String sigungu;
 
-    @Column(columnDefinition = "VARCHAR(20)", length = 20)
+    @Column(length = 20)
     private String eupmyun;
 
-    @Column(columnDefinition = "VARCHAR(12)", length = 12)
+    @Column(length = 12)
     private String doroCode;
 
-    @Column(columnDefinition = "VARCHAR(80)", length = 80)
+    @Column(length = 80)
     private String doro;
 
-    @Column(columnDefinition = "VARCHAR(50)", length = 50)
+    @Column(length = 50)
     private String locationName;
 
-    @Column(columnDefinition = "VARCHAR(20)", length = 20)
+    @Column(length = 20)
     private String phone;
 }

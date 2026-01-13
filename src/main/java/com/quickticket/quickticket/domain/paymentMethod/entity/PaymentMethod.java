@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.paymentMethod.entity;
 
 import com.quickticket.quickticket.domain.user.entity.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,29 +15,32 @@ import java.time.LocalDate;
 public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private Long paymentMethodId;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(nullable = false)
     private User user;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
+    @NotNull
+    @Column(nullable = false)
     private PaymentMethodType type;
 
-    @Column(columnDefinition = "VARCHAR(20)", length = 20)
+    @Column(length = 20)
     private String cardNumber;
 
-    @Column(columnDefinition = "VARCHAR(4)", length = 4)
+    @Column(length = 4)
     private String cvs;
 
     private LocalDate expirationPeriod;
 
     private Boolean isActive;
 
-    @Column(columnDefinition = "VARCHAR(20)")
+    @Column(length = 20)
     private String bank;
 
-    @Column(columnDefinition = "VARCHAR(20)")
+    @Column(length = 20)
     private String accountNumber;
 }
