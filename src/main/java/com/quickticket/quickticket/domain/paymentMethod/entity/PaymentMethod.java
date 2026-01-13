@@ -27,8 +27,8 @@ public class PaymentMethod {
     @Column(columnDefinition = "VARCHAR(20)", length = 20)
     private String cardNumber;
 
-    @Column(columnDefinition = "SMALLINT UNSIGNED")
-    private Short cvs;
+    @Column(columnDefinition = "VARCHAR(4)", length = 4)
+    private String cvs;
 
     private LocalDate expirationPeriod;
 

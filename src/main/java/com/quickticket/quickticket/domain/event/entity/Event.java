@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigInteger;
+import java.sql.Blob;
 import java.util.Map;
 
 @Entity
@@ -45,7 +46,8 @@ public class Event {
     @Column(columnDefinition = "LONG UNSIGNED", nullable = false)
     private BigInteger userRatingSum;
 
-    // private thumbnailImage;
+    @Column(nullable = false)
+    private Blob thumbnailImage;
 
     @Column(columnDefinition = "VARCHAR(30)", length = 30, nullable = false)
     private String agentName;
