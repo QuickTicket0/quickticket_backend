@@ -23,7 +23,7 @@ public class SeatPaymentIssue {
     @Id
     @NotNull
     @Column(nullable = false)
-    private Long seat;
+    private Integer seatId;
 
     @Id
     @ManyToOne
