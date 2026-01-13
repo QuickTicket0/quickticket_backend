@@ -19,6 +19,8 @@ import org.hibernate.type.SqlTypes;
 @Getter
 @Setter
 public class TicketIssue {
+    // JoinColumn의 경우는 columnDefinition을 지정하지 않는게 좋습니다
+    // 참조하는 엔티티의 키 타입에 맞춰서 자동으로 타입이 정해집니다.
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
