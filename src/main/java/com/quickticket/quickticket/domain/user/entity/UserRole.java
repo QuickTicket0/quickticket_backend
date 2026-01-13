@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum UserRole implements OrdinalEnum {
-    U(0),
-    A(1);
+    USER(0),
+    ADMIN(1);
 
     private final int code;
 }
