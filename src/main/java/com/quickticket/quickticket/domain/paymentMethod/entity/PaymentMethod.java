@@ -28,11 +28,11 @@ public class PaymentMethod {
     private String cardNumber;
 
     @Column(columnDefinition = "SMALLINT UNSIGNED")
-    private short cvs;
+    private Short cvs;
 
     private LocalDate expirationPeriod;
 
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(columnDefinition = "VARCHAR(20)")
     private String bank;

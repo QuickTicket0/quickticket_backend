@@ -25,7 +25,7 @@ public class Review {
     private User user;
 
     @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
-    private byte userRating;
+    private Short userRating;
 
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime createdAt;

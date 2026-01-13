@@ -34,10 +34,10 @@ public class TicketIssue {
     private PaymentMethod paymentMethod;
 
     @Column(columnDefinition = "INT UNSIGNED", nullable = false)
-    private long waitingNumber;
+    private Long waitingNumber;
 
     @Column(columnDefinition = "INT UNSIGNED", nullable = false)
-    private long personNumber;
+    private Long personNumber;
 
     @JdbcTypeCode(SqlTypes.JSON_ARRAY)
     @Column(columnDefinition = "JSON", nullable = false)

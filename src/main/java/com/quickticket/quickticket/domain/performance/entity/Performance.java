@@ -23,11 +23,11 @@ public class Performance {
     @JoinColumn(nullable = false)
     private Event event;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
-    private short performanceNth;
+    @Column(columnDefinition = "SMALLINT UNSIGNED", nullable = false)
+    private Integer performanceNth;
 
     @Column(columnDefinition = "INT UNSIGNED", nullable = false)
-    private long targetSeatNumber;
+    private Long targetSeatNumber;
 
     @JdbcTypeCode(SqlTypes.JSON_ARRAY)
     @Column(columnDefinition = "JSON", nullable = false)
@@ -42,6 +42,6 @@ public class Performance {
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime performanceStartsAt;
 
-    @Column(columnDefinition = "INT UNSIGNED", nullable = false)
-    private long runningTimeMinute;
+    @Column(columnDefinition = "SMALLINT UNSIGNED", nullable = false)
+    private Integer runningTimeMinute;
 }

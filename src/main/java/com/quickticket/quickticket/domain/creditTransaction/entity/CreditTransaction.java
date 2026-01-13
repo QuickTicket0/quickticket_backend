@@ -21,10 +21,10 @@ public class CreditTransaction {
     private TransactionType transactionType;
 
     @Column(nullable = false)
-    private int changeAmount;
+    private Integer changeAmount;
 
     @Column(columnDefinition = "INT UNSIGNED", nullable = false)
-    private long balanceAfter;
+    private Long balanceAfter;
 
     @Column(columnDefinition = "TIMESTAMP")
     @CreationTimestamp
