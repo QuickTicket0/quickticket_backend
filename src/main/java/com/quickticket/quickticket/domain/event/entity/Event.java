@@ -39,6 +39,7 @@ public class Event {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
+    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
     private AgeRating ageRating;
 
     @Column(columnDefinition = "LONG UNSIGNED", nullable = false)

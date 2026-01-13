@@ -52,8 +52,6 @@ public class User {
     // 근데 이러면 사소한 순서 변경에도 DB로 읽고 쓰는 기준이 달라지니 유지보수가 힘듭니다
     // 근데 STRING으로 하면 문자열을 그대로 DB에 저장하기 때문에 성능 낭비가 큽니다
     // 따라서 Enum에 code 필드를 기준으로 convert하도록 합니다.
-    //
-    // UserRoleConverter에 @Converter(autoApply = true)를 설정했기 때문에 별도의 어노테이션을 달 필요 없습니다.
     @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
     private UserRole role;
 

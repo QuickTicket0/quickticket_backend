@@ -17,6 +17,7 @@ public class CreditTransaction {
     @Column(columnDefinition = "INT UNSIGNED", nullable = false)
     private Long creditTransactionId;
 
+    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
     private TransactionType transactionType;
 
     @Column(nullable = false)

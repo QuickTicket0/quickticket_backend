@@ -21,6 +21,7 @@ public class PaymentMethod {
     @JoinColumn(columnDefinition = "INT UNSIGNED", nullable = false)
     private User user;
 
+    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
     private PaymentMethodType type;
 
     @Column(columnDefinition = "VARCHAR(20)", length = 20)

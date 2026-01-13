@@ -32,6 +32,6 @@ public class SeatPaymentIssue {
     @JoinColumn(name = "credit_transaction_id", columnDefinition = "INT UNSIGNED", nullable = false)
     private CreditTransaction creditTransaction;
 
-    @NotNull
+    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
     private SeatPaymentIssueState state;
 }
