@@ -1,0 +1,181 @@
+@charset "UTF-8";
+
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 전체 페이지 레이아웃 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* 로그인 박스 컨테이너 */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* 로고 스타일 */
+.logo {
+    font-size: 32px;
+    font-weight: 700;
+    color: #4a80f5;
+    margin-bottom: 40px;
+}
+
+/* 로고 내 특정 텍스트 스타일 */
+.logo span {
+    color: #000000;
+}
+
+/* 입력창 그룹 */
+.input-group {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+/* 로그인 입력창 내부 아이콘 스타일 */
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 14px;
+}
+
+/* 로그인 입력창 스타일 */
+.input-group input {
+    width: 100%;
+    padding: 14px 14px 14px 40px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* 입력창 포커스 스타일  */
+.input-group input:focus {
+    border-color: #4a80f5;
+}
+
+/* 체크박스 그룹 */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 13px;
+    color: #666;
+    padding-left: 5px;
+}
+
+/* 체크박스 대용 아이콘 스타일 */
+.checkbox-group i {
+    margin-right: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* 실제 체크박스 */
+.checkbox-group input[type="checkbox"] {
+    display: none;
+}
+
+/* 로그인 버튼 */
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #4a80f5;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: background-color 0.3s;
+}
+
+/* 로그인 버튼 마우스 오버*/
+.login-btn:hover {
+    background-color: #366ed8;
+}
+
+/* 하단 링크 영역 */
+.links {
+    display: flex;
+    justify-content: center;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+/* 하단 링크 글자 스타일 */
+.links a {
+    text-decoration: none;
+    color: #666;
+}
+
+/* 링크 사이 구분선 스타일 */
+.separator {
+    margin: 0 10px;
+    color: #ddd;
+}
+
+/* 간편 로그인 섹션 안내 문구 */
+.social-login p {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+/* 소셜로그인 아이콘들을 감싸는 박스 */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 소셜로그인 버튼 공통 */
+.social-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-decoration: none;
+    border: 1px solid transparent;
+    position: relative;
+}
+
+/* 카카오, 네이버, 구글 각 버튼의 브랜드 배경색 및 아이콘 색상 */
+.social-btn.kakao { background-color: #FEE500; color: #3c1e1e; }
+.social-btn.naver { background-color: #03C75A; color: white; }
+.social-btn.google { background-color: #ffffff; border-color: #ddd; color: #ea4335; }
+
+/* 네이버 PNG 및 구글 SVG 이미지 스타일 */
+.social-img-full {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    filter: drop-shadow(0.6px 0px 0px #fff) drop-shadow(-0.6px 0px 0px #fff);
+}
+
+/* 폰트 아이콘 방식(카카오 등) 아이콘 크기 설정 */
+.social-btn i {
+    font-size: 20px;
+}
