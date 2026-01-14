@@ -1,12 +1,19 @@
 .site-header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    width: 100%;
     height: 80px;
     padding: 0 40px;
-    background-color: #fff;
+    display: flex;
+    justify-content: center;
+
     border-bottom: 1px solid #eee;
-    min-width: 1000px;
+}
+
+.header-content {
+    max-width: 1000px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* 로고 영역 */

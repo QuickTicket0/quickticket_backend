@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <header th:fragment="headerFragment" class="site-header">
-    <!-- 로고 -->
-    <a th:href="@{/}" class="header-logo">
-        <span>Quick</span>Ticket
-    </a>
-    <!-- 좌측 메뉴 영역 -->
-    <nav class="header-nav">
-        <a th:href="@{/category/kpop}" class="nav-link">KPOP</a>
-        <a th:href="@{/category/classic}" class="nav-link">CLASSIC</a>
-        <a th:href="@{/category/trot}" class="nav-link">트로트</a>
-        <a th:href="@{/category/overseas}" class="nav-link">해외뮤지션</a>
-        <a th:href="@{/category/kids}" class="nav-link">KIDS</a>
-    </nav>
+    <div class="header-content">
+        <!-- 로고 -->
+        <a th:href="@{/}" class="header-logo">
+            <span>Quick</span>Ticket
+        </a>
+        <!-- 좌측 메뉴 영역 -->
+        <nav class="header-nav">
+            <a th:href="@{/category/kpop}" class="nav-link">KPOP</a>
+            <a th:href="@{/category/classic}" class="nav-link">CLASSIC</a>
+            <a th:href="@{/category/trot}" class="nav-link">트로트</a>
+            <a th:href="@{/category/overseas}" class="nav-link">해외뮤지션</a>
+            <a th:href="@{/category/kids}" class="nav-link">KIDS</a>
+        </nav>
 
-    <!-- 우측(검색창 + 유저메뉴)영역 -->
-    <div class="header-right">
-        <!-- 검색 영역 -->
-        <form th:action="@{/search}" method="get" class="search-box">
-            <input type="text" name="keyword" class="search-input" placeholder="콘서트 검색하기...">
-            <button type="submit" class="search-btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </form>
+        <!-- 우측(검색창 + 유저메뉴)영역 -->
+        <div class="header-right">
+            <!-- 검색 영역 -->
+            <form th:action="@{/search}" method="get" class="search-box">
+                <input type="text" name="keyword" class="search-input" placeholder="콘서트 검색하기...">
+                <button type="submit" class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
 
-        <div class="user-menu">
-            <a th:href="@{/login}">
-                <i class="fa-solid fa-user"></i> 로그인
-            </a>
-            <a th:href="@{/mypage}">
-                마이페이지
-            </a>
-            <a th:href="@{/event}" title="관리자 페이지">
-                <i class="fa-solid fa-gear"></i>
-            </a>
+            <div class="user-menu">
+                <a th:href="@{/login}">
+                    <i class="fa-solid fa-user"></i> 로그인
+                </a>
+                <a th:href="@{/mypage}">
+                    마이페이지
+                </a>
+                <a th:href="@{/event}" title="관리자 페이지">
+                    <i class="fa-solid fa-gear"></i>
+                </a>
+            </div>
         </div>
     </div>
 </header>
