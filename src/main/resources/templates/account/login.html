@@ -1,19 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickTicket 로그인</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" th:href="@{/css/all.min.css}">
-    <!-- 로그인 css -->
+    <title>QuickTicket - 로그인</title>
     <link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
 <body>
 
-<div class="login-container">
+<main layout:fragment="content" class="login-container">
     <!-- 로그인 로고 -->
     <div class="logo">Quick<span>Ticket</span></div>
 
@@ -68,7 +63,7 @@
             </a>
         </div>
     </div>
-</div>
+</main>
 
 </body>
 </html>

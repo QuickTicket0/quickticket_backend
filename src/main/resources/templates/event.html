@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
 <head>
-    <link rel="stylesheet" th:href="@{/css/all.min.css}">
-    <link rel="stylesheet" th:href="@{/css/site.css}">
+    <title>QuickTicket - 콘서트 정보</title>
 </head>
 <body>
-<!-- header -->
-<div th:replace="~{fragments/header :: headerFragment}"></div>
 
-<!-- footer -->
-<div th:replace="~{fragments/footer :: footerFragment}"></div>
+<main layout:fragment="content">
+
+</main>
+
 </body>
 </html>

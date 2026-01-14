@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickTicket - 회원가입</title>
-    <link rel="stylesheet" th:href="@{/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
 
-<div class="find-container">
-
+<main layout:fragment="content" class="find-container">
     <div class="logo" style="text-align: left; margin-bottom: 20px; font-size: 24px;">
         Quick<span>Ticket</span>
     </div>
@@ -97,8 +95,7 @@
             </a>
         </div>
     </div>
-
-</div>
+</main>
 
 </body>
 </html>
