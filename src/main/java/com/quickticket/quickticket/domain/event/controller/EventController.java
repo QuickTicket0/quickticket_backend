@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 @RequiredArgsConstructor
 public class EventController {
-    @GetMapping("/event/{eventId}")
-    public String event(Model model, @PathVariable String eventId) {
-        return "event";
+    @GetMapping("/event")
+    public String event(Model model) {
+        return "admin/event";
     }
 
     @GetMapping("/editEvent/{eventId}")

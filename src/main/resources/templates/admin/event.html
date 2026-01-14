@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<!-- header -->
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<!-- main -->
+<div class="main-content" style="min-height: 800px; padding: 50px;">
+    <h1>관리자 페이지입니다.</h1>
+</div>
+
+<!-- footer -->
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+</body>
+</html>
