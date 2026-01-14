@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class EventController {
     @GetMapping("/event")
     public String event(Model model) {
+        return "event";
+    }
+
+    @GetMapping("/admin/event")
+    public String adminEvent(Model model) {
         return "admin/event";
     }
 
