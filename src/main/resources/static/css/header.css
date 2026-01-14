@@ -1,0 +1,88 @@
+.site-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 80px;
+    padding: 0 40px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    min-width: 1000px;
+}
+
+/* 로고 영역 */
+.header-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-right: 60px;
+}
+.header-logo span {
+    color: #4a80f5;
+}
+/* 네비게이션 메뉴 */
+.header-nav {
+    display: flex;
+    gap: 30px;
+    margin-right: auto;
+}
+.nav-link {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.nav-link:hover {
+    color: #4a80f5;
+}
+/* 검색창 + 유저메뉴 */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+/* 검색창 */
+.search-box {
+    position: relative;
+    width: 250px;
+}
+.search-input {
+    width: 100%;
+    padding: 10px 40px 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+}
+.search-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+}
+/* 로그인/마이페이지 링크 */
+.user-menu {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: #333;
+    font-weight: 500;
+    align-items: center;
+}
+.user-menu a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.user-menu i {
+    font-size: 16px;
+}
+
+/* footer을 바닥에 고정 */
+.main-content {
+    flex: 1;
+}
