@@ -8,59 +8,61 @@
 </head>
 <body>
 
-<main layout:fragment="content" class="login-container">
-    <!-- 로그인 로고 -->
-    <div class="logo">Quick<span>Ticket</span></div>
+<main layout:fragment="content">
+    <div class="login-container">
+        <!-- 로그인 로고 -->
+        <div class="logo">Quick<span>Ticket</span></div>
 
-    <div th:if="${param.error}" style="color: #e74c3c; font-size: 13px; margin-bottom: 15px;">
-        아이디 또는 비밀번호가 일치하지 않습니다.
-    </div>
-    <div th:if="${param.logout}" style="color: #4a80f5; font-size: 13px; margin-bottom: 15px;">
-        로그아웃 되었습니다.
-    </div>
-
-    <!-- 로그인 폼 시작 -->
-    <form th:action="@{/login}" method="post">
-        <div class="input-group">
-            <i class="fa-regular fa-user"></i>
-            <input type="text" name="username" placeholder="아이디" required>
+        <div th:if="${param.error}" style="color: #e74c3c; font-size: 13px; margin-bottom: 15px;">
+            아이디 또는 비밀번호가 일치하지 않습니다.
         </div>
-        <div class="input-group">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" name="password" placeholder="비밀번호" required>
+        <div th:if="${param.logout}" style="color: #4a80f5; font-size: 13px; margin-bottom: 15px;">
+            로그아웃 되었습니다.
         </div>
 
-        <label class="checkbox-group">
-            <i class="fa-regular fa-circle-check"></i>
-            <input type="checkbox" name="remember-me" checked>
-            로그인 상태 유지
-        </label>
+        <!-- 로그인 폼 시작 -->
+        <form th:action="@{/login}" method="post">
+            <div class="input-group">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="username" placeholder="아이디" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="비밀번호" required>
+            </div>
 
-        <button type="submit" class="login-btn">로그인</button>
-    </form>
+            <label class="checkbox-group">
+                <i class="fa-regular fa-circle-check"></i>
+                <input type="checkbox" name="remember-me" checked>
+                로그인 상태 유지
+            </label>
 
-    <!-- 로그인 하단 링크 -->
-    <div class="links">
-        <a th:href="@{/findMyId}">아이디 찾기</a>
-        <span class="separator">|</span>
-        <a th:href="@{/findMyPassword}">비밀번호 찾기</a>
-        <span class="separator">|</span>
-        <a th:href="@{/signup}">회원가입</a>
-    </div>
+            <button type="submit" class="login-btn">로그인</button>
+        </form>
 
-    <!-- 소셜로그인 영역 -->
-    <div class="social-login">
-        <p>간편 로그인</p>
-        <div class="social-icons">
-            <a th:href="@{/oauth2/authorization/kakao}" class="social-btn kakao">
-                <i class="fa-solid fa-comment"></i>
-            </a>
-            <a th:href="@{/oauth2/authorization/naver}" class="social-btn naver">
-                <img th:src="@{/images/naver_logo.png}" alt="naver" class="social-img-full">
-            </a>
-            <a th:href="@{/oauth2/authorization/google}" class="social-btn google">
-                <img th:src="@{/images/google_logo.svg}" alt="google" class="social-img-full">
-            </a>
+        <!-- 로그인 하단 링크 -->
+        <div class="links">
+            <a th:href="@{/findMyId}">아이디 찾기</a>
+            <span class="separator">|</span>
+            <a th:href="@{/findMyPassword}">비밀번호 찾기</a>
+            <span class="separator">|</span>
+            <a th:href="@{/signup}">회원가입</a>
+        </div>
+
+        <!-- 소셜로그인 영역 -->
+        <div class="social-login">
+            <p>간편 로그인</p>
+            <div class="social-icons">
+                <a th:href="@{/oauth2/authorization/kakao}" class="social-btn kakao">
+                    <i class="fa-solid fa-comment"></i>
+                </a>
+                <a th:href="@{/oauth2/authorization/naver}" class="social-btn naver">
+                    <img th:src="@{/images/naver_logo.png}" alt="naver" class="social-img-full">
+                </a>
+                <a th:href="@{/oauth2/authorization/google}" class="social-btn google">
+                    <img th:src="@{/images/google_logo.svg}" alt="google" class="social-img-full">
+                </a>
+            </div>
         </div>
     </div>
 </main>

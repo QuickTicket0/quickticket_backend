@@ -7,13 +7,10 @@
     box-sizing: border-box;
 }
 /* 전체 페이지 레이아웃 */
-body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background-color: #ffffff;
+main {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     color: #333;
 }
 /* 로그인 박스 컨테이너 */
