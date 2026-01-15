@@ -3,12 +3,144 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/defaultLayout}">
 <head>
-    <title>QuickTicket - 콘서트 수정</title>
+    <title>QuickTicket - 콘서트 정보 수정</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
 
 <main layout:fragment="content">
+    <div class="page-content-wrapper">
+        <div class="main-container new-event-page">
+            <h2>콘서트 정보 수정</h2>
 
+            <form th:action="@{/admin/editEvent}" method="post" enctype="multipart/form-data">
+                <!-- 기본정보 영역 시작-->
+                <h3 class="section-title">기본정보</h3>
+                <section class="form-section">
+                    <div class="input-grid">
+                        <div class="input-item">
+                            <label>공연명</label>
+                            <input type="text" name="title" class="form-input" value="2025 임영웅 아임 히어로 콘서트">
+                        </div>
+                        <div class="input-item">
+                            <label>카테고리</label>
+                            <select name="category" class="form-select custom-select">
+                                <option value="KPOP">KPOP</option>
+                                <option value="CLASSIC">CLASSIC</option>
+                                <option value="TROT" selected>트로트</option>
+                            </select>
+                        </div>
+                        <div class="input-item">
+                            <label>회차</label>
+                            <select name="turn" class="form-select custom-select">
+                                <option value="1" selected>1회차</option>
+                            </select>
+                        </div>
+                        <div class="input-item">
+                            <label>공연일시</label>
+                            <div class="date-wrapper">
+                                <input type="text" name="eventDate" class="form-input" value="2025-05-05">
+                                <i class="fa-regular fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="input-item">
+                            <label>공연장소</label>
+                            <input type="text" name="location" class="form-input" value="서울월드컵경기장">
+                        </div>
+                        <div class="input-item">
+                            <label>기획사 정보</label>
+                            <input type="text" name="agency" class="form-input" value="물고기뮤직">
+                        </div>
+                    </div>
+                </section>
+                <!-- 기본정보 영역 끝-->
+                <!-- 판매 및 출연진 정보 영역 시작-->
+                <h3 class="section-title">판매 및 출연진 정보</h3>
+                <section class="form-section">
+                    <div class="info-grid">
+                        <div class="info-column">
+                            <label>출연진 정보</label>
+                            <div class="dynamic-input-group">
+                                <input type="text" name="cast" class="form-input" value="임영웅">
+                                <button type="button" class="btn-icon-delete" title="삭제">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <div class="dynamic-input-group" style="margin-top: 5px;">
+                                <input type="text" name="cast" class="form-input" value="MC 딩동">
+                                <button type="button" class="btn-icon-delete" title="삭제">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="btn-add-item">출연진 추가</button>
+                        </div>
+
+                        <div class="info-column">
+                            <label>좌석 등급 및 가격</label>
+                            <div class="dynamic-input-group row-inputs">
+                                <input type="text" value="VIP석" class="form-input small">
+                                <input type="text" value="165000" class="form-input small">
+                                <input type="text" value="500" class="form-input small">
+                                <button type="button" class="btn-icon-delete"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                            <div class="dynamic-input-group row-inputs" style="margin-top: 5px;">
+                                <input type="text" value="R석" class="form-input small">
+                                <input type="text" value="143000" class="form-input small">
+                                <input type="text" value="1000" class="form-input small">
+                                <button type="button" class="btn-icon-delete"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                            <button type="button" class="btn-add-item">등급 추가</button>
+                        </div>
+                    </div>
+                </section>
+                <!-- 판매 및 출연진 정보 영역 끝-->
+                <!-- 상세정보 영역 시작 -->
+                <h3 class="section-title">상세정보</h3>
+                <section class="form-section">
+                    <div class="info-grid">
+                        <div class="info-column">
+                            <label>상세정보 내용(이미지, 텍스트)</label>
+                            <textarea name="content" class="form-textarea"></textarea>
+
+                            <div class="image-upload-area">
+                                <p class="upload-label">첨부 이미지 목록</p>
+                                <div class="image-preview-list">
+                                    <div class="preview-item">
+                                        <div class="preview-box"></div> <span class="file-name">설명1.jpg</span>
+
+                                        <button type="button" class="btn-del-img">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                    <div class="preview-item">
+                                        <div class="preview-box"></div> <span class="file-name">설명1.jpg</span>
+
+                                        <button type="button" class="btn-del-img">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                    <button type="button" class="btn-image-add">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-column">
+                            <label>상품정보 내용</label>
+                            <textarea name="info" class="form-textarea">[예매 취소 조건]- 관람일 9일 전 ~ 7일 전 : 티켓 금액의 10%
+                            </textarea>
+                        </div>
+                    </div>
+                </section>
+                <!-- 상세정보 영역 끝 -->
+                <!-- 버튼 영역 -->
+                <div class="form-footer-buttons">
+                    <button type="submit" class="btn-submit">수정</button>
+                    <a th:href="@{/admin/event}" class="btn-list">목록</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
 
 </body>

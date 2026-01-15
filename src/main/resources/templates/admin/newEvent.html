@@ -4,120 +4,126 @@
       layout:decorate="~{layouts/defaultLayout}">
 <head>
     <title>QuickTicket - 신규 콘서트 등록</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
 
 <main layout:fragment="content">
-    <div class="admin-container new-event-page">
-        <h2 class="page-title">신규 콘서트 등록</h2>
+    <div class="page-content-wrapper">
+        <div class="main-container new-event-page">
+            <h2>신규 콘서트 등록</h2>
 
-        <form th:action="@{/admin/event/new}" method="post" enctype="multipart/form-data">
-
-            <h3 class="section-title">기본정보</h3>
-            <section class="form-section">
-                <div class="input-grid">
-                    <div class="input-item">
-                        <label>공연명</label>
-                        <input type="text" name="title" class="form-input" placeholder="공연명을 입력하세요">
-                    </div>
-                    <div class="input-item">
-                        <label>카테고리</label>
-                        <select name="category" class="form-select custom-select">
-                            <option value="KPOP">KPOP</option>
-                            <option value="CLASSIC">CLASSIC</option>
-                            <option value="TROT">트로트</option>
-                        </select>
-                    </div>
-                    <div class="input-item">
-                        <label>회차</label>
-                        <select name="turn" class="form-select custom-select">
-                            <option value="1">1회차</option>
-                        </select>
-                    </div>
-                    <div class="input-item">
-                        <label>공연일시</label>
-                        <div class="date-wrapper">
-                            <input type="text" name="eventDate" class="form-input" placeholder="YYYY-MM-DD HH:mm">
-                            <i class="fa-regular fa-calendar"></i>
+            <form th:action="@{/admin/newEvent}" method="post" enctype="multipart/form-data">
+                <!-- 기본정보 영역 시작-->
+                <h3 class="section-title">기본정보</h3>
+                <section class="form-section">
+                    <div class="input-grid">
+                        <div class="input-item">
+                            <label>공연명</label>
+                            <input type="text" name="title" class="form-input" placeholder="공연명을 입력하세요">
                         </div>
-                    </div>
-                    <div class="input-item">
-                        <label>공연장소</label>
-                        <input type="text" name="location" class="form-input">
-                    </div>
-                    <div class="input-item">
-                        <label>기획사 정보</label>
-                        <input type="text" name="agency" class="form-input">
-                    </div>
-                </div>
-            </section>
-
-            <h3 class="section-title">판매 및 출연진 정보</h3>
-            <section class="form-section">
-                <div class="info-grid">
-                    <div class="info-column">
-                        <label>출연진 정보</label>
-                        <div class="dynamic-input-group">
-                            <input type="text" name="cast" class="form-input" placeholder="출연진 이름을 입력하세요">
-                            <button type="button" class="btn-icon-delete" title="삭제">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
+                        <div class="input-item">
+                            <label>카테고리</label>
+                            <select name="category" class="form-select custom-select">
+                                <option value="KPOP">KPOP</option>
+                                <option value="CLASSIC">CLASSIC</option>
+                                <option value="TROT">트로트</option>
+                            </select>
                         </div>
-                        <button type="button" class="btn-add-item">출연진 추가</button>
-                    </div>
-                    <div class="info-column">
-                        <label>좌석 등급 및 가격</label>
-                        <div class="dynamic-input-group row-inputs">
-                            <input type="text" placeholder="등급" class="form-input small">
-                            <input type="text" placeholder="가격" class="form-input small">
-                            <input type="text" placeholder="수량" class="form-input small">
-                            <button type="button" class="btn-icon-delete"><i class="fa-regular fa-trash-can"></i></button>
+                        <div class="input-item">
+                            <label>회차</label>
+                            <select name="turn" class="form-select custom-select">
+                                <option value="1">1회차</option>
+                            </select>
                         </div>
-                        <button type="button" class="btn-add-item">등급 추가</button>
-                    </div>
-                </div>
-            </section>
-
-            <h3 class="section-title">상세정보</h3>
-            <section class="form-section">
-                <div class="info-grid">
-                    <div class="info-column">
-                        <label>상세정보 내용(이미지, 텍스트)</label>
-                        <textarea name="content" class="form-textarea"></textarea>
-
-                        <div class="image-upload-area">
-                            <p class="upload-label">첨부 이미지 목록</p>
-                            <div class="image-preview-list">
-                                <div class="preview-item">
-                                    <div class="preview-box"></div>
-                                    <span class="file-name">설명1.jpg</span>
-                                </div>
-                                <div class="preview-item">
-                                    <div class="preview-box"></div>
-                                    <span class="file-name">설명2.png</span>
-                                </div>
-                                <div class="preview-item">
-                                    <div class="preview-box"></div>
-                                    <span class="file-name">설명3.png</span>
-                                </div>
-                                <button type="button" class="btn-image-add">+</button>
+                        <div class="input-item">
+                            <label>공연일시</label>
+                            <div class="date-wrapper">
+                                <input type="text" name="eventDate" class="form-input" placeholder="YYYY-MM-DD HH:mm">
+                                <i class="fa-regular fa-calendar"></i>
                             </div>
                         </div>
+                        <div class="input-item">
+                            <label>공연장소</label>
+                            <input type="text" name="location" class="form-input">
+                        </div>
+                        <div class="input-item">
+                            <label>기획사 정보</label>
+                            <input type="text" name="agency" class="form-input">
+                        </div>
                     </div>
+                </section>
+                <!-- 기본정보 영역 끝-->
+                <!-- 판매 및 출연진 정보 영역 시작-->
+                <h3 class="section-title">판매 및 출연진 정보</h3>
+                <section class="form-section">
+                    <div class="info-grid">
+                        <div class="info-column">
+                            <label>출연진 정보</label>
+                            <div class="dynamic-input-group">
+                                <input type="text" name="cast" class="form-input" placeholder="출연진 이름을 입력하세요">
+                                <button type="button" class="btn-icon-delete" title="삭제">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="btn-add-item">출연진 추가</button>
+                        </div>
+                        <div class="info-column">
+                            <label>좌석 등급 및 가격</label>
+                            <div class="dynamic-input-group row-inputs">
+                                <input type="text" placeholder="등급" class="form-input small">
+                                <input type="text" placeholder="가격" class="form-input small">
+                                <input type="text" placeholder="수량" class="form-input small">
+                                <button type="button" class="btn-icon-delete"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                            <button type="button" class="btn-add-item">등급 추가</button>
+                        </div>
+                    </div>
+                </section>
+                <!-- 판매 및 출연진 정보 영역 끝-->
+                <!-- 상세정보 영역 시작 -->
+                <h3 class="section-title">상세정보</h3>
+                <section class="form-section">
+                    <div class="info-grid">
+                        <div class="info-column">
+                            <label>상세정보 내용(이미지, 텍스트)</label>
+                            <textarea name="content" class="form-textarea"></textarea>
 
-                    <div class="info-column">
-                        <label>상품정보 내용</label>
-                        <textarea name="info" class="form-textarea"></textarea>
+                            <div class="image-upload-area">
+                                <p class="upload-label">첨부 이미지 목록</p>
+                                <div class="image-preview-list">
+                                    <div class="preview-item">
+                                        <div class="preview-box"></div>
+                                        <span class="file-name">설명1.jpg</span>
+                                    </div>
+                                    <div class="preview-item">
+                                        <div class="preview-box"></div>
+                                        <span class="file-name">설명2.png</span>
+                                    </div>
+                                    <div class="preview-item">
+                                        <div class="preview-box"></div>
+                                        <span class="file-name">설명3.png</span>
+                                    </div>
+                                    <button type="button" class="btn-image-add">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-column">
+                            <label>상품정보 내용</label>
+                            <textarea name="info" class="form-textarea"></textarea>
+                        </div>
                     </div>
+                </section>
+                <!-- 상세정보 영역 끝 -->
+                <!-- 버튼 영역 -->
+                <div class="form-footer-buttons">
+                    <button type="submit" class="btn-submit">등록</button>
+                    <a th:href="@{/admin/event}" class="btn-list">목록</a>
                 </div>
-            </section>
-
-            <div class="form-footer-buttons">
-                <button type="submit" class="btn-submit">등록</button>
-                <a th:href="@{/admin/event}" class="btn-list">목록</a>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </main>
 

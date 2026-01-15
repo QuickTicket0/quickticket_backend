@@ -4,103 +4,103 @@
       layout:decorate="~{layouts/defaultLayout}">
 <head>
     <title>QuickTicket - 콘서트 관리</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
 
 <main layout:fragment="content">
-    <div class="admin-container">
-        <!-- 검색영역 시작 -->
-        <form class="search-filter-box">
-            <div class="filter-group">
-                <span class="filter-label">공연기간</span>
-                <div style="position: relative;">
-                    <input type="text" class="form-input date-input" value="2026.01.01 ~ 2026.01.31">
-                    <i class="fa-regular fa-calendar" style="position: absolute; right: 10px; top: 12px; color: #999;"></i>
+    <div class="page-wrapper">
+        <div class="main-container">
+            <form class="search-filter-box">
+                <div class="filter-group">
+                    <span class="filter-label">공연기간</span>
+                    <div style="position: relative;">
+                        <input type="text" class="form-input date-input" value="2026.01.01 ~ 2026.01.31">
+                        <i class="fa-regular fa-calendar" style="position: absolute; right: 10px; top: 12px; color: #999;"></i>
+                    </div>
                 </div>
+
+                <div class="filter-group">
+                    <span class="filter-label">카테고리</span>
+                    <select class="form-select category-select">
+                        <option value="">전체</option>
+                        <option value="KPOP">KPOP</option>
+                        <option value="CLASSIC">CLASSIC</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <span class="filter-label">상태</span>
+                    <select class="form-select category-select">
+                        <option value="">전체</option>
+                        <option value="SALE">판매중</option>
+                        <option value="SOLD_OUT">매진</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <input type="text" class="form-input keyword-input" placeholder="Value">
+                </div>
+
+                <button type="button" class="btn-search">검색</button>
+            </form>
+            <div class="list-header">
+                <div class="list-title">콘서트 목록</div>
+                <a th:href="@{/newEvent}" class="btn-register">신규 콘서트 등록</a>
             </div>
 
-            <div class="filter-group">
-                <span class="filter-label">카테고리</span>
-                <select class="form-select category-select">
-                    <option value="">전체</option>
-                    <option value="KPOP">KPOP</option>
-                    <option value="CLASSIC">CLASSIC</option>
-                </select>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                    <tr>
+                        <th class="col-check"><input type="checkbox"></th>
+                        <th class="col-no">NO</th>
+                        <th class="col-thumb">썸네일</th>
+                        <th>카테고리</th>
+                        <th>공연명</th>
+                        <th>출연자</th>
+                        <th>공연장소</th>
+                        <th>상태</th>
+                        <th class="col-action"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="i : ${#numbers.sequence(1, 5)}">
+                        <td style="text-align: center;">
+                            <input type="checkbox">
+                        </td>
+                        <td th:text="${i}">1</td>
+                        <td>
+                            <div class="thumb-box"></div>
+                        </td>
+                        <td>KPOP</td>
+                        <td>
+                            <a th:href="@{/editEvent/{id}(id=${i})}" class="link-title">
+                                2025 임영웅 아임 히어로 콘서트
+                            </a>
+                        </td>
+                        <td>임영웅</td>
+                        <td>서울월드컵경기장</td>
+                        <td>판매중</td>
+                        <td style="text-align: center; cursor: pointer; color: #999;">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <a href="#" class="page-btn"><i class="fa-solid fa-angles-left"></i></a>
+                <a href="#" class="page-btn"><i class="fa-solid fa-angle-left"></i></a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn"><i class="fa-solid fa-angle-right"></i></a>
+                <a href="#" class="page-btn"><i class="fa-solid fa-angles-right"></i></a>
             </div>
 
-            <div class="filter-group">
-                <span class="filter-label">상태</span>
-                <select class="form-select category-select">
-                    <option value="">전체</option>
-                    <option value="SALE">판매중</option>
-                    <option value="SOLD_OUT">매진</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <input type="text" class="form-input keyword-input" placeholder="Value">
-            </div>
-
-            <button type="button" class="btn-search">검색</button>
-        </form>
-        <!-- 검색영역 끝 -->
-
-        <!-- 콘서트 테이블 영역 시작 -->
-        <div class="list-header">
-            <div class="list-title">콘서트 목록</div>
-            <a th:href="@{/newEvent}" class="btn-register">신규 콘서트 등록</a>
-        </div>
-
-        <div class="table-container">
-            <table class="admin-table">
-                <thead>
-                <tr>
-                    <th class="col-check"><input type="checkbox"></th>
-                    <th class="col-no">NO</th>
-                    <th class="col-thumb">썸네일</th>
-                    <th>카테고리</th>
-                    <th>공연명</th>
-                    <th>출연자</th>
-                    <th>공연장소</th>
-                    <th>상태</th>
-                    <th class="col-action"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="i : ${#numbers.sequence(1, 5)}">
-                    <td style="text-align: center;">
-                        <input type="checkbox">
-                    </td>
-                    <td th:text="${i}">1</td>
-                    <td><div class="thumb-box"></div></td>
-                    <td>Text</td>
-                    <td>Text</td>
-                    <td>Text</td>
-                    <td>Text</td>
-                    <td>Text</td>
-                    <td style="text-align: center; cursor: pointer; color: #999;">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- 콘서트 테이블 영역 끝 -->
-
-        <!-- 페이지네이션 영역 -->
-        <div class="pagination">
-            <a href="#" class="page-btn"><i class="fa-solid fa-angles-left"></i></a>
-            <a href="#" class="page-btn"><i class="fa-solid fa-angle-left"></i></a>
-            <a href="#" class="page-btn active">1</a>
-            <a href="#" class="page-btn">2</a>
-            <a href="#" class="page-btn">3</a>
-            <a href="#" class="page-btn"><i class="fa-solid fa-angle-right"></i></a>
-            <a href="#" class="page-btn"><i class="fa-solid fa-angles-right"></i></a>
-        </div>
-
-    </div>
-</main>
+        </div> </div> </main>
 
 </body>
 </html>
