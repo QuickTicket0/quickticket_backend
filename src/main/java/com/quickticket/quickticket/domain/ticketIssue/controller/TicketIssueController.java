@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class TicketIssueController {
     @GetMapping("/ticketSuccess")
     public String ticketSuccess(Model model) {
+
         return "ticketSuccess";
     }
 

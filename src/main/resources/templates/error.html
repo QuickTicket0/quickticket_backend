@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
+<head>
+    <title>QuickTicket - 오류</title>
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+
+<main layout:fragment="content">
+    <div class="content">
+    <h2>오류</h2>
+    <p>[[${status}]]: [[${error}]]</p>
+    <p th:text="${message}"></p>
+    <div class="buttons">
+        <a th:href="@{/}">홈페이지</a>
+    </div>
+    </div>
+</main>
+
+</body>
+</html>
