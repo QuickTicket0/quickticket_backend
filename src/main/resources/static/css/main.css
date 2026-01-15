@@ -1,0 +1,204 @@
+@charset "UTF-8";
+
+/* 상단 대형 배너 */
+.hero-section {
+    width: 100%;
+    height: 450px;
+    background-color: #1a1a1a;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+.hero-bg-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.hero-subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+.main-section {
+    margin-bottom: 80px;
+}
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+/* 그리드 레이아웃 */
+.concert-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+/* 썸네일 카드 디자인 */
+.concert-card {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+.concert-card:hover {
+    transform: translateY(-8px);
+}
+/* 썸네일 영역 */
+.thumb-wrapper {
+    width: 100%;
+    position: relative;
+    padding-top: 140%;
+    background-color: #fff;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+.concert-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.img-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    font-size: 14px;
+    font-weight: 500;
+}
+/* 썸네일 카드 텍스트 */
+.card-info {
+    text-align: center;
+    padding: 0 5px;
+}
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-sub {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 5px;
+}
+/* 리스트 컨테이너 (상단 진한 선) */
+.event-list-wrapper {
+    width: 100%;
+    border-top: 2px solid #222;
+    margin-bottom: 60px;
+}
+/* 개별 리스트 아이템 */
+.event-item {
+    display: flex;
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+.event-item:hover {
+    background-color: #f8f8f8;
+}
+/* 리스트용 썸네일 영역 */
+.item-thumb {
+    width: 130px;
+    height: 175px;
+    flex-shrink: 0;
+    margin-right: 30px;
+    position: relative;
+    background-color: #eee;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+.list-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.event-item:hover .list-img {
+    transform: scale(1.05);
+}
+
+/* 가운데: 공연 정보 영역 */
+.item-info {
+    flex-grow: 1;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.info-title {
+    font-size: 1.00rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    word-break: keep-all;
+}
+
+/* 오른쪽: 날짜 및 장소 */
+.item-meta {
+    width: 280px;
+    flex-shrink: 0;
+    padding-left: 30px;
+    border-left: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    min-height: 130px;
+    text-align: left;
+}
+.meta-text {
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+}

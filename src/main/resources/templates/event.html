@@ -3,12 +3,63 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/defaultLayout}">
 <head>
-    <title>QuickTicket - 콘서트 정보</title>
+    <title>QuickTicket - 콘서트 예매</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
 <body>
 
 <main layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="event-container">
+            <h2 class="list-title">콘서트 예매</h2>
 
+            <div class="event-list">
+
+                <a href="#" class="event-item">
+                    <div class="item-thumb">
+                        <img th:src="@{/images/concertImage5.png}" alt="thumbnail" class="thumb-img">
+                    </div>
+
+                    <div class="item-info">
+                        <p class="info-title">2025-2026 이창섭 단독 콘서트 &lt;EndAnd&gt; - 서울</p>
+                    </div>
+
+                    <div class="item-meta">
+                        <span class="meta-text">2026.01.17 ~ 2026.01.18</span>
+                        <span class="meta-text">벡스코 오디토리움</span>
+                    </div>
+                </a>
+
+                <a href="#" class="event-item">
+                    <div class="item-thumb">
+                        <img th:src="@{/images/concertImage5.png}" alt="썸네일" class="thumb-img">
+                    </div>
+                    <div class="item-info">
+                        <p class="info-title">2025-2026 이창섭 단독 콘서트 &lt;EndAnd&gt; - 수원</p>
+                    </div>
+                    <div class="item-meta">
+                        <span class="meta-text">2026.02.14 ~ 2026.02.15</span>
+                        <span class="meta-text">수원컨벤션센터 전시홀</span>
+                    </div>
+                </a>
+
+                <a href="#" class="event-item">
+                    <div class="item-thumb">
+                        <img th:src="@{/images/concertImage5.png}" alt="썸네일" class="thumb-img">
+                    </div>
+                    <div class="item-info">
+                        <p class="info-title">2025-2026 이창섭 단독 콘서트 &lt;EndAnd&gt; - 대구</p>
+                    </div>
+                    <div class="item-meta">
+                        <span class="meta-text">2026.03.01 ~ 2026.03.02</span>
+                        <span class="meta-text">대구 엑스코 5층 컨벤션홀</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </div>
 </main>
 
 </body>
