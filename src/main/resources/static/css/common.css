@@ -35,24 +35,26 @@ input, select, textarea { font-family: inherit; outline: none; }
 /* Inner Container(실제 컨텐츠 영역) */
 .main-container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     padding: 0 20px;
     margin: 0 auto;
     padding: 50px 20px;
 }
-/* 페이지 제목 */
-.list-title {
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #000;
-}
 /* 날짜  */
-.date-input { width: 200px; }
-/* 카테고리 selet */
-.category-select { width: 100px; }
+.date-input {
+    width: 100%;
+}
+/* 카테고리 select */
+.category-select {
+    width: 100px;
+    flex-shrink: 0;
+}
 /* 검색창  */
-.keyword-input { width: 300px; }
+.keyword-input {
+    flex-grow: 1;
+    min-width: 200px;
+    width: auto;
+}
 /* 검색 버튼 */
 .btn-search {
     background-color: #4a80f5;
@@ -63,7 +65,8 @@ input, select, textarea { font-family: inherit; outline: none; }
     padding: 0 25px;
     font-weight: 600;
     cursor: pointer;
-    margin-left: auto;
+    margin-left: 10px;
+    flex-shrink: 0;
     transition: background-color 0.2s;
 }
 .btn-search:hover { background-color: #3a6bd6; }
@@ -81,8 +84,8 @@ input, select, textarea { font-family: inherit; outline: none; }
 .btn-register:hover { background-color: #3a6bd6; }
 /* 등록 및 목록 버튼 공통 디자인 */
 .btn-submit, .btn-list {
-    width: 120px ;
-    height: 48px ;
+    width: 100px ;
+    height: 40px ;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -113,3 +116,146 @@ input, select, textarea { font-family: inherit; outline: none; }
 .btn-submit:hover {
     background-color: #3a6bd6 ;
 }
+/* =========================================
+   공통: 페이지네이션 (Pagination)
+   ========================================= */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+.page-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.page-btn:hover {
+    border-color: #4a80f5;
+    color: #4a80f5;
+}
+.page-btn.active {
+    background-color: #4a80f5;
+    color: white;
+    border-color: #4a80f5;
+}
+/* =========================================
+   공통: 폼 스타일
+   ========================================= */
+/* 입력창 공통 스타일 */
+.form-input, .form-select {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+/* 폼 textarea  */
+.form-textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    background-color: #fff;
+    resize: vertical;
+}
+/* 폼 드롭다운의 화살표 위치 조정 */
+.custom-select {
+    width: 100%;
+    height: 42px;
+    padding: 0 40px 0 12px !important;
+    /* 기본 화살표 제거 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* 커스텀 화살표 아이콘 (어썸 라이브러리 대신 SVG 사용) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: calc(100% - 20px) center !important;
+    background-size: 14px !important;
+    cursor: pointer;
+}
+/* 페이지 타이틀 */
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 20px 0 10px 0;
+}
+.date-wrapper {
+    position: relative;
+    width: 100%;
+}
+/* 캘린더 아이콘 */
+.date-wrapper i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    font-size: 16px;
+}
+.date-wrapper .form-input {
+    padding-right: 40px;
+}
+/* 서브타이틀 */
+.sub-title {
+    display: block;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    /*border-left: 4px solid #4a80f5*/
+    padding-left: 12px;
+}
+/* =========================================
+   공통: 테이블
+   ========================================= */
+/*  테이블 스타일 */
+.table-container {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.common-table th {
+    background-color: #f5f7fa;
+    color: #555;
+    font-weight: 700;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+.common-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    vertical-align: middle;
+}
+.common-table tr:hover { background-color: #f9f9f9; }
+
+

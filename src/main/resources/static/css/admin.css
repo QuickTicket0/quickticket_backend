@@ -6,7 +6,7 @@
     padding: 25px;
     display: flex;
     align-items: center;
-    gap: 35px;
+    gap: 15px;
     margin-bottom: 40px;
 }
 .filter-group {
@@ -20,51 +20,13 @@
     color: #555;
     white-space: nowrap;
 }
-/* 입력창 공통 스타일 */
-.form-input, .form-select {
-    height: 40px;
-    padding: 0 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    outline: none;
-    box-sizing: border-box;
-}
 /* 리스트 헤더 (타이틀 + 등록버튼) */
 .list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    /*margin-bottom: 15px;*/
 }
-
-/*  테이블 스타일 */
-.table-container {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-.admin-table th {
-    background-color: #f5f7fa;
-    color: #555;
-    font-weight: 700;
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-.admin-table td {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    color: #333;
-    vertical-align: middle;
-}
-.admin-table tr:hover { background-color: #f9f9f9; }
 /* 테이블 컬럼 너비 */
 .col-check { width: 50px; text-align: center; }
 .col-no { width: 60px; }
@@ -77,51 +39,10 @@
     background-color: #eee;
     border-radius: 4px;
 }
-/* 페이지네이션 */
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 30px;
-}
-.page-btn {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #ddd;
-    background: #fff;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #666;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-.page-btn:hover {
-    border-color: #4a80f5;
-    color: #4a80f5;
-}
-.page-btn.active {
-    background-color: #4a80f5;
-    color: white;
-    border-color: #4a80f5;
-}
+
 /* ============================================================
    등록 페이지(newEvent.html) 디자인
    ============================================================ */
-/* 등록페이지 기본정보 */
-/* 기본정보 제목 */
-.section-title {
-    display: block;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #333;
-    border-left: 4px solid #4a80f5;
-    padding-left: 12px;
-}
 /* 폼 입력창을 감싸는 회색 박스 */
 .form-section {
     background-color: #f8f9fa;
@@ -228,17 +149,6 @@
     cursor: pointer;
     margin-top: 5px;
 }
-.new-event-page .form-textarea {
-    width: 100%;
-    min-height: 150px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.6;
-    background-color: #fff;
-    resize: vertical;
-}
 /* 첨부 이미지 목록 레이아웃 */
 .image-upload-area {
     margin-top: 25px;
@@ -303,13 +213,13 @@
     color: #4a80f5;
 }
 .form-footer-buttons {
-    display: flex !important;
-    justify-content: flex-end !important;
-    gap: 12px !important;
-    margin-top: 50px !important;
-    padding-bottom: 50px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+    display: flex;
+    justify-content: flex-end ;
+    gap: 12px;
+    margin-top: 50px;
+    padding-bottom: 50px;
+    width: 100%;
+    box-sizing: border-box;
 }
 .preview-item {
     position: relative;

@@ -12,11 +12,11 @@
 <main layout:fragment="content">
     <div class="page-content-wrapper">
         <div class="main-container new-event-page">
-            <h2>신규 콘서트 등록</h2>
+            <h2 class="main-title">신규 콘서트 등록</h2>
 
             <form th:action="@{/admin/newEvent}" method="post" enctype="multipart/form-data">
                 <!-- 기본정보 영역 시작-->
-                <h3 class="section-title">기본정보</h3>
+                <h3 class="sub-title">기본정보</h3>
                 <section class="form-section">
                     <div class="input-grid">
                         <div class="input-item">
@@ -56,7 +56,7 @@
                 </section>
                 <!-- 기본정보 영역 끝-->
                 <!-- 판매 및 출연진 정보 영역 시작-->
-                <h3 class="section-title">판매 및 출연진 정보</h3>
+                <h3 class="sub-title">판매 및 출연진 정보</h3>
                 <section class="form-section">
                     <div class="info-grid">
                         <div class="info-column">
@@ -83,7 +83,7 @@
                 </section>
                 <!-- 판매 및 출연진 정보 영역 끝-->
                 <!-- 상세정보 영역 시작 -->
-                <h3 class="section-title">상세정보</h3>
+                <h3 class="sub-title">상세정보</h3>
                 <section class="form-section">
                     <div class="info-grid">
                         <div class="info-column">

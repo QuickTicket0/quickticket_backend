@@ -16,7 +16,7 @@
                 <div class="filter-group">
                     <span class="filter-label">공연기간</span>
                     <div style="position: relative;">
-                        <input type="text" class="form-input date-input" value="2026.01.01 ~ 2026.01.31">
+                        <input type="text" class="form-input date-wrapper" value="2026.01.01 ~ 2026.01.31">
                         <i class="fa-regular fa-calendar" style="position: absolute; right: 10px; top: 12px; color: #999;"></i>
                     </div>
                 </div>
@@ -46,12 +46,12 @@
                 <button type="button" class="btn-search">검색</button>
             </form>
             <div class="list-header">
-                <div class="list-title">콘서트 목록</div>
+                <div class="sub-title">콘서트 목록</div>
                 <a th:href="@{/newEvent}" class="btn-register">신규 콘서트 등록</a>
             </div>
 
             <div class="table-container">
-                <table class="admin-table">
+                <table class="common-table">
                     <thead>
                     <tr>
                         <th class="col-check"><input type="checkbox"></th>
