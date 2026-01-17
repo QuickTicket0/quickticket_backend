@@ -12,4 +12,8 @@ public class PaymentMethodController {
     public String myPayments(Model model) {
         return "myPage/payments";
     }
+
+    @GetMapping("/myPage/myCredit")
+    public String myCredit(Model model) { return "myPage/myCredit"; }
+
 }
