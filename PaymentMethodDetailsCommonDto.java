@@ -1,0 +1,2 @@
+private protected interface PaymentMethodDetailsCommonDto {
+}
