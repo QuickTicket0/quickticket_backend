@@ -26,5 +26,6 @@ public class WantSeat {
     @JoinColumn(name = "seat", nullable = false)
     private Seat seat;
 
+
 }
 
