@@ -130,75 +130,596 @@
     border-top: 2px solid #222;
     margin-bottom: 60px;
 }
-/* 개별 리스트 아이템 */
-.event-item {
-    display: flex;
-    align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid #ddd;
-    background-color: #fff;
-    transition: background-color 0.2s ease;
-    text-decoration: none;
-    color: inherit;
-}
-.event-item:hover {
-    background-color: #f8f8f8;
-}
-/* 리스트용 썸네일 영역 */
-.item-thumb {
-    width: 130px;
-    height: 175px;
-    flex-shrink: 0;
-    margin-right: 30px;
-    position: relative;
-    background-color: #eee;
-    overflow: hidden;
-    border-radius: 4px;
-    border: 1px solid #eee;
-}
 .list-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
-.event-item:hover .list-img {
-    transform: scale(1.05);
+/* ============================== */
+/* 공연 상세 페이지 전용 스타일 */
+/* ============================== */
+/* 헤더 영역 */
+.event-header {
+    margin-bottom: 40px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 20px;
+    position: relative;
 }
-
-/* 가운데: 공연 정보 영역 */
-.item-info {
-    flex-grow: 1;
-    padding-right: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.info-title {
-    font-size: 1.00rem;
+.event-title {
+    font-size: 28px;
     font-weight: 700;
-    color: #333;
-    margin-bottom: 10px;
-    line-height: 1.4;
-    word-break: keep-all;
+    margin-bottom: 15px;
+    color: #000;
 }
-
-/* 오른쪽: 날짜 및 장소 */
-.item-meta {
-    width: 280px;
-    flex-shrink: 0;
-    padding-left: 30px;
-    border-left: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    min-height: 130px;
-    text-align: left;
-}
-.meta-text {
-    font-size: 0.9rem;
-    color: #666;
+.event-meta {
     display: flex;
     align-items: center;
+    gap: 20px;
+    font-size: 15px;
+    color: #666;
+}
+.meta-location {
+    color: #4a80f5;
+    font-weight: 500;
+}
+.btn-share {
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    font-size: 20px;
+    color: #666;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+/* 상단 메인 */
+.top-section {
+    display: flex;
+    gap: 50px;
+    margin-bottom: 50px;
+}
+/* 포스터 영역 */
+.poster-area {
+    width: 420px;
+    flex-shrink: 0;
+}
+.poster-box img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.btn-like {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: #555;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-like:hover {
+    border-color: #ff4d4f;
+    color: #ff4d4f;
+}
+/* 정보 영역 */
+.info-area {
+    flex: 1;
+}
+.info-row {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+}
+.info-row .label {
+    width: 100px;
+    font-weight: 600;
+    color: #333;
+}
+.info-row .content {
+    color: #555;
+    flex: 1;
+}
+/* 가격 리스트 스타일 */
+.price-list .price-item {
+    display: block;
+    margin-bottom: 4px;
+}
+.seat-type {
+    display: inline-block;
+    width: 60px;
+    color: #666;
+}
+.seat-price {
+    font-weight: 600;
+    color: #333;
+}
+.seat-price.highlight {
+    color: #e53e3e;
+}
+.divider {
+    height: 1px;
+    background-color: #333;
+    margin: 30px 0;
+}
+.sub-info {
+    margin-bottom: 25px;
+}
+.sub-info strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #333;
+}
+.sub-info p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+/* 달력 및 좌석 */
+.bottom-section {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 380px;
+    margin-bottom: 40px;
+}
+.selection-box {
+    flex: 2;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+.seat-summary-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.selection-header {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    font-weight: 700;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+.selection-body {
+    display: flex;
+    height: 100%;
+}
+/* 달력 스타일 */
+.calendar-wrap {
+    flex: 1.5;
+    padding: 20px;
+    border-right: 1px solid #eee;
+}
+.cal-nav {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.cal-nav button {
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #999;
+}
+.custom-calendar {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+.custom-calendar th {
+    font-size: 13px;
+    color: #666;
+    padding-bottom: 10px;
+}
+.custom-calendar td {
+    height: 36px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+/* 일요일 빨강, 토요일 파랑 */
+.custom-calendar .sun { color: #e53e3e; }
+.custom-calendar .sat { color: #4a80f5; }
+/* 선택된 날짜  */
+.custom-calendar td.active {
+    background-color: #4a80f5;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 50%;
+}
+/* 회차 선택 */
+.time-select-wrap {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+}
+.time-btn {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.time-btn.active {
+    border-color: #4a80f5;
+    color: #4a80f5;
+    font-weight: 700;
+    background-color: #eff6ff;
+}
+/* 우측 예매 가능 좌석 리스트 */
+.seat-status-list {
+    padding: 20px;
+    overflow-y: auto;
+}
+.seat-status-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #999;
+}
+.seat-status-item .name { color: #333; }
+.seat-status-item .status { color: #333; }
+/* 예매하기 버튼 */
+.action-footer {
+    text-align: center;
+    margin-bottom: 60px;
+}
+.btn-book {
+    background-color: #5d75fa;
+    color: #fff;
+    border: none;
+    width: 250px;
+    height: 60px;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(93, 117, 250, 0.3);
+}
+.btn-book:hover {
+    background-color: #4a63e0;
+}
+.booking-header {
+    margin-bottom: 30px;
+}
+.breadcrumb {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.breadcrumb .active {
+    color: #333;
+    font-weight: bold;
+}
+.concert-title {
+    font-size: 24px;
+    font-weight: 700;
+}
+/* 상단 검색조건 */
+.option-bar {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+.option-bar h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+.option-inputs {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #fff;
+    padding: 25px 30px;
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    align-items: center;
+    margin: 12px 0;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.input-group label {
+    font-weight: 700;
+    color: #555;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.input-group select {
+    width: 160px;
+    height: 42px;
+    padding: 0 15px;
+    padding-right: 35px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+.input-group select:hover {
+    border-color: #5673eb;
+    background-color: #fff;
+}
+/* 좌측 좌석예약 레이아웃 */
+.booking-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+/* 우측 좌석선택영역 */
+.sidebar {
+    flex: 1;
+    min-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.seat-grades {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+}
+.seat-grades h4, .selected-seat-summary h4 {
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.grade-card {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.grade-card:hover {
+    border-color: #5673eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.grade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.grade-name {
+    font-weight: 700;
+    font-size: 16px;
+}
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-green { background: #e3fcf2; color: #0ca678; }
+.badge-yellow { background: #fff9db; color: #f59f00; }
+.badge-red { background: #ffe3e3; color: #f03e3e; }
+
+.grade-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Selected Seat Summary */
+.selected-seat-summary {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-weight: 600;
+}
+
+.price-info {
+    text-align: right;
+}
+
+.seat-type {
+    font-size: 12px;
+    color: #888;
+    margin-right: 5px;
+}
+
+.total-price {
+    color: #5673eb;
+    font-weight: 700;
+}
+
+/* 좌석예약버튼 */
+.btn-booking-submit {
+    width: 100%;
+    height: 60px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #4263eb;
+}
+/* =========================================
+   결제  스타일
+   ========================================= *z
+/* 예매 정보 요약 박스 */
+.payment-summary-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 40px;
+}
+.summary-row {
+    display: flex;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+.summary-row:last-child {
+    margin-bottom: 0;
+}
+.summary-row .label {
+    width: 80px;
+    color: #888;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+.summary-row .value {
+    color: #333;
+    font-weight: 600;
+    flex: 1;
+}
+.summary-row.total-row {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+.summary-row .highlight {
+    font-size: 16px;
+    font-weight: 800;
+    color: #333;
+}
+/* 결제 수단 선택 */
+.payment-method-section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.method-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+/* 결제 수단 카드 스타일 */
+.method-card {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+/* 라디오 버튼 숨김 */
+.method-card input[type="radio"] {
+    display: none;
+}
+.method-content {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+    background: #fff;
+}
+.method-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.method-info .icon {
+    font-size: 20px;
+    color: #888;
+    width: 24px;
+    text-align: center;
+}
+.method-info .text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 라디오 버튼 원형 디자인 */
+.radio-circle {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* 선택되었을 때 스타일 */
+.method-card input[type="radio"]:checked + .method-content {
+    border-color: #5d75fa; /* 활성화 테두리 색상 */
+    background-color: #fcfdff;
+}
+
+.method-card input[type="radio"]:checked + .method-content .radio-circle {
+    border-color: #5d75fa;
+}
+
+.method-card input[type="radio"]:checked + .method-content .radio-circle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: #5d75fa;
+    border-radius: 50%;
+}
+
+/* 최종 결제 버튼 */
+.btn-final-pay {
+    width: 100%;
+    height: 56px;
+    background-color: #5d75fa;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-final-pay:hover {
+    background-color: #4a63e0;
 }

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
+<head>
+    <title>QuickTicket - 예매 성공</title>
+    <link rel="stylesheet" th:href="@{/css/ticketInfo.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
+</head>
+<body>
+
+<main layout:fragment="content">
+    <div class="main">
+        <h2>예매 완료</h2>
+        <div class="header-message">
+            고객님의 '<span id="header-message-event-name">[[${performance.eventName}]]</span>' 예매가 완료되었습니다.
+            <br>
+            좌석 예매 상태는 <span id="ticket-status"></span>입니다.
+        </div>
+
+        <div class="table-containers">
+            <div class="table-container">
+                <h5>공연 정보</h5>
+                <table>
+                    <tr>
+                        <td>공연명</td>
+                        <td id="performance-event-name">[[${performance.eventName}]]</td>
+                    </tr>
+                    <tr>
+                        <td>공연일자</td>
+                        <td id="performance-starts-at"></td>
+                    </tr>
+                    <tr>
+                        <td>회차</td>
+                        <td><span id="performance-nth">[[${performance.nth}]]</span>회차</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-container">
+                <h5>예매 정보</h5>
+                <table>
+                    <tr>
+                        <td>예매일자</td>
+                        <td id="ticket-created-at"></td>
+                    </tr>
+                    <tr>
+                        <td>예매번호</td>
+                        <td id="ticket-id">[[${ticket.id}]]</td>
+                    </tr>
+                    <tr>
+                        <td>희망 좌석</td>
+                        <td id="wishing-seats-info"></td>
+                    </tr>
+                    <tr>
+                        <td>좌석별 가격</td>
+                        <td id="seat-classes-price"></td>
+                    </tr>
+                    <tr>
+                        <td>결제 예상 범위</td>
+                        <td>
+                            <div id="payment-cost-estimate-range"></div>
+                            <div class="div13">
+                                ※ 취소표 발생 시 가장 먼저 매칭된 좌석의 금액으로 자동 결제됩니다.
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-container">
+                <h5>결제 정보</h5>
+                <table>
+                    <tr>
+                        <td>결제 좌석</td>
+                        <td id="payment-paid-seats"></td>
+                    </tr>
+                    <tr>
+                        <td>결제금액</td>
+                        <td id="payment-amount">[[${payment.amount}]]</td>
+                    </tr>
+                    <tr>
+                        <td>결제일자</td>
+                        <td id="payment-created-at"></td>
+                    </tr>
+                    <tr>
+                        <td>결제수단</td>
+                        <td id="payment-method"></td>
+                    </tr>
+                    <tr>
+                        <td>결제 상태</td>
+                        <td id="payment-status"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="buttons">
+                <a th:href="@{/}" class="homepage">홈페이지</a>
+                <a th:href="@{|/event/${performance.eventId}|}" class="ticket-details">예매 상세정보</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:inline="javascript">
+    const performance = /*[[${performance}]]*/ {
+        eventId: 1,
+        eventName: "test eventName",
+        startsAt: "2000-01-01T01:00:00",
+        nth: 1
+    };
+    const ticket = /*[[${ticket}]]*/ {
+        status: "CONFIRMED",
+        waitingNumber: undefined,
+        id: 1,
+        createdAt: "2000-01-01T01:00:00"
+    };
+    const wishingSeatsInfo = /*[[${wishingSeatsInfo}]]*/ [
+        {
+            name: "E",
+            price: 1000,
+            wishingSeatsId: [1, 2]
+        }
+    ];
+    const payment = /*[[${payment}]]*/ {
+        method: "CREDIT",
+        status: "ALL_PAID",
+        createdAt: "2000-01-01T01:00:00",
+        amount: 1000,
+        paidSeats: [
+            {
+                name: "E",
+                quantity: 1
+            }
+        ]
+    };
+
+    for (const seatClass of wishingSeatsInfo) {
+        seatClass.name
+        seatClass.price
+        seatClass.wishingSeatsId
+    }
+
+    for (const seatClass of payment.paidSeats) {
+        seatClass.name
+        seatClass.quantity
+    }
+
+    document.getElementById("performance-starts-at").innerText = "";
+    document.getElementById("ticket-created-at").innerText = "";
+    document.getElementById("ticket-status").innerText = "";
+    document.getElementById("wishing-seats-info").innerText = "";
+    document.getElementById("seat-classes-price").innerText = "";
+    document.getElementById("payment-cost-estimate-range").innerText = "";
+    document.getElementById("payment-paid-seats").innerText = "";
+    document.getElementById("payment-method").innerText = "";
+    document.getElementById("payment-created-at").innerText = "";
+    document.getElementById("payment-status").innerText = "";
+</script>
+
+</body>
+</html>

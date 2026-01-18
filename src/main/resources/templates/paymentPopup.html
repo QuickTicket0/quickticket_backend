@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="paymentModal" id="paymentModal" class="modal-overlay hidden">
+    <div class="modal-window">
+        <div class="modal-header">
+            <h2>결제</h2>
+            <button type="button" class="btn-close-modal" onclick="closePaymentModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="payment-summary-box">
+            <div class="summary-row">
+                <span class="label">공연명</span>
+                <span class="value">엔드 앤드</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">공연일자</span>
+                <span class="value">2026-01-01 / 오후 12:00</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">회차</span>
+                <span class="value">1회차</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">희망 좌석</span>
+                <span class="value">12석 중 2석 (S석 10개, VIP석 2개)</span>
+            </div>
+            <div class="summary-row total-row">
+                <span class="label">총 금액</span>
+                <span class="value highlight">154,000원</span>
+            </div>
+        </div>
+
+        <div class="payment-method-section">
+            <h3>결제수단 선택</h3>
+
+            <div class="method-options">
+                <label class="method-card">
+                    <input type="radio" name="paymentMethod" value="credit" checked>
+                    <div class="method-content">
+                        <div class="method-info">
+                            <i class="fa-solid fa-coins icon"></i>
+                            <span class="text">크레딧(Credit)</span>
+                        </div>
+                        <div class="radio-circle"></div>
+                    </div>
+                </label>
+
+                <label class="method-card">
+                    <input type="radio" name="paymentMethod" value="card">
+                    <div class="method-content">
+                        <div class="method-info">
+                            <i class="fa-regular fa-credit-card icon"></i>
+                            <span class="text">신용카드</span>
+                        </div>
+                        <div class="radio-circle"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <button type="button" class="btn-final-pay" th:onclick="|location.href='@{/ticketSuccess}'|">결제하기</button>
+    </div>
+</div>
+
+</body>
+</html>

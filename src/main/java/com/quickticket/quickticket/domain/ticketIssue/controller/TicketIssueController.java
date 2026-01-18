@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class TicketIssueController {
     @GetMapping("/ticketSuccess")
-    public String ticketSuccess(Model model) {
-
-        return "ticketSuccess";
-    }
+    public String ticketSuccess(Model model) { return "ticketSuccess"; }
 
     @GetMapping("/cancelTicketSuccess")
     public String cancelTicketSuccess(Model model) {
@@ -29,4 +26,7 @@ public class TicketIssueController {
     public String myTicket(Model model, @PathVariable String ticketId) {
         return "myPage/myTicket";
     }
+
+    @GetMapping("/registTicket")
+    public String registTicket(Model model) { return "registTicket"; }
 }

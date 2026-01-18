@@ -4,156 +4,99 @@
       layout:decorate="~{layouts/defaultLayout}">
 <head>
     <title>QuickTicket - 예매 성공</title>
-    <link rel="stylesheet" th:href="@{/css/ticketInfo.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
 </head>
 <body>
-
-<main layout:fragment="content">
-    <div class="main">
-        <h2>예매 완료</h2>
-        <div class="header-message">
-            고객님의 '<span id="header-message-event-name">[[${performance.eventName}]]</span>' 예매가 완료되었습니다.
-            <br>
-            좌석 예매 상태는 <span id="ticket-status"></span>입니다.
-        </div>
-
-        <div class="table-containers">
-            <div class="table-container">
-                <h5>공연 정보</h5>
-                <table>
-                    <tr>
-                        <td>공연명</td>
-                        <td id="performance-event-name">[[${performance.eventName}]]</td>
-                    </tr>
-                    <tr>
-                        <td>공연일자</td>
-                        <td id="performance-starts-at"></td>
-                    </tr>
-                    <tr>
-                        <td>회차</td>
-                        <td><span id="performance-nth">[[${performance.nth}]]</span>회차</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="table-container">
-                <h5>예매 정보</h5>
-                <table>
-                    <tr>
-                        <td>예매일자</td>
-                        <td id="ticket-created-at"></td>
-                    </tr>
-                    <tr>
-                        <td>예매번호</td>
-                        <td id="ticket-id">[[${ticket.id}]]</td>
-                    </tr>
-                    <tr>
-                        <td>희망 좌석</td>
-                        <td id="wishing-seats-info"></td>
-                    </tr>
-                    <tr>
-                        <td>좌석별 가격</td>
-                        <td id="seat-classes-price"></td>
-                    </tr>
-                    <tr>
-                        <td>결제 예상 범위</td>
-                        <td>
-                            <div id="payment-cost-estimate-range"></div>
-                            <div class="div13">
-                                ※ 취소표 발생 시 가장 먼저 매칭된 좌석의 금액으로 자동 결제됩니다.
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+                <div class="cancel-success-wrap">
+                    <!-- 제목 영역-->
+                    <div class="success-header">
+                        <h2 class="main-msg">예매 완료</h2>
+                        <p class="sub-msg">
+                            고객님의 '앤드 앤드' 예매가 완료되었습니다.<br>
+                            좌석 예매 상태는 <span style="color: #5d75fa; font-weight: 700;">확정</span>입니다.
+                        </p>
+                    </div>
+                    <!-- 공연 정보 영역-->
+                    <div class="info-section">
+                        <h3 class="sub-title">공연 정보</h3>
+                        <div class="gray-box info-box">
+                            <div class="info-row">
+                                <span class="label">공연명</span>
+                                <span class="value">앤드 앤드</span>
                             </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="table-container">
-                <h5>결제 정보</h5>
-                <table>
-                    <tr>
-                        <td>결제 좌석</td>
-                        <td id="payment-paid-seats"></td>
-                    </tr>
-                    <tr>
-                        <td>결제금액</td>
-                        <td id="payment-amount">[[${payment.amount}]]</td>
-                    </tr>
-                    <tr>
-                        <td>결제일자</td>
-                        <td id="payment-created-at"></td>
-                    </tr>
-                    <tr>
-                        <td>결제수단</td>
-                        <td id="payment-method"></td>
-                    </tr>
-                    <tr>
-                        <td>결제 상태</td>
-                        <td id="payment-status"></td>
-                    </tr>
-                </table>
-            </div>
+                            <div class="info-row">
+                                <span class="label">공연일자</span>
+                                <span class="value">2026-01-01 / 오후 12:00</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">회차</span>
+                                <span class="value">1회차</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 예매 정보 영역-->
+                    <div class="info-section">
+                        <h3 class="sub-title">예매 정보</h3>
+                        <div class="gray-box info-box">
+                            <div class="info-row">
+                                <span class="label">예매번호</span>
+                                <span class="value">RES-2026-001</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">예매 일시</span>
+                                <span class="value">2026-01-01 / 12:00:00</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">예매 좌석</span>
+                                <span class="value">VIP석 2매 (E구역 1열 1, 2번)</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">좌석별 가격</span>
+                                <span class="value">
+                                    VIP석: 10,000원<br>
+                                    S석: 5,000원
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 결제 정보 영역-->
+                    <div class="info-section">
+                        <h3 class="sub-title">결제 정보</h3>
+                        <div class="gray-box info-box">
+                            <div class="info-row">
+                                <span class="label">결제수단</span>
+                                <span class="value">크레딧</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">결제 상태</span>
+                                <span class="value">결제 완료</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">결제 일시</span>
+                                <span class="value">2026-01-01 / 12:05:00</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">총 결제 금액</span>
+                                <span class="value highlight">20,000원</span>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="buttons">
-                <a th:href="@{/}" class="homepage">홈페이지</a>
-                <a th:href="@{|/event/${performance.eventId}|}" class="ticket-details">예매 상세정보</a>
+                    <!-- 버튼 영역 -->
+                    <div class="footer-area">
+                        <div class="btn-group">
+                            <a href="/" class="btn-list custom-btn">홈페이지</a>
+                            <a href="/myPage/tickets" class="btn-list custom-btn">예매내역 확인</a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
-</main>
-
-<script th:inline="javascript">
-    const performance = /*[[${performance}]]*/ {
-        eventId: 1,
-        eventName: "test eventName",
-        startsAt: "2000-01-01T01:00:00",
-        nth: 1
-    };
-    const ticket = /*[[${ticket}]]*/ {
-        status: "CONFIRMED",
-        waitingNumber: undefined,
-        id: 1,
-        createdAt: "2000-01-01T01:00:00"
-    };
-    const wishingSeatsInfo = /*[[${wishingSeatsInfo}]]*/ [
-        {
-            name: "E",
-            price: 1000,
-            wishingSeatsId: [1, 2]
-        }
-    ];
-    const payment = /*[[${payment}]]*/ {
-        method: "CREDIT",
-        status: "ALL_PAID",
-        createdAt: "2000-01-01T01:00:00",
-        amount: 1000,
-        paidSeats: [
-            {
-                name: "E",
-                quantity: 1
-            }
-        ]
-    };
-
-    for (const seatClass of wishingSeatsInfo) {
-        seatClass.name
-        seatClass.price
-        seatClass.wishingSeatsId
-    }
-
-    for (const seatClass of payment.paidSeats) {
-        seatClass.name
-        seatClass.quantity
-    }
-
-    document.getElementById("performance-starts-at").innerText = "";
-    document.getElementById("ticket-created-at").innerText = "";
-    document.getElementById("ticket-status").innerText = "";
-    document.getElementById("wishing-seats-info").innerText = "";
-    document.getElementById("seat-classes-price").innerText = "";
-    document.getElementById("payment-cost-estimate-range").innerText = "";
-    document.getElementById("payment-paid-seats").innerText = "";
-    document.getElementById("payment-method").innerText = "";
-    document.getElementById("payment-created-at").innerText = "";
-    document.getElementById("payment-status").innerText = "";
-</script>
-
+    </main>
 </body>
 </html>
