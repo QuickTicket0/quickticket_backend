@@ -55,4 +55,8 @@ public class Performance {
     @NotNull
     @Column(nullable = false)
     private Integer runningTimeMinute;
+
+    @NotNull
+    @Column(nullable = false)
+    private Integer ticket_waiting_length;
 }

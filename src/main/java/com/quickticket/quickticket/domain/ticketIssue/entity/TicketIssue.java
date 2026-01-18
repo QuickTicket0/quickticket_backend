@@ -7,10 +7,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
-import java.util.List;
 
 // DB의 복합 primary key는 JPA에서 @IdClass 혹은 @EmbeddedId로 구현할 수 있습니다
 // @EmbeddedId는 키로 작용하는 필드들의 묶음 객체로 나타내서 다룰 필요가 있을 때,
@@ -22,6 +18,12 @@ import java.util.List;
 @Getter
 @Setter
 public class TicketIssue {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    @Column(nullable = false)
+    private TicketIssueId ticketIssueId;
+
     @Id
     @ManyToOne
     @NotNull
@@ -47,8 +49,4 @@ public class TicketIssue {
     @Column(nullable = false)
     private Integer personNumber;
 
-    @JdbcTypeCode(SqlTypes.JSON_ARRAY)
-    @NotNull
-    @Column(nullable = false)
-    private List<String> seatsId;
 }

@@ -9,6 +9,5 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class SeatPaymentIssueId implements Serializable {
     private Long user;
-    private Integer seatId;
     private Long performance;
 }
