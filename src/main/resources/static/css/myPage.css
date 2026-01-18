@@ -310,3 +310,187 @@
     width: 140px !important;
     height: 44px !important;
 }
+/* =========================================
+   예매 상세정보 페이지 전용 스타일
+   ========================================= */
+.detail-layout, .detail-row {
+    margin-bottom: 40px;
+}
+.text-blue { color: #5d75fa; font-weight: 600; }
+.text-bold { font-weight: 700; color: #333; }
+.sub-text { display: block; font-size: 12px; color: #999; margin-top: 4px; }
+.mb-20 { margin-bottom: 20px; }
+.top-section {
+    display: flex;
+    gap: 30px;
+}
+.poster-area {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.poster-img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.info-area {
+    flex: 1;
+}
+.seat-section {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+.map-view-area {
+    width: 45%;
+    flex-shrink: 0;
+}
+.map-placeholder {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.map-placeholder img { max-width: 100%; height: auto; }
+
+/* 범례 스타일 */
+.map-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 12px;
+    color: #666;
+    margin-top: 12px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.color-box { width: 12px; height: 12px; border-radius: 2px; }
+.color-box.confirmed { background-color: #5d75fa; }
+.color-box.pending { background-color: #ddd; }
+
+/* 우측 좌석 정보 영역 */
+.seat-info-area {
+    flex: 1;
+}
+.seat-item-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #333;
+}
+.seat-item-row:first-child { border-top: 1px solid #f0f0f0; }
+.seat-item-row .seat-loc { font-weight: 600; }
+.seat-item-row .seat-price { color: #666; }
+.seat-item-row .price { color: #5d75fa; font-weight: 600; margin-left: 5px; }
+.btn-wide {
+    width: 140px !important;
+    height: 50px !important;
+    font-size: 16px !important;
+    border-radius: 25px !important;
+}
+
+/* =========================================
+   리뷰 팝업 전용 스타일
+   ========================================= */
+.modal-window.review-popup-window {
+    width: 800px;
+    max-width: 95%;
+    padding: 40px 50px;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+.modal-header.centered-header {
+    justify-content: center;
+    position: relative;
+    margin-bottom: 40px;
+}
+.modal-header.centered-header h2 {
+    font-size: 22px;
+}
+.modal-header.centered-header .btn-close-modal {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.review-popup-body {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+.popup-poster-area {
+    width: 280px;
+    flex-shrink: 0;
+}
+.popup-poster-img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.popup-form-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.popup-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+.popup-gray-box {
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 15px 20px;
+}
+/* 별점 스타일 */
+.star-rating-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.star-rating-group .popup-label {
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+.stars {
+    display: flex;
+    gap: 4px;
+    cursor: pointer;
+}
+.stars .star {
+    font-size: 24px;
+    color: #ccc;
+    transition: all 0.2s;
+}
+.stars .star.fa-solid {
+    color: #333;
+}
+.popup-textarea {
+    height: 120px !important;
+    resize: none;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+.popup-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-popup-submit {
+    width: 160px;
+    height: 52px;
+    font-size: 18px;
+    border-radius: 8px;
+    background-color: #5d75fa;
+}
