@@ -1,19 +1,496 @@
+@charset "UTF-8";
 
+/* 레이아웃 */
 .mypage-body {
     display: flex;
-    gap: 40px;
+    gap: 30px; /* 사이 간격 조절 */
     align-items: flex-start;
+    padding-top: 20px;
 }
 /* 좌측 사이드바 */
 .mypage-sidebar {
     width: 250px;
     flex-shrink: 0;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 20px;
+    /* background-color: #f8f9fa;  */
+    background-color: transparent;
 }
 /* 우측 본문 */
 .mypage-content {
     flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* ============================== */
+/* 크레딧 관리 페이지 스타일           */
+/* ============================== */
+.credit-history-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 7px;
+}
+.balance-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+/* 검은색 원형 아이콘 */
+.icon-circle {
+    width: 48px;
+    height: 48px;
+    background-color: #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+}
+.text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.text-group .label {
+    font-size: 13px;
+    color: #888;
+}
+.text-group .amount {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+}
+/* 버튼 그룹 */
+.balance-actions {
+    display: flex;
+    gap: 10px;
+}
+.btn-charge {
+    padding: 10px 24px;
+    background-color: #5d75fa;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-charge:hover {
+    background-color: #4a63e0;
+}
+.btn-refund {
+    padding: 10px 24px;
+    background-color: #fff;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-refund:hover {
+    background-color: #f5f5f5;
+}
+/* 하단 크레딧 내역 리스트 */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+.credit-balance-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.history-group {
+    margin-bottom: 20px;
+}
+.date-label {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 8px;
+}
+/* 내역 카드 디자인 */
+.history-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 20px 25px;
+}
+/* 내역 텍스트 */
+.card-left .type-text {
+    font-size: 14px;
+    color: #888;
+}
+.card-left .type-text.concert-name {
+    color: #555;
+    font-weight: 500;
+}
+/* 금액 텍스트 */
+.card-right .amount-text {
+    font-size: 16px;
+    font-weight: 700;
+}
+/* 충전 (+) 색상 */
+.amount-text.plus {
+    color: #5d75fa;
+}
+/* 사용 (-) 색상 */
+.amount-text.minus {
+    color: #000;
+}
+/* ============================== */
+/* 결제수단 관리 (카드 리스트) 스타일 */
+/* ============================== */
+/* 섹션 소제목 */
+.section-header {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+.box-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 15px;
+}
+/* 카드 그리드 레이아웃 */
+.card-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.payment-manage-box {
+    display: block;
+}
+/* 개별 카드 스타일 */
+.payment-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(33.33% - 10px);
+    min-width: 200px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.payment-card:hover {
+    border-color: #ccc;
+}
+/* 카드 아이콘 */
+.card-icon {
+    font-size: 24px;
+    color: #555;
+    margin-right: 15px;
+}
+/* 카드 텍스트 정보 */
+.card-info {
+    display: flex;
+    flex-direction: column;
+}
+.card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+.card-number {
+    font-size: 12px;
+    color: #999;
+}
+/* 카드 추가 버튼 스타일 */
+.btn-add-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(33.33% - 10px);
+    min-width: 200px;
+    height: 86px;
+    cursor: pointer;
+    color: #333;
+    transition: all 0.2s;
+}
+.btn-add-card i {
+    font-size: 20px;
+    margin-bottom: 8px;
+    font-weight: 300;
+    color: #666;
+}
+.btn-add-card span {
+    font-size: 13px;
+    color: #333;
+}
+.btn-add-card:hover {
+    background-color: #fafafa;
+    border-color: #bbb;
+}
+/* ============================== */
+/* 예매 취소 완료 페이지 스타일 */
+/* ============================== */
+.cancel-success-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 상단 헤더 */
+.success-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.success-header .main-msg {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+.success-header .sub-msg {
+    font-size: 15px;
+    color: #666;
+}
+/* 공통 */
+.info-section {
+    margin-bottom: 30px;
+}
+.info-box {
+    padding: 25px 30px;
+}
+.info-row {
+    display: flex;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+.info-row:last-child {
+    margin-bottom: 0;
+}
+.info-row .label {
+    width: 140px;
+    color: #888;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+.info-row .value {
+    color: #333;
+    flex: 1;
+    line-height: 1.5;
+}
+.info-row .value.highlight {
+    font-weight: 700;
+    color: #333;
+}
+/* 하단 푸터 영역 */
+.footer-area {
+    text-align: center;
+    margin-top: 50px;
+}
+.caution-note {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+}
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.custom-btn {
+    width: 140px !important;
+    height: 44px !important;
+}
+/* =========================================
+   예매 상세정보 페이지 전용 스타일
+   ========================================= */
+.detail-layout, .detail-row {
+    margin-bottom: 40px;
+}
+.text-blue { color: #5d75fa; font-weight: 600; }
+.text-bold { font-weight: 700; color: #333; }
+.sub-text { display: block; font-size: 12px; color: #999; margin-top: 4px; }
+.mb-20 { margin-bottom: 20px; }
+.top-section {
+    display: flex;
+    gap: 30px;
+}
+.poster-area {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.poster-img {
     width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.info-area {
+    flex: 1;
+}
+.seat-section {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+.map-view-area {
+    width: 45%;
+    flex-shrink: 0;
+}
+.map-placeholder {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.map-placeholder img { max-width: 100%; height: auto; }
+
+/* 범례 스타일 */
+.map-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 12px;
+    color: #666;
+    margin-top: 12px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.color-box { width: 12px; height: 12px; border-radius: 2px; }
+.color-box.confirmed { background-color: #5d75fa; }
+.color-box.pending { background-color: #ddd; }
+
+/* 우측 좌석 정보 영역 */
+.seat-info-area {
+    flex: 1;
+}
+.seat-item-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #333;
+}
+.seat-item-row:first-child { border-top: 1px solid #f0f0f0; }
+.seat-item-row .seat-loc { font-weight: 600; }
+.seat-item-row .seat-price { color: #666; }
+.seat-item-row .price { color: #5d75fa; font-weight: 600; margin-left: 5px; }
+.btn-wide {
+    width: 140px !important;
+    height: 50px !important;
+    font-size: 16px !important;
+    border-radius: 25px !important;
+}
+
+/* =========================================
+   리뷰 팝업 전용 스타일
+   ========================================= */
+.modal-window.review-popup-window {
+    width: 800px;
+    max-width: 95%;
+    padding: 40px 50px;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+.modal-header.centered-header {
+    justify-content: center;
+    position: relative;
+    margin-bottom: 40px;
+}
+.modal-header.centered-header h2 {
+    font-size: 22px;
+}
+.modal-header.centered-header .btn-close-modal {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.review-popup-body {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+.popup-poster-area {
+    width: 280px;
+    flex-shrink: 0;
+}
+.popup-poster-img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.popup-form-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.popup-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+.popup-gray-box {
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 15px 20px;
+}
+/* 별점 스타일 */
+.star-rating-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.star-rating-group .popup-label {
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+.stars {
+    display: flex;
+    gap: 4px;
+    cursor: pointer;
+}
+.stars .star {
+    font-size: 24px;
+    color: #ccc;
+    transition: all 0.2s;
+}
+.stars .star.fa-solid {
+    color: #333;
+}
+.popup-textarea {
+    height: 120px !important;
+    resize: none;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+.popup-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-popup-submit {
+    width: 160px;
+    height: 52px;
+    font-size: 18px;
+    border-radius: 8px;
+    background-color: #5d75fa;
 }

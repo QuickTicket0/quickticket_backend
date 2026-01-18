@@ -44,11 +44,6 @@ input, select, textarea { font-family: inherit; outline: none; }
 .date-input {
     width: 100%;
 }
-/* 카테고리 select */
-.category-select {
-    width: 100px;
-    flex-shrink: 0;
-}
 /* 검색창  */
 .keyword-input {
     flex-grow: 1;
@@ -84,7 +79,7 @@ input, select, textarea { font-family: inherit; outline: none; }
 .btn-register:hover { background-color: #3a6bd6; }
 /* 등록 및 목록 버튼 공통 디자인 */
 .btn-submit, .btn-list {
-    width: 100px ;
+    width: 90px ;
     height: 40px ;
     display: inline-flex;
     align-items: center;
@@ -105,6 +100,15 @@ input, select, textarea { font-family: inherit; outline: none; }
 .btn-list:hover {
     background-color: #f8f9fa;
     border-color: #cccccc ;
+}
+.form-footer-buttons {
+    display: flex;
+    justify-content: flex-end ;
+    gap: 12px;
+    margin-top: 50px;
+    padding-bottom: 50px;
+    width: 100%;
+    box-sizing: border-box;
 }
 /* 저장(제출) 버튼  */
 .btn-submit {
@@ -219,13 +223,13 @@ input, select, textarea { font-family: inherit; outline: none; }
 /* 서브타이틀 */
 .sub-title {
     display: block;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
     font-size: 16px;
     font-weight: 700;
     color: #333;
     /*border-left: 4px solid #4a80f5*/
-    padding-left: 12px;
+    /*padding-left: 12px;*/
 }
 /* =========================================
    공통: 테이블
@@ -236,6 +240,7 @@ input, select, textarea { font-family: inherit; outline: none; }
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
+    margin-top: 10px;
 }
 .common-table {
     width: 100%;
@@ -259,3 +264,234 @@ input, select, textarea { font-family: inherit; outline: none; }
 .common-table tr:hover { background-color: #f9f9f9; }
 
 
+/* ============================== */
+/* 사이드바 디자인 스타일 */
+/* ============================== */
+/* 프로필 카드 */
+.profile-card {
+    background-color: #fff;
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 7px;
+    margin-bottom: 20px;
+}
+.user-info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+/* 유저 아이콘 동그라미 */
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    background-color: #eff3ff;
+    color: #5d75fa;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.user-details .greeting {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #333;
+}
+.user-details .name {
+    font-weight: 600;
+}
+.user-details .grade {
+    color: #5d75fa;
+    font-weight: 700;
+}
+/* 포인트 영역 */
+.user-point-row {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+.point-label {
+    color: #888;
+}
+.point-value {
+    font-weight: 700;
+    color: #333;
+}
+/* 네비게이션 메뉴 */
+.sidebar-menu ul.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fff;
+    overflow: hidden;
+}
+.menu-item {
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #fff;
+}
+.menu-item:last-child {
+    border-bottom: none;
+}
+/* 상위 메뉴 링크  */
+.menu-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    line-height: 1;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.menu-link:hover {
+    color: #5d75fa;
+    background-color: #fcfcfc;
+}
+/* 화살표 아이콘 */
+.menu-link .arrow {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 11px;
+    color: #aaa;
+    transition: transform 0.3s ease;
+    margin-top: 1px;
+}
+/* 하위 메뉴 영역 */
+.submenu-list {
+    display: none;
+    background-color: #fafafa;
+    border-top: 1px solid #eee;
+    padding: 0;
+}
+.menu-item.expanded .submenu-list {
+    display: block;
+}
+.submenu-list li {
+    border-bottom: 1px solid #eee;
+}
+.submenu-list li:last-child {
+    border-bottom: none;
+}
+/* 서브 메뉴 링크 */
+.submenu-link {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px 14px 40px;
+    line-height: 1.2;
+
+    text-decoration: none;
+    font-size: 13px;
+    color: #666;
+    transition: all 0.2s;
+}
+.submenu-link:hover {
+    color: #5d75fa;
+    background-color: #f0f0f0;
+}
+/* 활성화된 서브 메뉴 */
+.submenu-link.active {
+    color: #5d75fa;
+    font-weight: 600;
+}
+/* 활성화 상태  */
+.menu-item.expanded .menu-link .arrow {
+    transform: rotate(180deg);
+    color: #5d75fa;
+}
+.menu-item.expanded .menu-link {
+    color: #5d75fa;
+    font-weight: 600;
+    background-color: #fff;
+}
+.menu-link.active-link {
+    color: #5d75fa;
+    font-weight: 600;
+    background-color: #fcfcfc;
+}
+/* 좌석선택영역 박스 */
+.seat-map-area {
+    flex: 2;
+    background-color: #e9ecef;
+    border: 2px #ced4da;
+    border-radius: 12px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #868e96;
+}
+/* ============================== */
+/* 공통 회색 박스 스타일 */
+/* ============================== */
+.gray-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 30px 40px;
+    margin-bottom: 40px;
+    border: 1px solid #eee;
+}
+/* ============================== */
+/* 공통 모달 */
+/* ============================== */
+/* 모달 배경 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+/* 모달 창 */
+.modal-window {
+    background: #fff;
+    width: 500px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+/* 모달 헤더 */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.modal-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+}
+.btn-close-modal {
+    font-size: 20px;
+    color: #999;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+/* 숨김 상태 클래스 */
+.modal-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}

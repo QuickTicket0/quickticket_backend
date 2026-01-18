@@ -4,12 +4,84 @@
       layout:decorate="~{layouts/defaultLayout}">
 <head>
     <title>QuickTicket - 크레딧 관리</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
 </head>
 <body>
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+                <div class="mypage-body" style="display: flex; gap: 30px; align-items: flex-start;">
+                    <!-- 좌측 사이드바 영역 -->
+                    <aside th:replace="~{fragments/sidebar :: sidebarFragment}"></aside>
 
-<main layout:fragment="content">
+                    <!-- 우측 크레딧 영역 -->
+                    <main class="mypage-content" style="flex: 1; min-width: 0;">
+                        <h2 class="sub-title">크레딧 관리</h2>
 
-</main>
+                        <!-- 상단 크레딧잔액 영역 -->
+                        <div class="gray-box credit-balance-box">
+                            <div class="balance-info">
+                                <div class="icon-circle">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                </div>
+                                <div class="text-group">
+                                    <span class="label">현재 잔액</span>
+                                    <strong class="amount">81,000 Credit</strong>
+                                </div>
+                            </div>
+                            <div class="balance-actions">
+                                <button type="button" class="btn-charge">충전하기</button>
+                                <button type="button" class="btn-refund">환불하기</button>
+                            </div>
+                        </div>
+
+                        <!-- 하단 크레딧내역 영역 -->
+                        <div class="credit-history-section">
+                            <h3 class="sub-title" style="font-size: 16px; margin-bottom: 15px;">크레딧 내역</h3>
+
+                            <div class="history-group">
+                                <div class="date-label">2026년 1월 1일</div>
+                                <div class="history-card">
+                                    <div class="card-left">
+                                        <span class="type-text">충전</span>
+                                    </div>
+                                    <div class="card-right">
+                                        <span class="amount-text plus">(+)35,000 Credit</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="history-group">
+                                <div class="date-label">2025년 12월 31일</div>
+                                <div class="history-card">
+                                    <div class="card-left">
+                                        <span class="type-text concert-name">2025-2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원</span>
+                                    </div>
+                                    <div class="card-right">
+                                        <span class="amount-text minus">(-)154,000 Credit</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="history-group">
+                                <div class="date-label">2025년 12월 15일</div>
+                                <div class="history-card">
+                                    <div class="card-left">
+                                        <span class="type-text">충전</span>
+                                    </div>
+                                    <div class="card-right">
+                                        <span class="amount-text plus">(+)200,000 Credit</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </main>
 
 </body>
 </html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="reviewModal" id="reviewModal" class="modal-overlay hidden">
+
+        <div class="modal-window review-popup-window">
+
+            <div class="modal-header centered-header">
+                <h2>감상평 등록(수정)</h2>
+                <button type="button" class="btn-close-modal" onclick="closeReviewModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="review-popup-body">
+                <div class="popup-poster-area">
+                    <img th:src="@{/images/concertImage5.png}" alt="공연 포스터" class="popup-poster-img">
+                </div>
+
+                <div class="popup-form-area">
+                    <!-- 공연정보 영역-->
+                    <div class="info-group">
+                        <h3 class="popup-label">공연 정보</h3>
+                        <div class="popup-gray-box">
+                            <div class="info-row">
+                                <span class="label">공연명</span>
+                                <span class="value">엔드 앤드</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">공연일자</span>
+                                <span class="value">2026-01-01 / 오후 12:00</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">회차</span>
+                                <span class="value">1회차</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 별점 영역-->
+                    <div class="star-rating-group">
+                        <h3 class="popup-label">별점</h3>
+                        <div class="stars" id="starContainer">
+                            <i class="fa-regular fa-star star" onclick="setRating(1)"></i>
+                            <i class="fa-regular fa-star star" onclick="setRating(2)"></i>
+                            <i class="fa-regular fa-star star" onclick="setRating(3)"></i>
+                            <i class="fa-regular fa-star star" onclick="setRating(4)"></i>
+                            <i class="fa-regular fa-star star" onclick="setRating(5)"></i>
+                        </div>
+                        <input type="hidden" id="reviewRating" value="0">
+                    </div>
+                    <!-- 감상평작성 영역-->
+                    <div class="review-text-group">
+                        <h3 class="popup-label">감상평 등록</h3>
+                        <textarea class="form-textarea popup-textarea" placeholder="내용을 입력해주세요."></textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 버튼 영역-->
+            <div class="popup-footer">
+                <button type="button" class="btn-submit btn-popup-submit">등록</button>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

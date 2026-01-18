@@ -3,64 +3,152 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/defaultLayout}">
 <head>
-    <title>QuickTicket - 콘서트 예매</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>QuickTicket - 공연 상세정보</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+                <!-- 제목 -->
+                <div class="event-header">
+                    <h2 class="event-title">2025-2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원</h2>
+                    <div class="event-meta">
+                        <span class="meta-date">2026.01.24 ~ 2026.01.25</span>
+                        <span class="meta-location"><i class="fa-solid fa-location-dot"></i> 수원실내체육관</span>
+                        <!--<button class="btn-share"><i class="fa-solid fa-share-nodes"></i></button>-->
+                    </div>
+                </div>
 
-<main layout:fragment="content">
-    <div class="page-wrapper">
-        <div class="event-container">
-            <h2 class="page-title">콘서트 예매</h2>
+                <div class="event-body-wrap">
+                    <div class="top-section">
+                        <!-- 포스터 영역 -->
+                        <div class="poster-area">
+                            <div class="poster-box">
+                                <img th:src="@{/images/concertImage5.png}" alt="concert5">
+                            </div>
+                        </div>
+                        <!-- 상세내용 영역 -->
+                        <div class="info-area">
+                            <div class="info-list">
+                                <div class="info-row">
+                                    <span class="label">등급</span>
+                                    <span class="content">만 7세 이상 관람가</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">관람시간</span>
+                                    <span class="content">120분</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">출연</span>
+                                    <span class="content">이창섭</span>
+                                </div>
+                                <div class="info-row price-row">
+                                    <span class="label">가격</span>
+                                    <div class="content price-list">
+                                        <div class="price-item">
+                                            <span class="seat-type">VIP석</span>
+                                            <span class="seat-price highlight">154,000원</span>
+                                        </div>
+                                        <div class="price-item">
+                                            <span class="seat-type">R석</span>
+                                            <span class="seat-price">143,000원</span>
+                                        </div>
+                                        <div class="price-item">
+                                            <span class="seat-type">S석</span>
+                                            <span class="seat-price">132,000원</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="event-list">
+                            <div class="divider"></div>
 
-                <a href="#" class="event-item">
-                    <div class="item-thumb">
-                        <img th:src="@{/images/concertImage5.png}" alt="thumbnail" class="thumb-img">
+                            <div class="sub-info">
+                                <strong>공연시간 안내</strong>
+                                <p>2026년 1월 24일(토) 오후 6시<br>2026년 1월 25일(일) 오후 5시</p>
+                            </div>
+
+                            <div class="sub-info">
+                                <strong>배송정보</strong>
+                                <p>현장 수령만 가능</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="item-info">
-                        <p class="info-title">2025-2026 이창섭 단독 콘서트 &lt;EndAnd&gt; - 서울</p>
+                    <div class="bottom-section">
+                        <!--날짜 선택 영역-->
+                        <div class="selection-box">
+                            <div class="selection-header">날짜/시간 선택</div>
+                            <div class="selection-body">
+                                <div class="calendar-wrap">
+                                    <div class="cal-nav">
+                                        <button>&lt;</button>
+                                        <strong>2026. 01</strong>
+                                        <button>&gt;</button>
+                                    </div>
+                                    <table class="custom-calendar">
+                                        <thead>
+                                        <tr>
+                                            <th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class="sat">토</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sun">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td class="sat">10</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sun">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td class="sat">17</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="sun">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+                                            <td class="sat active">24</td> </tr>
+                                        <tr>
+                                            <td class="sun">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="sat">31</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="time-select-wrap">
+                                    <button class="time-btn active">1회 오후 6시 00분</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 예매가능좌석 영역 -->
+                        <div class="seat-summary-box">
+                            <div class="selection-header">예매 가능 좌석</div>
+                            <div class="seat-status-list">
+                                <div class="seat-status-item">
+                                    <span class="name">VIP석</span>
+                                    <span class="status">154,000원</span>
+                                </div>
+                                <div class="seat-status-item">
+                                    <span class="name">R석</span>
+                                    <span class="status">143,000원</span>
+                                </div>
+                                <div class="seat-status-item">
+                                    <span class="name">S석</span>
+                                    <span class="status">132,000원</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="item-meta">
-                        <span class="meta-text">2026.01.17 ~ 2026.01.18</span>
-                        <span class="meta-text">벡스코 오디토리움</span>
+                    <!-- 예매하기 페이지 이동 -->
+                    <div class="action-footer">
+                        <button type="button" class="btn-book" th:onclick="|location.href='@{/registTicket}'|">
+                            예매하기
+                        </button>
                     </div>
-                </a>
 
-                <a href="#" class="event-item">
-                    <div class="item-thumb">
-                        <img th:src="@{/images/concertImage5.png}" alt="썸네일" class="thumb-img">
-                    </div>
-                    <div class="item-info">
-                        <p class="info-title">2025-2026 이창섭 단독 콘서트 &lt;EndAnd&gt; - 수원</p>
-                    </div>
-                    <div class="item-meta">
-                        <span class="meta-text">2026.02.14 ~ 2026.02.15</span>
-                        <span class="meta-text">수원컨벤션센터 전시홀</span>
-                    </div>
-                </a>
-
-                <a href="#" class="event-item">
-                    <div class="item-thumb">
-                        <img th:src="@{/images/concertImage5.png}" alt="썸네일" class="thumb-img">
-                    </div>
-                    <div class="item-info">
-                        <p class="info-title">2025-2026 이창섭 단독 콘서트 &lt;EndAnd&gt; - 대구</p>
-                    </div>
-                    <div class="item-meta">
-                        <span class="meta-text">2026.03.01 ~ 2026.03.02</span>
-                        <span class="meta-text">대구 엑스코 5층 컨벤션홀</span>
-                    </div>
-                </a>
-
+                </div>
             </div>
         </div>
-    </div>
-</main>
-
+    </main>
 </body>
 </html>

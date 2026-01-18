@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <aside class="mypage-sidebar" th:fragment="sidebarFragment">
+        <div class="profile-card">
+            <div class="user-info-row">
+                <div class="user-avatar">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <p class="greeting">
+                        <span class="name">000님</span>은 현재<br>
+                        <span class="grade">WELCOME 회원입니다</span>
+                    </p>
+                </div>
+            </div>
+            <div class="user-point-row">
+                <span class="point-label">보유 포인트</span>
+                <span class="point-value">1,250P</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul class="menu-list">
+
+                <li class="menu-item">
+                    <a th:href="@{/myPage/tickets}" class="menu-link">
+                        <span>전체 예매 목록</span>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a th:href="@{/myPage/userInfo}" class="menu-link">
+                        <span>회원 정보 관리</span>
+                    </a>
+                </li>
+
+                <li class="menu-item has-submenu">
+                    <a href="#" class="menu-link">
+                        <span>결제 관리</span>
+                        <i class="fa-solid fa-chevron-down arrow"></i>
+                    </a>
+                    <ul class="submenu-list">
+                        <li><a th:href="@{/myPage/myCredit}" class="submenu-link">크레딧 관리</a></li>
+                        <li><a th:href="@{/myPage/payments}" class="submenu-link">결제 계좌 관리</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const currentPath = window.location.pathname;
+
+                // 상위 메뉴 활성화
+                const menuLinks = document.querySelectorAll('.menu-item:not(.has-submenu) .menu-link');
+                menuLinks.forEach(link => {
+                    // 링크의 주소를 가져와서 비교
+                    const href = link.getAttribute('href');
+
+                    // 현재 주소가 해당 메뉴 링크로 시작하거나 같으면 활성화
+                    if (href && currentPath.startsWith(href)) {
+                        link.classList.add('active-link');
+                    }
+                });
+
+                // 하위 메뉴 활성화 및 펼침
+                const submenuLinks = document.querySelectorAll('.submenu-link');
+                submenuLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+
+                    // 현재 주소가 서브메뉴 링크와 일치하면
+                    if (href && currentPath.includes(href)) {
+                        link.classList.add('active');
+
+                        const parentLi = link.closest('.menu-item.has-submenu');
+                        if (parentLi) {
+                            parentLi.classList.add('expanded');
+                            // parentLi.querySelector('.menu-link').classList.add('active-link');
+                        }
+                    }
+                });
+
+                // 하위메뉴 클릭 이벤트 (메뉴 접었다 펴기 기능)
+                const toggleLinks = document.querySelectorAll('.menu-item.has-submenu > .menu-link');
+                toggleLinks.forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const parentLi = this.parentElement;
+
+                        // 다른 메뉴 닫기
+                        document.querySelectorAll('.menu-item.has-submenu').forEach(function(item) {
+                            if (item !== parentLi) {
+                                item.classList.remove('expanded');
+                            }
+                        });
+
+                        // 토글
+                        parentLi.classList.toggle('expanded');
+                    });
+                });
+            });
+        </script>
+    </aside>
+</html>
