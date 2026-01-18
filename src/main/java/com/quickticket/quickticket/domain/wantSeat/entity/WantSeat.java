@@ -25,7 +25,5 @@ public class WantSeat {
     @NotNull
     @JoinColumn(name = "seat", nullable = false)
     private Seat seat;
-
-
 }
 
