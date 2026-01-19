@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.payment.method.controller;
+package com.quickticket.quickticket.domain.payment.seatPayment.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class PaymentMethodController {
+public class SeatPaymentController {
     @GetMapping("/myPage/payments")
     public String myPayments(Model model) {
         return "myPage/payments";
     }
-
-    @GetMapping("/myPage/myCredit")
-    public String myCredit(Model model) { return "myPage/myCredit"; }
-
 }

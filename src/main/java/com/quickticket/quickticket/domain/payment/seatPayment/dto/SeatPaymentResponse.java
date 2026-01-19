@@ -1,9 +1,9 @@
-package com.quickticket.quickticket.domain.payment.seatPaymentIssue.dto;
+package com.quickticket.quickticket.domain.payment.seatPayment.dto;
 
 import java.util.List;
 
-public class SeatPaymentIssueResponse {
-    public record WithPaymentMethod(
+public class SeatPaymentResponse {
+    public record IssueWithPaymentMethod(
         String method,
         String status,
         String createdAt,

@@ -1,6 +1,6 @@
 package com.quickticket.quickticket.domain.payment.credit.dto;
 
-import com.quickticket.quickticket.domain.payment.method.domain.TransactionType;
+import com.quickticket.quickticket.domain.payment.credit.domain.TransactionType;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

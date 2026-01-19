@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticketIssue.controller;
+package com.quickticket.quickticket.domain.ticket.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequiredArgsConstructor
-public class TicketIssueController {
+public class TicketController {
     @GetMapping("/ticketSuccess")
     public String ticketSuccess(Model model) { return "ticketSuccess"; }
 

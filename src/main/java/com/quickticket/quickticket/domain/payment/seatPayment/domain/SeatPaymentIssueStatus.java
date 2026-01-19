@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.payment.seatPaymentIssue.domain;
+package com.quickticket.quickticket.domain.payment.seatPayment.domain;
 
 import com.quickticket.quickticket.shared.converters.OrdinalEnum;
 import lombok.AllArgsConstructor;

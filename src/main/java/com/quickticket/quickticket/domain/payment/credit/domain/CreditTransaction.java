@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.payment.method.domain;
+package com.quickticket.quickticket.domain.payment.credit.domain;
 
 import lombok.Builder;
 import lombok.Getter;

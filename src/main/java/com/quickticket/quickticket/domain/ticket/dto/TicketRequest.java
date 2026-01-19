@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticketIssue.dto;
+package com.quickticket.quickticket.domain.ticket.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

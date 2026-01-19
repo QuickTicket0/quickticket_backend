@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticketIssue.domain;
+package com.quickticket.quickticket.domain.payment.credit.domain;
 
 import com.quickticket.quickticket.shared.converters.OrdinalEnum;
 import lombok.AllArgsConstructor;
@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum TicketStatus implements OrdinalEnum {
-    WAITING(0);
+public enum TransactionType implements OrdinalEnum {
+    SEAT_PAYMENT(0);
 
     public final int code;
 }
