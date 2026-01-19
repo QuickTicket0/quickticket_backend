@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.seatClass.entity;
+package com.quickticket.quickticket.domain.seat.entity;
 
 import com.quickticket.quickticket.domain.event.entity.Event;
 import jakarta.persistence.*;
@@ -9,29 +9,22 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "SEAT_CLASS")
-@IdClass(SeatClassId.class)
 @Getter
 @Setter
-
 public class SeatClass {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(nullable = false)
-    private SeatClassId seatclassId;
+    @EmbeddedId
+    private SeatClassId id;
 
-    @Id
+    @MapsId("eventId")
     @ManyToOne
-    @NotNull
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String name;
 
     @NotNull
     @Column(nullable = false)
     private Long price;
-
 }

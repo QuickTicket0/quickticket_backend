@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -54,9 +55,7 @@ public class Performance {
 
     @NotNull
     @Column(nullable = false)
-    private Integer runningTimeMinute;
+    private LocalTime runningTime;
 
-    @NotNull
-    @Column(nullable = false)
-    private Integer ticket_waiting_length;
+    private Long ticketWaitingLength;
 }

@@ -1,7 +1,5 @@
 package com.quickticket.quickticket.domain.seat.entity;
 
-import com.quickticket.quickticket.domain.event.entity.Event;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Id;
@@ -16,11 +14,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class SeatId implements Serializable {
-    @Column(name = "seat_id")
-    private Long seatId;
+public class SeatClassId implements Serializable {
+    @Column(name = "seat_class_id")
+    private Long seatClassId;
 
-    @Column(name = "performance_id")
-    private Long performanceId;
+    @Column(name = "event_id")
+    private Long eventId;
 
 }

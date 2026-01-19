@@ -26,11 +26,10 @@ public class CreditTransaction {
     @JoinColumn(nullable = false)
     private User user;
 
-    @ManyToOne
+    @OneToOne
     @NotNull
     @JoinColumn(nullable = false)
-    private SeatPaymentIssue paymentID;
-
+    private SeatPaymentIssue payment;
 
     @NotNull
     @Column(nullable = false)
