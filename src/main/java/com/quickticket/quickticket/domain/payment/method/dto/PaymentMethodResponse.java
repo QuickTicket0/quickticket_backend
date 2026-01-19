@@ -13,7 +13,7 @@ public class PaymentMethodResponse {
     private record CardPayment(
         String cardNumber,
         String cvs,
-        LocalDate expirationPeroid,
+        LocalDate expirationPeriod,
         Boolean isActive,
         String bankName
     ) implements MethodDetails {}

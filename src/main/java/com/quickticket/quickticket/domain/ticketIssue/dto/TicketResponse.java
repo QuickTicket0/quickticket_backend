@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.ticketIssue.dto;
 
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import com.quickticket.quickticket.domain.payment.method.dto.PaymentMethodCommonDto;
+import com.quickticket.quickticket.domain.ticketIssue.domain.TicketStatus;
 import lombok.Builder;
 
 import java.sql.Blob;

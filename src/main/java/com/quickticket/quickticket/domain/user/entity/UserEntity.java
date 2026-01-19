@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "USER")
 @Getter
 @Setter
-public class User {
+public class UserEntity {
     // MySQL에서의 INT UNSIGNED 타입은 부호가 없기에 담을 수 있는 숫자의 범위가 0 ~ 4,294,967,295 입니다
     // 반면 자바의 int 타입의 범위는 -2,147,483,648 ~ 2,147,483,647 이기 때문에 오버플로우의 여지가 있습니다
     // 따라서 안전하게 더 큰 long 타입을 써서 이를 예방합니다.

@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.payment.method.dto;
+package com.quickticket.quickticket.domain.payment.credit.dto;
 
 import com.quickticket.quickticket.domain.payment.method.domain.TransactionType;
 import lombok.Builder;

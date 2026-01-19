@@ -1,4 +1,4 @@
 package com.quickticket.quickticket.domain.payment.method.dto;
 
-public protected interface PaymentMethodDetailsCommonDto {
+sealed interface PaymentMethodDetailsCommonDto permits CardPaymentCommonDto {
 }
