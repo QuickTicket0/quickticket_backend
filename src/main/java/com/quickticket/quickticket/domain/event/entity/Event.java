@@ -58,19 +58,12 @@ public class Event {
     @Column(nullable = false)
     private Blob thumbnailImage;
 
-    @NotNull
-    @Column(length = 30, nullable = false)
+    @Column(length = 30)
     private String agentName;
 
-    @NotNull
-    @Column(length = 30, nullable = false)
+    @Column(length = 30)
     private String hostName;
 
     @Column(length = 30)
     private String contactData;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @NotNull
-    @Column(nullable = false)
-    private Map<Long, Object> seatData;
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +37,7 @@ public class Review {
 
     @NotNull
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @NotNull

@@ -4,6 +4,6 @@ import com.quickticket.quickticket.shared.converters.AbstractOrdinalEnumConverte
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
-public class SeatPaymentIssueStateConverter extends AbstractOrdinalEnumConverter<SeatPaymentIssueState> {
-    public SeatPaymentIssueStateConverter() { super(SeatPaymentIssueState.class); }
+public class SeatPaymentIssueStatusConverter extends AbstractOrdinalEnumConverter<SeatPaymentIssueStatus> {
+    public SeatPaymentIssueStatusConverter() { super(SeatPaymentIssueStatus.class); }
 }
