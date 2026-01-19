@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.event.dto;
 
+import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

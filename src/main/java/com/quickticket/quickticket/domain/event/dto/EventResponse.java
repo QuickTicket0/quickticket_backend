@@ -1,6 +1,7 @@
 package com.quickticket.quickticket.domain.event.dto;
 
 import com.quickticket.quickticket.domain.category.dto.CategoryCommonDto;
+import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import lombok.Builder;
 
