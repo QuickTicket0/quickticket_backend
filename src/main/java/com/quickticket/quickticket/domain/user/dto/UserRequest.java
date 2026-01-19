@@ -1,6 +1,6 @@
 package com.quickticket.quickticket.domain.user.dto;
 
-import com.quickticket.quickticket.shared.constraints.NumberString;
+import com.quickticket.quickticket.shared.validators.NumberString;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 
