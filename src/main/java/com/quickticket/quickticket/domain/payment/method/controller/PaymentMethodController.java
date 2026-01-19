@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.paymentMethod.controller;
+package com.quickticket.quickticket.domain.payment.method.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

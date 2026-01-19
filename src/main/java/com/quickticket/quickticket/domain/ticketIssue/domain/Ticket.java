@@ -1,6 +1,6 @@
 package com.quickticket.quickticket.domain.ticketIssue.domain;
 
-import com.quickticket.quickticket.domain.paymentMethod.domain.PaymentMethod;
+import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethod;
 import com.quickticket.quickticket.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;

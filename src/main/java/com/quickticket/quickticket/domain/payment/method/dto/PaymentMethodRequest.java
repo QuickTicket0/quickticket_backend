@@ -1,6 +1,6 @@
-package com.quickticket.quickticket.domain.paymentMethod.dto;
+package com.quickticket.quickticket.domain.payment.method.dto;
 
-import com.quickticket.quickticket.domain.paymentMethod.domain.PaymentMethodType;
+import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethodType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

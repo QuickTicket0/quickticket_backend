@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.seatPaymentIssue.dto;
+package com.quickticket.quickticket.domain.payment.seatPaymentIssue.dto;
 
 import java.util.List;
 

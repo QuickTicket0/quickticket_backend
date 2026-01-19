@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.seatAllocation.dto;
+package com.quickticket.quickticket.domain.seat.dto;
 
 import java.util.List;
 
