@@ -1,9 +1,16 @@
+package com.quickticket.quickticket.domain.paymentMethod.domain;
+
+import lombok.Builder;
+import lombok.Getter;
+
+import java.time.LocalDate;
+
 @Builder
 @Getter
 public class CardPayment extends PaymentMethod {
     private String cardNumber;
     private String cvs;
-    private LocalDate expirationPeroid;
+    private LocalDate expirationPeriod;
     private Boolean isActive;
     private String bankName;
 

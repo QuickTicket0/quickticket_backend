@@ -1,3 +1,7 @@
+package com.quickticket.quickticket.domain.paymentMethod.domain;
+
+import com.quickticket.quickticket.domain.user.domain.User;
+
 public abstract class PaymentMethod {
     private Long id;
     private User user;
@@ -6,7 +10,7 @@ public abstract class PaymentMethod {
 
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
     public void assignId(Long id) {
-        if (this.id != null) throw IllegalStateException();
+        if (this.id != null) throw new IllegalStateException();
 
         this.id = id;
     }

@@ -1,3 +1,12 @@
+package com.quickticket.quickticket.domain.paymentMethod.domain;
+
+import lombok.Builder;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+import static lombok.AccessLevel.PRIVATE;
+
 @Builder(access = PRIVATE)
 @Getter
 public class CreditTransaction {
@@ -9,7 +18,7 @@ public class CreditTransaction {
 
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
     public void assignId(Long id) {
-        if (this.id != null) throw IllegalStateException();
+        if (this.id != null) throw new IllegalStateException();
 
         this.id = id;
     }
@@ -22,8 +31,8 @@ public class CreditTransaction {
     ) {
         validateBalanceAfter(balanceAfter);
 
-        return User.builder()
-            .transactionType(transactionType)
+        return CreditTransaction.builder()
+            .type(transactionType)
             .changeAmount(changeAmount)
             .balanceAfter(balanceAfter)
             .createdAt(createdAt)
@@ -37,9 +46,9 @@ public class CreditTransaction {
         Long balanceAfter,
         LocalDateTime createdAt
     ) {
-        return User.builder()
+        return CreditTransaction.builder()
             .id(id)
-            .transactionType(transactionType)
+            .type(transactionType)
             .changeAmount(changeAmount)
             .balanceAfter(balanceAfter)
             .createdAt(createdAt)

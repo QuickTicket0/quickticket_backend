@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.user.dto;
 
+import com.quickticket.quickticket.shared.constraints.NumberString;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 
@@ -64,7 +65,7 @@ public class UserRequest {
         @Size(max = 30)
         String email,
 
-        @Phone
+        @NumberString
         @Size(max = 30)
         String phone
     ) {}

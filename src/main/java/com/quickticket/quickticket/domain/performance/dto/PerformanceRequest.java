@@ -1,3 +1,13 @@
+package com.quickticket.quickticket.domain.performance.dto;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
 public class PerformanceRequest {
     @Builder
     public record Create(
@@ -15,14 +25,14 @@ public class PerformanceRequest {
         List<String> performersName,
 
         @NotNull
-        LocalDateTIme ticketingStartsAt,
-        
+        LocalDateTime ticketingStartsAt,
+
         @NotNull
-        LocalDateTIme ticketingEndsAt,
-        
+        LocalDateTime ticketingEndsAt,
+
         @NotNull
-        LocalDateTIme performanceStartsAt,
-        
+        LocalDateTime performanceStartsAt,
+
         @NotNull
         LocalTime runningTime
     ) {}
@@ -41,11 +51,11 @@ public class PerformanceRequest {
 
         List<String> performersName,
         
-        LocalDateTIme ticketingStartsAt,
+        LocalDateTime ticketingStartsAt,
         
-        LocalDateTIme ticketingEndsAt,
+        LocalDateTime ticketingEndsAt,
         
-        LocalDateTIme performanceStartsAt,
+        LocalDateTime performanceStartsAt,
         
         LocalTime runningTime
     ) {}

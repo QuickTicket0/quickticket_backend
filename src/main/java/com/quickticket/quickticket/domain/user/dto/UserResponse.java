@@ -1,3 +1,11 @@
+package com.quickticket.quickticket.domain.user.dto;
+
+import com.quickticket.quickticket.domain.user.domain.UserRole;
+import lombok.Builder;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class UserResponse {
     @Builder
     public record Details(
@@ -17,6 +25,6 @@ public class UserResponse {
 
         UserRole role,
         
-        LocalDateTIme createdAt
+        LocalDateTime createdAt
     ) {}
 }

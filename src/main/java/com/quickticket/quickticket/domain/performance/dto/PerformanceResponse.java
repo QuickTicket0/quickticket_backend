@@ -1,3 +1,14 @@
+package com.quickticket.quickticket.domain.performance.dto;
+
+import com.quickticket.quickticket.domain.category.dto.CategoryCommonDto;
+import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
+import lombok.Builder;
+
+import java.sql.Blob;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
 public class PerformanceResponse {
     @Builder
     public record ListItem(
@@ -11,11 +22,11 @@ public class PerformanceResponse {
 
         List<String> performersName,
 
-        LocalDateTIme ticketingStartsAt,
+        LocalDateTime ticketingStartsAt,
 
-        LocalDateTIme ticketingEndsAt,
+        LocalDateTime ticketingEndsAt,
         
-        LocalDateTIme performanceStartsAt,
+        LocalDateTime performanceStartsAt,
 
         LocalTime runningTime
     ) {

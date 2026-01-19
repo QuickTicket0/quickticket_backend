@@ -1,3 +1,13 @@
+package com.quickticket.quickticket.domain.ticketIssue.dto;
+
+import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
+import com.quickticket.quickticket.domain.paymentMethod.dto.PaymentMethodCommonDto;
+import lombok.Builder;
+
+import java.sql.Blob;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 public class TicketResponse {
     @Builder
     public record Details(
@@ -28,11 +38,11 @@ public class TicketResponse {
         public record TicketPerormanceInfo(
             Integer nth,
 
-            LocalDateTIme ticketingStartsAt,
+            LocalDateTime ticketingStartsAt,
             
-            LocalDateTIme ticketingEndsAt,
+            LocalDateTime ticketingEndsAt,
             
-            LocalDateTIme performanceStartsAt,
+            LocalDateTime performanceStartsAt,
             
             LocalTime runningTime
         ) {}

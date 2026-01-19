@@ -1,3 +1,9 @@
+package com.quickticket.quickticket.domain.ticketIssue.dto;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+
 public class TicketRequest {
     @Builder
     public record Preset(

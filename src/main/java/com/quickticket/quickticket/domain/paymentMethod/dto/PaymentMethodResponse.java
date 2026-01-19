@@ -1,3 +1,10 @@
+package com.quickticket.quickticket.domain.paymentMethod.dto;
+
+import com.quickticket.quickticket.domain.paymentMethod.domain.PaymentMethodType;
+import lombok.Builder;
+
+import java.time.LocalDate;
+
 public class PaymentMethodResponse {
     private interface MethodDetails {
     }

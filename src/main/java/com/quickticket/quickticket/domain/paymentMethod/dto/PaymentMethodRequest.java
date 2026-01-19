@@ -1,3 +1,14 @@
+package com.quickticket.quickticket.domain.paymentMethod.dto;
+
+import com.quickticket.quickticket.domain.paymentMethod.domain.PaymentMethodType;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Builder;
+
+import java.time.LocalDate;
+
 public class PaymentMethodRequest {
     private interface MethodDetails {
     }
@@ -13,7 +24,7 @@ public class PaymentMethodRequest {
         String cvs,
 
         @NotNull
-        LocalDate expirationPeroid,
+        LocalDate expirationPeriod,
 
         @NotNull
         Boolean isActive,

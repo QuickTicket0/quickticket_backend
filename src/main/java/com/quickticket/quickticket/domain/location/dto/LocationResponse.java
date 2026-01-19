@@ -1,3 +1,7 @@
+package com.quickticket.quickticket.domain.location.dto;
+
+import lombok.Builder;
+
 public class LocationResponse {
     @Builder
     public record Details(

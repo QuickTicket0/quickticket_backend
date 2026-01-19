@@ -1,3 +1,11 @@
+package com.quickticket.quickticket.domain.paymentMethod.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+
+import java.time.LocalDate;
+
 @Builder
 public record CardPaymentCommonDto(
     @NotBlank
@@ -7,7 +15,7 @@ public record CardPaymentCommonDto(
     String cvs,
 
     @NotBlank
-    LocalDate expirationPeroid,
+    LocalDate expirationPeriod,
 
     @NotNull
     Boolean isActive,
