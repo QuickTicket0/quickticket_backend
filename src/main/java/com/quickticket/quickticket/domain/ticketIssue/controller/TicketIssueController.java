@@ -27,6 +27,6 @@ public class TicketIssueController {
         return "myPage/myTicket";
     }
 
-    @GetMapping("/registTicket")
-    public String registTicket(Model model) { return "registTicket"; }
+    @GetMapping("/registerTicket")
+    public String registerTicket(Model model) { return "registerTicket"; }
 }
