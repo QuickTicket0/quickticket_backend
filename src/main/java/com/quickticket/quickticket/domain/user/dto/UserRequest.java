@@ -1,3 +1,10 @@
+package com.quickticket.quickticket.domain.user.dto;
+
+import jakarta.validation.constraints.*;
+import lombok.Builder;
+
+import java.time.LocalDate;
+
 public class UserRequest {
     @Builder
     public record Login(
@@ -7,7 +14,7 @@ public class UserRequest {
 
         @NotBlank
         @Size(max = 50)
-        String password,
+        String password
     ) {}
 
     @Builder
