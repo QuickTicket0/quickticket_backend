@@ -1,5 +1,7 @@
 package com.quickticket.quickticket.domain.payment.credit.domain;
 
+import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssue;
+import com.quickticket.quickticket.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +14,8 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 public class CreditTransaction {
     private Long id;
+    private User user;
+    private SeatPaymentIssue relatedSeatPaymentIssue;
     private TransactionType type;
     private Long changeAmount;
     private Long balanceAfter;

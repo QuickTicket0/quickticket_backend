@@ -23,6 +23,7 @@ public class Performance {
     private LocalDateTime ticketingEndsAt;
     private LocalDateTime performanceStartsAt;
     private LocalTime runningTime;
+    private Long ticketWaitingLength;
 
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
     public void assignId(Long id) {

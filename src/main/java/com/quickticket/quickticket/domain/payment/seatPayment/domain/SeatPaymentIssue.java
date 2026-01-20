@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.payment.seatPayment.domain;
 
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
+import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import lombok.Getter;
 @Getter
 public class SeatPaymentIssue {
     private Long id;
-    private Performance performance;
+    private Ticket ticketIssue;
     private User user;
     private Seat seat;
     private SeatPaymentIssueStatus status;
