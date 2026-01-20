@@ -7,7 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TransactionType implements OrdinalEnum {
-    SEAT_PAYMENT(0);
+    SEAT_PAYMENT(0),
+    REFUND(1),
+    CREDIT_ADD(2);
 
-    public final int code;
+    private final int code;
 }

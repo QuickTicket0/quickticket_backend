@@ -1,7 +1,8 @@
-package com.quickticket.quickticket.domain.creditTransaction.entity;
+package com.quickticket.quickticket.domain.payment.credit.entity;
 
-import com.quickticket.quickticket.domain.seatPaymentIssue.entity.SeatPaymentIssue;
-import com.quickticket.quickticket.domain.user.entity.User;
+import com.quickticket.quickticket.domain.payment.credit.domain.TransactionType;
+import com.quickticket.quickticket.domain.payment.seatPayment.entity.SeatPaymentIssueEntity;
+import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "CREDIT_TRANSACTION")
 @Getter
 @Setter
-public class CreditTransaction {
+public class CreditTransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -24,12 +25,12 @@ public class CreditTransaction {
     @ManyToOne
     @NotNull
     @JoinColumn(nullable = false)
-    private User user;
+    private UserEntity user;
 
     @OneToOne
     @NotNull
     @JoinColumn(nullable = false)
-    private SeatPaymentIssue payment;
+    private SeatPaymentIssueEntity payment;
 
     @NotNull
     @Column(nullable = false)

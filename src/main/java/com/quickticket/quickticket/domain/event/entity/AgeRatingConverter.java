@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.event.entity;
 
+import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import com.quickticket.quickticket.shared.converters.AbstractOrdinalEnumConverter;
 import jakarta.persistence.Converter;
 

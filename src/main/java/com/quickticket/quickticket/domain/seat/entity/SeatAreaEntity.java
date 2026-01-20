@@ -1,30 +1,25 @@
 package com.quickticket.quickticket.domain.seat.entity;
 
-import com.quickticket.quickticket.domain.event.entity.Event;
+import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Entity
-@Table(name = "SEAT_CLASS")
+@Table(name = "SEAT_AREA")
 @Getter
 @Setter
-public class SeatClass {
+public class SeatAreaEntity {
     @EmbeddedId
-    private SeatClassId id;
+    private SeatAreaId id;
 
     @MapsId("eventId")
     @ManyToOne
     @JoinColumn(name = "event_id")
-    private Event event;
+    private EventEntity event;
 
     @NotNull
     @Column(nullable = false, length = 20)
     private String name;
-
-    @NotNull
-    @Column(nullable = false)
-    private Long price;
 }

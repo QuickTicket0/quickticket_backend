@@ -1,7 +1,7 @@
 package com.quickticket.quickticket.domain.review.entity;
 
-import com.quickticket.quickticket.domain.event.entity.Event;
-import com.quickticket.quickticket.domain.user.entity.User;
+import com.quickticket.quickticket.domain.event.entity.EventEntity;
+import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "REVIEW")
 @Getter
 @Setter
-public class Review {
+public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -24,12 +24,12 @@ public class Review {
     @ManyToOne
     @NotNull
     @JoinColumn(nullable = false)
-    private Event event;
+    private EventEntity event;
 
     @ManyToOne
     @NotNull
     @JoinColumn(nullable = false)
-    private User user;
+    private UserEntity user;
 
     @NotNull
     @Column(nullable = false)

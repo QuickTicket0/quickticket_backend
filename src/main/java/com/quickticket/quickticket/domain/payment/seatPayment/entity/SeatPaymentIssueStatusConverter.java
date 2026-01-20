@@ -1,5 +1,6 @@
-package com.quickticket.quickticket.domain.seatPaymentIssue.entity;
+package com.quickticket.quickticket.domain.payment.seatPayment.entity;
 
+import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssueStatus;
 import com.quickticket.quickticket.shared.converters.AbstractOrdinalEnumConverter;
 import jakarta.persistence.Converter;
 

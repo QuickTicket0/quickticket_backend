@@ -1,6 +1,6 @@
 package com.quickticket.quickticket.domain.performance.entity;
 
-import com.quickticket.quickticket.domain.event.entity.Event;
+import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "PERFORMANCE")
 @Getter
 @Setter
-public class Performance {
+public class PerformanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -26,7 +26,7 @@ public class Performance {
     @ManyToOne
     @NotNull
     @JoinColumn(nullable = false)
-    private Event event;
+    private EventEntity event;
 
     @NotNull
     @Column(nullable = false)

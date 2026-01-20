@@ -1,6 +1,7 @@
-package com.quickticket.quickticket.domain.paymentMethod.entity;
+package com.quickticket.quickticket.domain.payment.method.entity;
 
-import com.quickticket.quickticket.domain.user.entity.User;
+import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethodType;
+import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "PAYMENT_METHOD")
 @Getter
 @Setter
-public class PaymentMethod {
+public class PaymentMethodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -22,7 +23,7 @@ public class PaymentMethod {
     @ManyToOne
     @NotNull
     @JoinColumn(nullable = false)
-    private User user;
+    private UserEntity user;
 
     @NotNull
     @Column(nullable = false)

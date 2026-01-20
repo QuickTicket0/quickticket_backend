@@ -10,5 +10,5 @@ public enum PaymentMethodType implements OrdinalEnum {
     CARD(0),
     CREDIT(1);
 
-    public final int code;
+    private final int code;
 }

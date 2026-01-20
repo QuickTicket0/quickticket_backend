@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticketIssue.entity;
+package com.quickticket.quickticket.domain.ticket.entity;
 
 import com.quickticket.quickticket.domain.seat.entity.SeatId;
 import jakarta.persistence.Embeddable;

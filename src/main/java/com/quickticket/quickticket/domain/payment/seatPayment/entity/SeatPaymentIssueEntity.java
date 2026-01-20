@@ -1,9 +1,9 @@
-package com.quickticket.quickticket.domain.seatPaymentIssue.entity;
+package com.quickticket.quickticket.domain.payment.seatPayment.entity;
 
-import com.quickticket.quickticket.domain.performance.entity.Performance;
-import com.quickticket.quickticket.domain.seat.entity.Seat;
-import com.quickticket.quickticket.domain.ticketIssue.entity.TicketIssue;
-import com.quickticket.quickticket.domain.user.entity.User;
+import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssueStatus;
+import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
+import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
+import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "SEAT_PAYMENT_ISSUE")
 @Getter
 @Setter
-public class SeatPaymentIssue {
+public class SeatPaymentIssueEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -23,12 +23,12 @@ public class SeatPaymentIssue {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "ticket_issue_id", nullable = false)
-    private TicketIssue ticketissue;
+    private TicketIssueEntity ticketIssue;
 
     @ManyToOne
     @NotNull
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @NotNull
@@ -38,7 +38,7 @@ public class SeatPaymentIssue {
             @JoinColumn(name = "performance_id", referencedColumnName = "performance_id",
                     nullable = false, insertable = false, updatable = false)
     })
-    private Seat seat;
+    private SeatEntity seat;
 
     @NotNull
     @Column(nullable = false)

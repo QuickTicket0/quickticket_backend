@@ -1,5 +1,6 @@
-package com.quickticket.quickticket.domain.paymentMethod.entity;
+package com.quickticket.quickticket.domain.payment.method.entity;
 
+import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethodType;
 import com.quickticket.quickticket.shared.converters.AbstractOrdinalEnumConverter;
 import jakarta.persistence.Converter;
 

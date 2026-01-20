@@ -1,8 +1,8 @@
-package com.quickticket.quickticket.domain.ticketIssue.entity;
+package com.quickticket.quickticket.domain.ticket.entity;
 
-import com.quickticket.quickticket.domain.paymentMethod.entity.PaymentMethod;
-import com.quickticket.quickticket.domain.performance.entity.Performance;
-import com.quickticket.quickticket.domain.user.entity.User;
+import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
+import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
+import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "TICKET_ISSUE")
 @Getter
 @Setter
-public class TicketIssue {
+public class TicketIssueEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -22,17 +22,17 @@ public class TicketIssue {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @NotNull
     @JoinColumn(name = "performance_id", nullable = false)
-    private Performance performance;
+    private PerformanceEntity performance;
 
     @ManyToOne
     @NotNull
     @JoinColumn(name = "payment_method_id", nullable = false)
-    private PaymentMethod paymentMethod;
+    private PaymentMethodEntity paymentMethod;
 
     @NotNull
     @Column(nullable = false)

@@ -1,7 +1,6 @@
 package com.quickticket.quickticket.domain.seat.entity;
 
-import com.quickticket.quickticket.domain.performance.entity.Performance;
-import com.quickticket.quickticket.domain.event.entity.Event;
+import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -16,14 +15,14 @@ import lombok.Setter;
 @Table(name = "SEAT")
 @Getter
 @Setter
-public class Seat {
+public class SeatEntity {
     @EmbeddedId
     private SeatId id;
 
     @MapsId("performanceId")
     @ManyToOne
     @JoinColumn(name = "performance_id")
-    private Performance performance;
+    private PerformanceEntity performance;
 
     @ManyToOne
     @NotNull
@@ -33,7 +32,7 @@ public class Seat {
             @JoinColumn(name = "event_id", referencedColumnName = "event_id",
                     nullable = false, insertable = false, updatable = false)
     })
-    private SeatClass seatClass;
+    private SeatClassEntity seatClass;
 
     @ManyToOne
     @NotNull
@@ -43,7 +42,7 @@ public class Seat {
             @JoinColumn(name = "event_id", referencedColumnName = "event_id",
                     nullable = false, insertable = false, updatable = false)
     })
-    private SeatArea area;
+    private SeatAreaEntity area;
 
 
     private Long currentWaitingNumber;
