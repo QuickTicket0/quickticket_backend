@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.user.entity;
+package com.quickticket.quickticket.domain.user.domain;
 
 import com.quickticket.quickticket.shared.converters.OrdinalEnum;
 import lombok.AllArgsConstructor;

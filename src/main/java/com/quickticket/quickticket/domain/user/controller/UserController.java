@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/account")
-    public String account(Model model) {
-        return "account";
+    @GetMapping("/myPage/userInfo")
+    public String myPage(Model model) {
+        return "myPage/userInfo";
     }
 }

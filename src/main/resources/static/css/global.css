@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    width: 100%;
+    min-height: calc(100vh - 80px - 140px);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

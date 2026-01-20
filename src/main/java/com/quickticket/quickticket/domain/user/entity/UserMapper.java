@@ -1,6 +1,6 @@
 package com.quickticket.quickticket.domain.user.entity;
 
-import com.quickticket.quickticket.domain.user.dto.UserDto;
+import com.quickticket.quickticket.domain.user.domain.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -8,6 +8,6 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    User toAccount(UserDto userDto);
-    UserDto toAccountDto(User account);
+    UserEntity toUser(User user);
+    User toUserDto(UserEntity account);
 }

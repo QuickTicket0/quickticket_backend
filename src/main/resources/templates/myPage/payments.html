@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
+<head>
+    <title>QuickTicket - 결제수단 관리</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+                <div class="mypage-body">
+                    <!-- 좌측 사이드바 영역 -->
+                    <aside th:replace="~{fragments/sidebar :: sidebarFragment}"></aside>
+
+                    <!-- 우측 결제관리 영역 -->
+                    <main class="mypage-content">
+                        <h2 class="sub-title">결제 수단 관리</h2>
+
+                        <div class="payment-section">
+                            <div class="gray-box payment-manage-box">
+                                <p class="box-label">연결된 결제수단</p>
+
+                                <div class="card-grid">
+                                    <div class="payment-card">
+                                        <div class="card-icon">
+                                            <i id="methodIcon" class="fa-regular fa-credit-card"></i>
+                                        </div>
+                                        <div class="card-info">
+                                            <span id="bankName" class="card-name">[[${card?.bankName}]]</span>
+                                            <span id="cardNumber" class="card-number">[[${card?.cardNumber}]]</span>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn-add-card">
+                                        <i class="fa-solid fa-plus"></i>
+                                        <span>추가</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            const tempCard = {
+                bankName: "신한카드 (국민체크)",
+                cardNumber: "4518-****-****-1234",
+                methodType: "CARD"
+            };
+
+            // 임시데이터로 대체
+            const bankEl = document.getElementById("bankName");
+            const numEl = document.getElementById("cardNumber");
+
+            if (bankEl) bankEl.innerText = tempCard.bankName;
+            if (numEl) numEl.innerText = tempCard.cardNumber;
+
+            // 아이콘 변경 로직
+            const iconEl = document.getElementById("methodIcon");
+            if (iconEl) {
+                if (tempCard.methodType === "CREDIT") {
+                    iconEl.className = "fa-solid fa-coins";
+                } else {
+                    iconEl.className = "fa-regular fa-credit-card";
+                }
+            }
+        </script>
+    </main>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
+<head>
+    <title>QuickTicket - 예매하기</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/font_awesome/all.min.css}">
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+
+                <section class="booking-header">
+                    <div class="breadcrumb">
+                        <span>1.공연 회차 선택</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span class="active">2.좌석 선택</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span>3.결제 수단 선택</span>
+                    </div>
+                    <h1 class="concert-title">2025-2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원</h1>
+                </section>
+
+    <!--            <section class="option-bar">-->
+                    <h3>예매날짜 선택</h3>
+                    <div class="option-inputs">
+                        <div class="input-group">
+                            <label>일자:</label>
+                            <select class="custom-select">
+                                <option>2026년 2월 09일</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>시간:</label>
+                            <select class="custom-select">
+                                <option>17시 00분</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>인원:</label>
+                            <select class="custom-select">
+                                <option>3명</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="booking-layout">
+                    <div class="seat-map-area">
+                        <div>
+                            <p>좌석선택영역입니다.</p>
+                        </div>
+                    </div>
+
+                    <aside class="sidebar">
+                        <div class="seat-grades">
+                            <h4>좌석 등급 / 잔여석</h4>
+                            <div class="grade-card">
+                                <div class="grade-header">
+                                    <span class="grade-name">A구역</span>
+                                    <span class="badge badge-green">대기 가능</span>
+                                </div>
+                                <div class="grade-info">
+                                    <span class="price">154,000원</span>
+                                    <span class="queue">예상 순번 : 1번째</span>
+                                </div>
+                            </div>
+
+                            <div class="grade-card">
+                                <div class="grade-header">
+                                    <span class="grade-name">B구역</span>
+                                    <span class="badge badge-yellow">대기 보통</span>
+                                </div>
+                                <div class="grade-info">
+                                    <span class="price">154,000원</span>
+                                    <span class="queue">예상 순번 : 5번째</span>
+                                </div>
+                            </div>
+
+                            <div class="grade-card">
+                                <div class="grade-header">
+                                    <span class="grade-name">C구역</span>
+                                    <span class="badge badge-red">대기 혼잡</span>
+                                </div>
+                                <div class="grade-info">
+                                    <span class="price">154,000원</span>
+                                    <span class="queue">예상 순번 : 10번째</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="selected-seat-summary">
+                            <h4>선택한 좌석</h4>
+                            <div class="summary-row">
+                                <span class="seat-loc">A구역 R24</span>
+                                <div class="price-info">
+                                    <span class="seat-type">VIP석</span>
+                                    <span class="total-price">154,000원</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-submit btn-booking-submit" onclick="openPaymentModal()">
+                            좌석 선택 완료
+                        </button>
+                    </aside>
+                </section>
+            </div>
+        </div>
+
+        <div th:replace="~{paymentPopup :: paymentModal}"></div>
+
+        <script>
+            // 모달 열기 함수
+            function openPaymentModal() {
+                const modal = document.getElementById('paymentModal');
+                if(modal) {
+                    modal.classList.remove('hidden');
+                }
+            }
+
+            // 모달 닫기 함수
+            function closePaymentModal() {
+                const modal = document.getElementById('paymentModal');
+                if(modal) {
+                    modal.classList.add('hidden');
+                }
+            }
+
+            // 배경 클릭 시 닫기
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('paymentModal');
+                if (modal) {
+                    modal.addEventListener('click', function(event) {
+                        if (event.target === this) {
+                            closePaymentModal();
+                        }
+                    });
+                }
+            });
+        </script>
+    </main>
+</body>
+</html>

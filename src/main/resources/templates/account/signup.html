@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/blankLayout}">
+<head>
+    <title>QuickTicket - 회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+<main layout:fragment="content">
+    <div class="find-container">
+        <h2 class="page-title">회원가입</h2>
+
+        <form th:action="@{/signup}" method="post">
+
+            <div class="gray-form-box">
+                <!-- 아이디  -->
+                <div class="form-field">
+                    <label for="username" class="form-label">아이디</label>
+                    <input type="text" id="username" name="username" class="simple-input" placeholder="아이디를 입력하세요">
+                </div>
+                <!-- 비밀번호 -->
+                <div class="form-field">
+                    <label for="password" class="form-label">비밀번호</label>
+                    <input type="password" id="password" name="password" class="simple-input" placeholder="비밀번호를 입력하세요">
+                </div>
+                <!-- 비밀번호재입력 -->
+                <div class="form-field">
+                    <label for="passwordConfirm" class="form-label">비밀번호 재입력</label>
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" class="simple-input" placeholder="비밀번호를 다시 입력하세요">
+                </div>
+                <!-- 이름 -->
+                <div class="form-field">
+                    <label for="name" class="form-label">이름</label>
+                    <input type="text" id="name" name="name" class="simple-input" placeholder="이름을 입력하세요">
+                </div>
+                <!-- 생년월일 -->
+                <div class="form-field">
+                    <label class="form-label">생년월일</label>
+                    <div class="birth-container">
+                        <input type="text" name="birthYear" class="simple-input" placeholder="년">
+                        <input type="text" name="birthMonth" class="simple-input" placeholder="월">
+                        <input type="text" name="birthDay" class="simple-input" placeholder="일">
+                    </div>
+                </div>
+                <!-- 전화번호 -->
+                <div class="form-field">
+                    <label for="phoneNumber" class="form-label">전화번호</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber" class="simple-input" placeholder="010-1234-5678">
+                </div>
+                <!-- 이메일 -->
+                <div class="form-field">
+                    <label for="email" class="form-label">이메일</label>
+                    <input type="email" id="email" name="email" class="simple-input" placeholder="example@email.com">
+                </div>
+                <!-- 주소 -->
+                <div class="form-field">
+                    <label for="address" class="form-label">주소</label>
+                    <input type="text" id="address" name="address" class="simple-input" placeholder="주소를 입력하세요">
+
+                    <button type="button" class="address-search-btn">
+                        주소 검색 <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- 약관 동의 영역 -->
+            <div class="terms-container">
+                <label class="term-item">
+                    <input type="checkbox" name="term1" required>개인정보 수집 및 이용동의 <span class="required-text">(필수)</span>
+                </label>
+                <label class="term-item">
+                    <input type="checkbox" name="term2">마케팅 수신 동의 <span class="optional-text">(선택)</span>
+                </label>
+            </div>
+
+            <button type="submit" class="login-btn" style="width: 100%; max-width: 400px;">가입하기</button>
+        </form>
+
+        <!-- 소셜로그인 영역 -->
+        <div class="social-login">
+            <p>간편 로그인</p>
+            <div class="social-icons">
+                <a th:href="@{/oauth2/authorization/kakao}" class="social-btn kakao">
+                    <i class="fa-solid fa-comment"></i>
+                </a>
+                <a th:href="@{/oauth2/authorization/naver}" class="social-btn naver">
+                    <img th:src="@{/images/naver_logo.png}" alt="naver" class="social-img-full">
+                </a>
+                <a th:href="@{/oauth2/authorization/google}" class="social-btn google">
+                    <img th:src="@{/images/google_logo.svg}" alt="google" class="social-img-full">
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

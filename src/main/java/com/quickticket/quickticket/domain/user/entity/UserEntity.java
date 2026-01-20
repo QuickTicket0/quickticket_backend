@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.user.entity;
 
+import com.quickticket.quickticket.domain.user.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,7 +14,9 @@ import java.time.LocalDateTime;
 @Table(name = "USER")
 @Getter
 @Setter
-public class User {
+public class UserEntity {
+    // 값 타입인 long이 아닌 래퍼 타입 Long을 쓴 이유는
+    // 엔티티 객체 최초 생성시 id값이 정해지지 않은 상태여서 null을 표현할 필요성이 있기 때문입니다.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull

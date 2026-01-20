@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
+<head>
+    <title>QuickTicket - 크레딧 관리</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+                <div class="mypage-body" style="display: flex; gap: 30px; align-items: flex-start;">
+                    <!-- 좌측 사이드바 영역 -->
+                    <aside th:replace="~{fragments/sidebar :: sidebarFragment}"></aside>
+
+                    <!-- 우측 크레딧 영역 -->
+                    <main class="mypage-content" style="flex: 1; min-width: 0;">
+                        <h2 class="sub-title">크레딧 관리</h2>
+
+                        <!-- 상단 크레딧잔액 영역 -->
+                        <div class="gray-box credit-balance-box">
+                            <div class="balance-info">
+                                <div class="icon-circle">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                </div>
+                                <div class="text-group">
+                                    <span class="label">현재 잔액</span>
+                                    <strong id="changeAmount" class="amount">
+                                        [[${creditDto?.changeAmount != null ? #numbers.formatInteger(creditDto.changeAmount, 0, 'COMMA') : '0'}]] Credit
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="balance-actions">
+                                <button type="button" class="btn-charge">충전하기</button>
+                                <button type="button" class="btn-refund">환불하기</button>
+                            </div>
+                        </div>
+
+                        <!-- 하단 크레딧내역 영역 -->
+                        <div class="credit-history-section">
+                            <h3 class="sub-title" style="font-size: 16px; margin-bottom: 15px;">크레딧 내역</h3>
+
+                            <div id="historyListContainer">
+                                <div class="history-group" th:each="item : ${transactionList}">
+                                    <div class="date-label">[[${item.createdAt != null ? #temporals.format(item.createdAt, 'yyyy년 M월 d일') : ''}]]</div>
+                                    <div class="history-card">
+                                        <div class="card-left">
+                                            <span class="type-text" th:classappend="${item.changeAmount < 0} ? 'concert-name' : ''">
+                                                [[${item.summary}]]
+                                            </span>
+                                        </div>
+                                        <div class="card-right">
+                                            <span class="amount-text" th:classappend="${item.changeAmount >= 0} ? 'plus' : 'minus'">
+                                                <span th:if="${item.changeAmount >= 0}">(+)</span>
+                                                <span th:unless="${item.changeAmount >= 0}">(-)</span>
+                                                [[${item.changeAmount != null ? #numbers.formatInteger(T(java.lang.Math).abs(item.changeAmount), 0, 'COMMA') : '0'}]] Credit
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:if="${#lists.isEmpty(transactionList)}" style="text-align: center; padding: 50px 0; color: #999;">
+                                거래 내역이 없습니다.
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            // 잔액 데이터
+            const tempCredit = "165,000 Credit";
+            document.getElementById("changeAmount").innerText = tempCredit;
+
+            // 리스트 데이터
+            const tempHistory = [
+                { date: "2026년 1월 20일", summary: "크레딧 충전", amount: "+ 50,000", isPlus: true },
+                { date: "2026년 1월 15일", summary: "2026 이창섭 콘서트 예매 결제", amount: "- 165,000", isPlus: false },
+                { date: "2026년 1월 10일", summary: "크레딧 충전", amount: "+ 100,000", isPlus: true }
+            ];
+
+            const listContainer = document.getElementById("historyListContainer");
+            const noMsg = document.getElementById("noHistoryMsg");
+
+            if (listContainer) {
+                listContainer.innerHTML = "";
+                if (noMsg) {
+                    noMsg.style.display = "none";
+                }
+
+                tempHistory.forEach(item => {
+                    const html = `
+                            <div class="history-group">
+                                <div class="date-label">${item.date}</div>
+                                <div class="history-card">
+                                    <div class="card-left">
+                                        <span class="type-text ${!item.isPlus ? 'concert-name' : ''}">
+                                            ${item.summary}
+                                        </span>
+                                    </div>
+                                    <div class="card-right">
+                                        <span class="amount-text ${item.isPlus ? 'plus' : 'minus'}">
+                                            ${item.amount} Credit
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    listContainer.innerHTML += html;
+                });
+            }
+        </script>
+    </main>
+</body>
+</html>

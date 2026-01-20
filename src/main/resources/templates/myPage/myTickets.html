@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
+<head>
+    <title>QuickTicket - 내 예매 목록</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+                <div class="mypage-body">
+                    <!-- 좌측 메뉴 사이드바 -->
+                    <aside th:replace="~{fragments/sidebar :: sidebarFragment}"></aside>
+
+                    <!-- 우측 예매목록 영역 -->
+                    <main class="mypage-content">
+                        <h2 class="sub-title">전체 예매 목록</h2>
+                        <table class="common-table">
+                            <thead>
+                            <tr>
+                                <th class="col-check" style="text-align: center">
+                                    <input type="checkbox">
+                                </th>
+                                <th class="col-no">NO</th>
+                                <th>예매번호</th>
+                                <th>콘서트명</th>
+                                <th>관람일</th>
+                                <th>매수</th>
+                                <th>예매날</th>
+                                <th class="col-action"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="ticketListContainer">
+                                <tr th:each="ticket, stat : ${ticketList}">
+                                    <td style="text-align: center;">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td th:text="${stat.count}">1</td>
+                                    <td>[[ 'RES-' + ${ticket?.id} ]]</td>
+                                    <td>
+                                        <a th:href="@{/myTicket/{id}(id=${ticket?.id})}" class="link-title">
+                                            [[${event?.name}]]
+                                        </a>
+                                    </td>
+                                    <td>
+                                        [[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd') : ''}]]
+                                    </td>
+                                    <td>[[${ticket?.personNumber}]]</td>
+                                    <td>
+                                        [[${ticket?.reservedAt != null ? #temporals.format(ticket.reservedAt, 'yyyy-MM-dd') : '-'}]]
+                                    </td>
+                                    <td style="text-align: center; cursor: pointer; color: #999;">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </td>
+                                </tr>
+
+                                <tr id="noTicketMsg" th:if="${#lists.isEmpty(ticketList)}">
+                                    <td colspan="8" style="text-align: center; padding: 50px 0; color: #666;">
+                                        예매 내역이 없습니다.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </main>
+                </div>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            const tempTickets = [
+                { id: 101, name: "2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원", date: "2026-02-09", count: 2, reservedAt: "2026-01-15" },
+                { id: 102, name: "2026 임현식 단독 콘서트", date: "2026-03-01", count: 1, reservedAt: "2026-01-18" },
+                { id: 103, name: "BTOB FAN MEETING", date: "2026-03-21", count: 4, reservedAt: "2026-01-20" }
+            ];
+
+            const listContainer = document.getElementById("ticketListContainer");
+            const noMsgRow = document.getElementById("noTicketMsg");
+
+            if (listContainer) {
+                if (noMsgRow) noMsgRow.style.display = "none";
+
+                listContainer.innerHTML = "";
+                tempTickets.forEach((ticket, index) => {
+                    const html = `
+                        <tr>
+                            <td style="text-align: center;"><input type="checkbox"></td>
+                            <td>${index + 1}</td>
+                            <td>RES-${ticket.id}</td>
+                            <td>
+                                <a href="/myTicket/${ticket.id}" class="link-title">${ticket.name}</a>
+                            </td>
+                            <td>${ticket.date}</td>
+                            <td>${ticket.count}</td>
+                            <td>${ticket.reservedAt}</td>
+                            <td style="text-align: center; cursor: pointer; color: #999;">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </td>
+                        </tr>
+                    `;
+                    listContainer.innerHTML += html;
+                });
+            }
+        </script>
+    </main>
+</body>
+</html>

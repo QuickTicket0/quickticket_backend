@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultLayout}">
+<head>
+    <title>QuickTicket - 홈</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<main layout:fragment="content">
+    <!-- 상단 배너 영역 -->
+    <section class="hero-section">
+        <div class="hero-bg-placeholder">
+            <h1 class="hero-title">The Decade</h1>
+            <p class="hero-subtitle">대구 | 엑스코 동관 5-6홀<br>2026.02.07 SAT - 2026.02.08 SUN</p>
+        </div>
+    </section>
+
+    <div class="main-container">
+        <section class="main-section">
+            <div class="section-header">
+                <h2 class="main-title">WHAT'S HOT</h2>
+            </div>
+
+            <div class="concert-grid">
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <img th:src="@{/images/concertImage1.png}" alt="concert1" class="concert-img">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">LOUD BRIDGE FESTIVAL</div>
+                        <div class="card-sub">SEOUL 2026</div>
+                    </div>
+                </a>
+
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <img th:src="@{/images/concertImage2.png}" alt="concert2" class="concert-img">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">소란 겨울 콘서트</div>
+                        <div class="card-sub">'DEAMeR'</div>
+                    </div>
+                </a>
+
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <img th:src="@{/images/concertImage3.png}" alt="concert3" class="concert-img">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">wacci Hall Tour</div>
+                        <div class="card-sub">2025-2026 in Seoul</div>
+                    </div>
+                </a>
+
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <img th:src="@{/images/concertImage4.png}" alt="concert4" class="concert-img">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">2026 빈 소년 합창단</div>
+                        <div class="card-sub">신년음악회</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="main-section">
+            <div class="section-header">
+                <h2 class="main-title">HOT DEAL</h2>
+            </div>
+
+            <div class="concert-grid">
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <div class="img-placeholder">
+                            <img th:src="@{/images/concertImage5.png}" alt="concert5" class="concert-img">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">이창섭 단독 콘서트</div>
+                        <div class="card-title">20% 할인</div>
+                    </div>
+                </a>
+
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <div class="img-placeholder">
+                            <img th:src="@{/images/concertImage6.png}" alt="concert6" class="concert-img">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">betcover!! 내한공연</div>
+                        <div class="card-title">10% 할인</div>
+                    </div>
+                </a>
+
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <div class="img-placeholder">
+                            <img th:src="@{/images/concertImage7.png}" alt="concert7" class="concert-img">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">LUCKLIFE 2026</div>
+                        <div class="card-title">10% 할인</div>
+                    </div>
+                </a>
+
+                <a th:href="@{/event}" class="concert-card">
+                    <div class="thumb-wrapper">
+                        <div class="img-placeholder">
+                            <img th:src="@{/images/concertImage8.png}" alt="concert8" class="concert-img">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">오월오일 단독 콘서트</div>
+                        <div class="card-title">30% 할인</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+</body>
+</html>
