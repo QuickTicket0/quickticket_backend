@@ -17,7 +17,9 @@ public class SeatPaymentIssue {
     private Long id;
     private Ticket ticketIssue;
     private User user;
+    /// 결제하려는 좌석
     private Seat seat;
+    /// 결제 상태
     private SeatPaymentIssueStatus status;
 
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요

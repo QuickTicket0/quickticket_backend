@@ -15,9 +15,12 @@ import static lombok.AccessLevel.PRIVATE;
 public class CreditTransaction {
     private Long id;
     private User user;
+    /// 만약 transactionType이 좌석 결제와 관련된 것일 경우, null이 아닌 값이 됩니다
     private SeatPaymentIssue relatedSeatPaymentIssue;
     private TransactionType type;
+    /// 기존에서부터 변동 금액
     private Long changeAmount;
+    /// 새로 정해진 금액
     private Long balanceAfter;
     /// 변동이 발생한 시점입니다
     private LocalDateTime createdAt;

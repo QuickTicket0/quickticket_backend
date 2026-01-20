@@ -16,6 +16,7 @@ public class User {
     private LocalDate birthday;
     private String email;
     private String phone;
+    /// 현재 보유한 크레딧 잔액
     private Long credit;
     private UserRole role;
     private LocalDateTime createdAt;

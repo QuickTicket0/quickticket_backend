@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class CardPayment extends PaymentMethod {
     private String cardNumber;
     private String cvs;
+    /// 카드 만기일
     private LocalDate expirationPeriod;
     private Boolean isActive;
     private String bankName;

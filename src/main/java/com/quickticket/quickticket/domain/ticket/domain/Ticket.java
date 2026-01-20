@@ -21,10 +21,16 @@ public class Ticket {
     private User user;
     private PaymentMethod paymentMethod;
     private TicketStatus status;
+    /// 예매 대기순번에서 이 예매가 선착순 몇번째인지의 번호
     private Long waitingNumber;
     private Integer personNumber;
+    /// 예매가 이뤄졌을시 null이 아님
     private LocalDateTime createdAt;
+    /// 예매 취소했을시 null이 아님
     private LocalDateTime canceledAt;
+    /// 배정받길 원하는 좌석.
+    /// 원하는 좌석 내에 모든 좌석들이 배정받는 것은 아닙니다.
+    /// 인원이 2명이라면 그 범위 내에서 가장 빨리 선착순이 난 좌석 2개를 차례대로 배정받습니다.
     private List<Seat> wantingSeats;
 
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요

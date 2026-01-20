@@ -9,7 +9,9 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder(access = PRIVATE)
 @Getter
 public class Category {
+    /// 카테고리 고유 id. Primary key로서 완전히 고유핟
     private Long id;
+    /// 카테고리가 보여지는 이름 (로맨스, 스릴러, 스포츠 등)
     private String name;
 
     public void changeName(String newName) {
