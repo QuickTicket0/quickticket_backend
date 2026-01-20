@@ -21,11 +21,12 @@ public class TicketController {
     @GetMapping("/ticketSuccess")
     public String ticketSuccess(Model model) {
 
-        // 모델에 각각 정보를 넘긴다고 가정함(콘서트정보, 티켓정보, 결제정보)
+        // 모델에 각각 정보를 넘긴다고 가정함(콘서트정보, 티켓정보, 각좌석결제정보)
         //  model.addAttribute("event", eventDto);
         //  model.addAttribute("ticket", ticketDto);
-        //  model.addAttribute("payment", paymentDto);
-        return "ticketSuccess"; }
+        //  model.addAttribute("payment", SeatPaymentDto);
+        return "ticketSuccess";
+    }
 
     @GetMapping("/cancelTicketSuccess")
     public String cancelTicketSuccess(Model model) {

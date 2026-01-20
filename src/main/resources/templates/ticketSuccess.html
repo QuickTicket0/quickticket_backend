@@ -19,6 +19,7 @@
                             좌석 예매 상태는 <span id="ticketStatus" style="color: #5d75fa; font-weight: 700;">[[${ticket?.status}]]</span>입니다.
                         </p>
                     </div>
+                    <!-- 공연정보 영역-->
                     <div class="info-section">
                         <h3 class="sub-title">공연 정보</h3>
                         <div class="gray-box info-box">
@@ -28,7 +29,9 @@
                             </div>
                             <div class="info-row">
                                 <span class="label">공연일자</span>
-                                <span id="performanceStartsAt" class="value">[[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / HH:mm') : ''}]]</span>
+                                <span id="performanceStartsAt" class="value">
+                                    [[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / HH:mm') : ''}]]
+                                </span>
                             </div>
                             <div class="info-row">
                                 <span class="label">회차</span>
@@ -36,6 +39,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- 예매정보 영역-->
                     <div class="info-section">
                         <h3 class="sub-title">예매 정보</h3>
                         <div class="gray-box info-box">
@@ -54,17 +58,20 @@
                             <div class="info-row">
                                 <span class="label">예매 좌석</span>
                                 <span id="seatInfo" class="value">
-                                    [[${payment?.paidSeats != null and !payment.paidSeats.isEmpty() ? payment.paidSeats[0].name + ' ' + payment.paidSeats[0].quantity + '매' : ''}]]
-                                </span>
+                            <th:block th:if="${payment?.paidSeats != null}" th:each="seat, stat : ${payment.paidSeats}">
+                                <span>[[${seat.name}]] [[${seat.quantity}]]매</span><span th:if="${!stat.last}">, </span>
+                            </th:block>
+                        </span>
                             </div>
                         </div>
                     </div>
+                    <!-- 결제정보 영역-->
                     <div class="info-section">
                         <h3 class="sub-title">결제 정보</h3>
                         <div class="gray-box info-box">
                             <div class="info-row">
                                 <span class="label">결제수단</span>
-                                <span id="paymentMethod" class="value">[[${payment?.method}]]</span>
+                                <span id="paymentMethod" class="value">[[${payment?.method]]</span>
                             </div>
                             <div class="info-row">
                                 <span class="label">결제 상태</span>
@@ -72,7 +79,9 @@
                             </div>
                             <div class="info-row">
                                 <span class="label">총 결제 금액</span>
-                                <span id="paymentAmount" class="value highlight">[[${payment?.amount != null ? #numbers.formatInteger(payment.amount, 0, 'COMMA') + '원' : ''}]]</span>
+                                <span id="paymentAmount" class="value highlight">
+                            [[${payment?.amount != null ? #numbers.formatInteger(payment.amount, 0, 'COMMA') + '원' : '0원'}]]
+                        </span>
                             </div>
                         </div>
                     </div>

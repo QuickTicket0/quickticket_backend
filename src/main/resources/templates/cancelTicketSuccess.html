@@ -50,7 +50,7 @@
                             <div class="info-row">
                                 <span class="label">취소 일시</span>
                                 <span id="infoCanceledAt" class="value">
-                                    [[${canceledAt != null ? #temporals.format(canceledAt, 'yyyy-MM-dd / HH:mm:ss') : #temporals.format(#temporals.createNow(), 'yyyy-MM-dd / HH:mm:ss')}]]
+                                    [[${ticket?.canceledAt != null ? #temporals.format(ticket.canceledAt, 'yyyy-MM-dd / HH:mm:ss') : '-'}]]
                                 </span>
                             </div>
                             <div class="info-row">
