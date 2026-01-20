@@ -24,23 +24,20 @@
                                 <p class="box-label">연결된 결제수단</p>
 
                                 <div class="card-grid">
-                                    <div class="card-icon">
-                                        <i th:if="${card.methodType.name() == 'CARD'}"
-                                           class="fa-regular fa-credit-card"></i>
-
-                                        <i th:if="${card.methodType.name() == 'CREDIT'}"
-                                           class="fa-solid fa-coins"></i>
-                                    </div>
-                                    <div class="card-info">
-                                        <span id="bankName" class="card-name">[[${card.bankName}]]</span>
-                                        <span id="cardNumber" class="card-number">[[${card.cardNumber}]]</span>
+                                    <div class="payment-card">
+                                        <div class="card-icon">
+                                            <i id="methodIcon" class="fa-regular fa-credit-card"></i>
+                                        </div>
+                                        <div class="card-info">
+                                            <span id="bankName" class="card-name">[[${card?.bankName}]]</span>
+                                            <span id="cardNumber" class="card-number">[[${card?.cardNumber}]]</span>
+                                        </div>
                                     </div>
 
                                     <button type="button" class="btn-add-card">
                                         <i class="fa-solid fa-plus"></i>
                                         <span>추가</span>
                                     </button>
-
                                 </div>
                             </div>
                         </div>
@@ -48,9 +45,29 @@
                 </div>
             </div>
         </div>
-        <script>
-            document.getElementById("bankName").innerText = "";
-            document.getElementById("cardNumber").innerText = "";
+        <script th:inline="javascript">
+            const tempCard = {
+                bankName: "신한카드 (국민체크)",
+                cardNumber: "4518-****-****-1234",
+                methodType: "CARD"
+            };
+
+            // 임시데이터로 대체
+            const bankEl = document.getElementById("bankName");
+            const numEl = document.getElementById("cardNumber");
+
+            if (bankEl) bankEl.innerText = tempCard.bankName;
+            if (numEl) numEl.innerText = tempCard.cardNumber;
+
+            // 아이콘 변경 로직
+            const iconEl = document.getElementById("methodIcon");
+            if (iconEl) {
+                if (tempCard.methodType === "CREDIT") {
+                    iconEl.className = "fa-solid fa-coins";
+                } else {
+                    iconEl.className = "fa-regular fa-credit-card";
+                }
+            }
         </script>
     </main>
 </body>
