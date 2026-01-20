@@ -2,11 +2,15 @@ package com.quickticket.quickticket.domain.ticket.entity;
 
 import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
+import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TICKET_ISSUE")
@@ -33,6 +37,19 @@ public class TicketIssueEntity {
     @NotNull
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethodEntity paymentMethod;
+
+    @NotNull
+    @Column(name = "ticket_status", nullable = false)
+    private TicketStatus status;
+
+    @NotNull
+    @Column(nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime canceledAt;
 
     @NotNull
     @Column(nullable = false)
