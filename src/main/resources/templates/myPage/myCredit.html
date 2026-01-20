@@ -27,7 +27,9 @@
                                 </div>
                                 <div class="text-group">
                                     <span class="label">현재 잔액</span>
-                                    <strong id="changeAmount" class="amount">[[${#numbers.formatInteger(creditDto.changeAmount, 0, 'COMMA')}]] Credit</strong>
+                                    <strong id="changeAmount" class="amount">
+                                        [[${creditDto?.changeAmount != null ? #numbers.formatInteger(creditDto.changeAmount, 0, 'COMMA') : '0'}]] Credit
+                                    </strong>
                                 </div>
                             </div>
                             <div class="balance-actions">
@@ -40,20 +42,22 @@
                         <div class="credit-history-section">
                             <h3 class="sub-title" style="font-size: 16px; margin-bottom: 15px;">크레딧 내역</h3>
 
-                            <div class="history-group" th:each="item : ${transactionList}">
-                                <div id="createdAt" class="date-label">[[${#temporals.format(item.createdAt, 'yyyy년 M월 d일')}]]</div>
-                                <div class="history-card">
-                                    <div class="card-left">
-                                        <span id="summary" class="type-text" th:classappend="${item.changeAmount < 0} ? 'concert-name' : ''">
-                                            [[${item.summary}]]
-                                        </span>
-                                    </div>
-                                    <div class="card-right">
-                                        <span id="changeAmountCard" class="amount-text" th:classappend="${item.changeAmount >= 0} ? 'plus' : 'minus'">
-                                            <span id="plus" th:if="${item.changeAmount >= 0}">(+)</span>
-                                            <span id="minus" th:unless="${item.changeAmount >= 0}">(-)</span>
-                                            [[${#numbers.formatInteger(T(java.lang.Math).abs(item.changeAmount), 0, 'COMMA')}]] Credit
-                                        </span>
+                            <div id="historyListContainer">
+                                <div class="history-group" th:each="item : ${transactionList}">
+                                    <div class="date-label">[[${item.createdAt != null ? #temporals.format(item.createdAt, 'yyyy년 M월 d일') : ''}]]</div>
+                                    <div class="history-card">
+                                        <div class="card-left">
+                                            <span class="type-text" th:classappend="${item.changeAmount < 0} ? 'concert-name' : ''">
+                                                [[${item.summary}]]
+                                            </span>
+                                        </div>
+                                        <div class="card-right">
+                                            <span class="amount-text" th:classappend="${item.changeAmount >= 0} ? 'plus' : 'minus'">
+                                                <span th:if="${item.changeAmount >= 0}">(+)</span>
+                                                <span th:unless="${item.changeAmount >= 0}">(-)</span>
+                                                [[${item.changeAmount != null ? #numbers.formatInteger(T(java.lang.Math).abs(item.changeAmount), 0, 'COMMA') : '0'}]] Credit
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -66,12 +70,48 @@
                 </div>
             </div>
         </div>
-        <script>
-            document.getElementById("changeAmount").innerText = "";
-            document.getElementById("summary").innerText = "";
-            document.getElementById("plus").innerText = "";
-            document.getElementById("minus").innerText = "";
-            document.getElementById("changeAmountCard").innerText = "";
+        <script th:inline="javascript">
+            // 잔액 데이터
+            const tempCredit = "165,000 Credit";
+            document.getElementById("changeAmount").innerText = tempCredit;
+
+            // 리스트 데이터
+            const tempHistory = [
+                { date: "2026년 1월 20일", summary: "크레딧 충전", amount: "+ 50,000", isPlus: true },
+                { date: "2026년 1월 15일", summary: "2026 이창섭 콘서트 예매 결제", amount: "- 165,000", isPlus: false },
+                { date: "2026년 1월 10일", summary: "크레딧 충전", amount: "+ 100,000", isPlus: true }
+            ];
+
+            const listContainer = document.getElementById("historyListContainer");
+            const noMsg = document.getElementById("noHistoryMsg");
+
+            if (listContainer) {
+                listContainer.innerHTML = "";
+                if (noMsg) {
+                    noMsg.style.display = "none";
+                }
+
+                tempHistory.forEach(item => {
+                    const html = `
+                            <div class="history-group">
+                                <div class="date-label">${item.date}</div>
+                                <div class="history-card">
+                                    <div class="card-left">
+                                        <span class="type-text ${!item.isPlus ? 'concert-name' : ''}">
+                                            ${item.summary}
+                                        </span>
+                                    </div>
+                                    <div class="card-right">
+                                        <span class="amount-text ${item.isPlus ? 'plus' : 'minus'}">
+                                            ${item.amount} Credit
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    listContainer.innerHTML += html;
+                });
+            }
         </script>
     </main>
 </body>

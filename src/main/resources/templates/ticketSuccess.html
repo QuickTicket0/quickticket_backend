@@ -8,101 +8,122 @@
     <link rel="stylesheet" th:href="@{/css/myPage.css}">
 </head>
 <body>
-<main layout:fragment="content">
-    <div class="page-wrapper">
-        <div class="main-container">
-            <div class="cancel-success-wrap">
-                <!-- 제목영역 -->
-                <div class="success-header">
-                    <h2 class="main-msg">예매 완료</h2>
-                    <p class="sub-msg">
-                        고객님의 '<span id="ticketName" style="font-weight:bold;">[[${event.name}]]</span>' 예매가 완료되었습니다.<br>
-                        좌석 예매 상태는 <span id="ticketStatus" style="color: #5d75fa; font-weight: 700;">[[${ticket.status}]]</span>입니다.
-                    </p>
-                </div>
-                <!-- 공연정보 영역 -->
-                <div class="info-section">
-                    <h3 class="sub-title">공연 정보</h3>
-                    <div class="gray-box info-box">
-                        <div class="info-row">
-                            <span class="label">관람등급</span>
-                            <span id="ageRating" class="value">[[${event.ageRating}]]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">공연일자</span>
-                            <span id="performanceStartsAt" class="value">[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / HH:mm')}]]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">회차</span>
-                            <span id="nth" class="value">[[${ticket.performance.nth} + '회차']]</span>
+    <main layout:fragment="content">
+        <div class="page-wrapper">
+            <div class="main-container">
+                <div class="cancel-success-wrap">
+                    <div class="success-header">
+                        <h2 class="main-msg">예매 완료</h2>
+                        <p class="sub-msg">
+                            고객님의 '<span id="ticketName" style="font-weight:bold;">[[${event?.name}]]</span>' 예매가 완료되었습니다.<br>
+                            좌석 예매 상태는 <span id="ticketStatus" style="color: #5d75fa; font-weight: 700;">[[${ticket?.status}]]</span>입니다.
+                        </p>
+                    </div>
+                    <div class="info-section">
+                        <h3 class="sub-title">공연 정보</h3>
+                        <div class="gray-box info-box">
+                            <div class="info-row">
+                                <span class="label">관람등급</span>
+                                <span id="ageRating" class="value">[[${event?.ageRating}]]</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">공연일자</span>
+                                <span id="performanceStartsAt" class="value">[[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / HH:mm') : ''}]]</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">회차</span>
+                                <span id="nth" class="value">[[${ticket?.performance?.nth}]]회차</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- 예매정보 영역 -->
-                <div class="info-section">
-                    <h3 class="sub-title">예매 정보</h3>
-                    <div class="gray-box info-box">
-                        <div class="info-row">
-                            <span class="label">예매번호</span>
-                            <span id="ticketId" class="value">[[ 'RES-2026-' + ${ticket.id} ]]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">예매 인원</span>
-                            <span id="personNumber" class="value">[[${ticket.personNumber} + '명']]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">대기 번호</span>
-                            <span id="waitingNumber" class="value">[[${ticket.waitingNumber} + '번']]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">예매 좌석</span>
-                            <span id="seatInfo" class="value">[[${payment.paidSeats[0].name} + ' ' + ${payment.paidSeats[0].quantity} + '매']]</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 결제정보 영역 -->
-                <div class="info-section">
-                    <h3 class="sub-title">결제 정보</h3>
-                    <div class="gray-box info-box">
-                        <div class="info-row">
-                            <span class="label">결제수단</span>
-                            <span id="paymentMethod" class="value">[[${payment.method}]]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">결제 상태</span>
-                            <span id="paymentStatus" class="value">[[${payment.status}]]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">총 결제 금액</span>
-                            <span id="paymentAmount" class="value highlight">[[${#numbers.formatInteger(payment.amount, 0, 'COMMA')} + '원']]</span>
+                    <div class="info-section">
+                        <h3 class="sub-title">예매 정보</h3>
+                        <div class="gray-box info-box">
+                            <div class="info-row">
+                                <span class="label">예매번호</span>
+                                <span id="ticketId" class="value">[[ 'RES-2026-' + ${ticket?.id} ]]</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">예매 인원</span>
+                                <span id="personNumber" class="value">[[${ticket?.personNumber}]]명</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">대기 번호</span>
+                                <span id="waitingNumber" class="value">[[${ticket?.waitingNumber}]]번</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">예매 좌석</span>
+                                <span id="seatInfo" class="value">
+                                    [[${payment?.paidSeats != null and !payment.paidSeats.isEmpty() ? payment.paidSeats[0].name + ' ' + payment.paidSeats[0].quantity + '매' : ''}]]
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="info-section">
+                        <h3 class="sub-title">결제 정보</h3>
+                        <div class="gray-box info-box">
+                            <div class="info-row">
+                                <span class="label">결제수단</span>
+                                <span id="paymentMethod" class="value">[[${payment?.method}]]</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">결제 상태</span>
+                                <span id="paymentStatus" class="value">[[${payment?.status}]]</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">총 결제 금액</span>
+                                <span id="paymentAmount" class="value highlight">[[${payment?.amount != null ? #numbers.formatInteger(payment.amount, 0, 'COMMA') + '원' : ''}]]</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="footer-area">
-                    <div class="btn-group">
-                        <a th:href="@{/}" class="btn-list custom-btn">홈페이지</a>
-                        <a th:href="@{/myPage/tickets}" class="btn-list custom-btn">예매내역 확인</a>
+                    <div class="footer-area">
+                        <div class="btn-group">
+                            <a th:href="@{/}" class="btn-list custom-btn">홈페이지</a>
+                            <a th:href="@{/myPage/tickets}" class="btn-list custom-btn">예매내역 확인</a>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        document.getElementById("ticketName").innerText = "";
-        document.getElementById("ticketStatus").innerText = "";
-        document.getElementById("ageRating").innerText = "";
-        document.getElementById("performanceStartsAt").innerText = "";
-        document.getElementById("nth").innerText = "";
-        document.getElementById("ticketId").innerText = "";
-        document.getElementById("personNumber").innerText = "";
-        document.getElementById("waitingNumber").innerText = "";
-        document.getElementById("seatInfo").innerText = "";
-        document.getElementById("paymentMethod").innerText = "";
-        document.getElementById("paymentStatus").innerText = "";
-        document.getElementById("paymentAmount").innerText = "";
-    </script>
-</main>
+
+        <script th:inline="javascript">
+            const tempData = {
+                eventName: "2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원",
+                status: "예매 확정",
+                ageRating: "만 7세 이상",
+                startsAt: "2026-02-09 / 17:00",
+                nth: "1회차",
+                ticketId: "RES-2026-1234567",
+                personNumber: "2명",
+                waitingNumber: "-",
+                seatInfo: "VIP석 1매, R석 1매",
+                payMethod: "신용카드",
+                payStatus: "결제 완료",
+                amount: "165,000원"
+            };
+
+            const setText = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.innerText = value;
+                }
+            };
+
+            setText("ticketName", tempData.eventName);
+            setText("ticketStatus", tempData.status);
+            setText("ageRating", tempData.ageRating);
+            setText("performanceStartsAt", tempData.startsAt);
+            setText("nth", tempData.nth);
+            setText("ticketId", tempData.ticketId);
+            setText("personNumber", tempData.personNumber);
+            setText("waitingNumber", tempData.waitingNumber);
+            setText("seatInfo", tempData.seatInfo);
+            setText("paymentMethod", tempData.payMethod);
+            setText("paymentStatus", tempData.payStatus);
+            setText("paymentAmount", tempData.amount);
+        </script>
+    </main>
 </body>
 </html>
