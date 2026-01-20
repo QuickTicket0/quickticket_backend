@@ -7,6 +7,9 @@ import lombok.Getter;
 
 import java.sql.Blob;
 
+/// 공연, 콘서트 등을 나타냅니다.
+/// 각 회차별로 변동될수 있는 정보들은 Performance 도메인에 각각 존재합니다.
+/// Performance는 Event에서 시간별로 파생되는 회차 단위입니다.
 @Builder
 @Getter
 public class Event {

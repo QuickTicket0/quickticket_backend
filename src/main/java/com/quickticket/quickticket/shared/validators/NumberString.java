@@ -8,6 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/// 오직 숫자로만 이뤄진 문자열 validator
 @Constraint(validatedBy = {NumberStringValidator.class})
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

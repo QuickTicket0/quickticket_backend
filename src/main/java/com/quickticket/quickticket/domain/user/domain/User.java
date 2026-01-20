@@ -6,12 +6,12 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/// 비밀번호나 인증 등은 account 도메인에서 관할하고, user 도메인은 사용자 데이터 처리에 집중합니다.
 @Builder
 @Getter
 public class User {
     private Long id;
     private String username;
-    private String passwordHash;
     private String realName;
     private LocalDate birthday;
     private String email;

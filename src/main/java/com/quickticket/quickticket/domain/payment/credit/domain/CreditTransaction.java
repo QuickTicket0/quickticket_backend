@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 
+/// Credit 원장에서 잔고 변동 각각을 나타내는 데이터
 @Builder(access = PRIVATE)
 @Getter
 public class CreditTransaction {
@@ -14,6 +15,7 @@ public class CreditTransaction {
     private TransactionType type;
     private Long changeAmount;
     private Long balanceAfter;
+    /// 변동이 발생한 시점입니다
     private LocalDateTime createdAt;
 
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요

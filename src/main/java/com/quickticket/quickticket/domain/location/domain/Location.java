@@ -3,6 +3,7 @@ package com.quickticket.quickticket.domain.location.domain;
 import lombok.Builder;
 import lombok.Getter;
 
+/// 주로 Event가 열리는 장소를 나타내기 위한 장소 데이터
 @Builder
 @Getter
 public class Location {

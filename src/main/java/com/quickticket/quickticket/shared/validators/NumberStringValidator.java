@@ -5,6 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.regex.Pattern;
 
+/// 오직 숫자로만 이뤄진 문자열 validator
 public class NumberStringValidator implements ConstraintValidator<NumberString, String> {
     private String regexp;
 

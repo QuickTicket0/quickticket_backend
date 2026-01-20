@@ -44,6 +44,8 @@ public class UserRequest {
         String phone
     ) {}
 
+    /// 사용자 설정 변경
+    /// 바꿀 정보만 삽입하고, 나머지는 null로 두면 기존 설정이 적용됩니다
     @Builder
     public record EditInfo(
         @NotNull

@@ -10,6 +10,7 @@ import lombok.Builder;
 import java.sql.Blob;
 
 public class EventRequest {
+    /// admin이 새 Event를 생성할때
     @Builder
     public record Create(
         @NotBlank
@@ -45,6 +46,8 @@ public class EventRequest {
         Long locationId
     ) {}
 
+    /// admin이 스스로 생성했던 Event의 일부 정보만 수정할때.
+    /// 수정하지 않은 나머지는 null로 보냅니다.
     @Builder
     public record Edit(
         @NotNull
@@ -80,6 +83,7 @@ public class EventRequest {
         Long locationId
     ) {}
 
+    /// admin이 본인이 생성했던 Event를 삭제할때
     @Builder
     public record Delete(
         @NotNull

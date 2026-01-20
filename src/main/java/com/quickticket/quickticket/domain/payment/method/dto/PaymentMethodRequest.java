@@ -10,39 +10,14 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 public class PaymentMethodRequest {
-    private interface MethodDetails {
-    }
-
-    @Builder
-    private record CardPayment(
-        @NotBlank
-        @Size(max = 20)
-        String cardNumber,
-
-        @NotBlank
-        @Size(max = 4)
-        String cvs,
-
-        @NotNull
-        LocalDate expirationPeriod,
-
-        @NotNull
-        Boolean isActive,
-
-        @NotBlank
-        @Size(max = 30)
-        String bankName
-    ) implements MethodDetails {}
-
+    /// 사용자가 마이페이지에서 새 결제수단을 추가할때
     @Builder
     public record AddNew(
         @NotNull
-        PaymentMethodType methodType,
-
-        @NotNull
-        MethodDetails methodDetails
+        PaymentMethodCommonDto method
     ) {}
 
+    /// 사용자가 마이페이지에서 기존 결제수단을 제거할때
     @Builder
     public record Delete(
         @NotNull
