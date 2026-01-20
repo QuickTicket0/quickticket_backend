@@ -8,95 +8,87 @@
     <link rel="stylesheet" th:href="@{/css/myPage.css}">
 </head>
 <body>
-    <main layout:fragment="content">
-        <div class="page-wrapper">
-            <div class="main-container">
-                <div class="cancel-success-wrap">
-                    <!-- 제목 영역-->
-                    <div class="success-header">
-                        <h2 class="main-msg">예매 완료</h2>
-                        <p class="sub-msg">
-                            고객님의 '앤드 앤드' 예매가 완료되었습니다.<br>
-                            좌석 예매 상태는 <span style="color: #5d75fa; font-weight: 700;">확정</span>입니다.
-                        </p>
-                    </div>
-                    <!-- 공연 정보 영역-->
-                    <div class="info-section">
-                        <h3 class="sub-title">공연 정보</h3>
-                        <div class="gray-box info-box">
-                            <div class="info-row">
-                                <span class="label">공연명</span>
-                                <span class="value">앤드 앤드</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">공연일자</span>
-                                <span class="value">2026-01-01 / 오후 12:00</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">회차</span>
-                                <span class="value">1회차</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 예매 정보 영역-->
-                    <div class="info-section">
-                        <h3 class="sub-title">예매 정보</h3>
-                        <div class="gray-box info-box">
-                            <div class="info-row">
-                                <span class="label">예매번호</span>
-                                <span class="value">RES-2026-001</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">예매 일시</span>
-                                <span class="value">2026-01-01 / 12:00:00</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">예매 좌석</span>
-                                <span class="value">VIP석 2매 (E구역 1열 1, 2번)</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">좌석별 가격</span>
-                                <span class="value">
-                                    VIP석: 10,000원<br>
-                                    S석: 5,000원
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 결제 정보 영역-->
-                    <div class="info-section">
-                        <h3 class="sub-title">결제 정보</h3>
-                        <div class="gray-box info-box">
-                            <div class="info-row">
-                                <span class="label">결제수단</span>
-                                <span class="value">크레딧</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">결제 상태</span>
-                                <span class="value">결제 완료</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">결제 일시</span>
-                                <span class="value">2026-01-01 / 12:05:00</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">총 결제 금액</span>
-                                <span class="value highlight">20,000원</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 버튼 영역 -->
-                    <div class="footer-area">
-                        <div class="btn-group">
-                            <a href="/" class="btn-list custom-btn">홈페이지</a>
-                            <a href="/myPage/tickets" class="btn-list custom-btn">예매내역 확인</a>
-                        </div>
-                    </div>
-
+<main layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-container">
+            <div class="cancel-success-wrap">
+                <!-- 제목영역 -->
+                <div class="success-header">
+                    <h2 class="main-msg">예매 완료</h2>
+                    <p class="sub-msg">
+                        고객님의 '<span id="header-event-name" style="font-weight:bold;">[[${event.name}]]</span>' 예매가 완료되었습니다.<br>
+                        좌석 예매 상태는 <span id="header-ticket-status" style="color: #5d75fa; font-weight: 700;">[[${ticket.status}]]</span>입니다.
+                    </p>
                 </div>
+                <!-- 공연정보 영역 -->
+                <div class="info-section">
+                    <h3 class="sub-title">공연 정보</h3>
+                    <div class="gray-box info-box">
+                        <div class="info-row">
+                            <span class="label">관람등급</span>
+                            <span id="ageRating" class="value">[[${event.ageRating}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">공연일자</span>
+                            <span id="performanceStartsAt" class="value">[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / HH:mm')}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">회차</span>
+                            <span id="nth" class="value">[[${ticket.performance.nth} + '회차']]</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 예매정보 영역 -->
+                <div class="info-section">
+                    <h3 class="sub-title">예매 정보</h3>
+                    <div class="gray-box info-box">
+                        <div class="info-row">
+                            <span class="label">예매번호</span>
+                            <span id="ticket_id" class="value">[[ 'RES-2026-' + ${ticket.id} ]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">예매 인원</span>
+                            <span id="personNumber" class="value">[[${ticket.personNumber} + '명']]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">대기 번호</span>
+                            <span id="waitingNumber" class="value">[[${ticket.waitingNumber} + '번']]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">예매 좌석</span>
+                            <span id="seat_info" class="value">[[${payment.paidSeats[0].name} + ' ' + ${payment.paidSeats[0].quantity} + '매']]</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 결제정보 영역 -->
+                <div class="info-section">
+                    <h3 class="sub-title">결제 정보</h3>
+                    <div class="gray-box info-box">
+                        <div class="info-row">
+                            <span class="label">결제수단</span>
+                            <span id="payment_method" class="value">[[${payment.method}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">결제 상태</span>
+                            <span id="payment_status" class="value">[[${payment.status}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">총 결제 금액</span>
+                            <span id="payment_amount" class="value highlight">[[${#numbers.formatInteger(payment.amount, 0, 'COMMA')} + '원']]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-area">
+                    <div class="btn-group">
+                        <a th:href="@{/}" class="btn-list custom-btn">홈페이지</a>
+                        <a th:href="@{/myPage/tickets}" class="btn-list custom-btn">예매내역 확인</a>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </main>
+    </div>
+</main>
 </body>
 </html>

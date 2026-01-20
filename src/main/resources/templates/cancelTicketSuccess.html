@@ -8,93 +8,96 @@
     <link rel="stylesheet" th:href="@{/css/myPage.css}">
 </head>
 <body>
-    <main layout:fragment="content">
-        <div class="page-wrapper">
-            <div class="main-container">
-
-                <div class="cancel-success-wrap">
-                    <!-- 제목영역 -->
-                    <div class="success-header">
-                        <h2 class="main-msg">예매 취소 완료</h2>
-                        <p class="sub-msg">고객님의 '앤드 앤드' 예매취소가 완료되었습니다.</p>
-                    </div>
-                    <!-- 공연정보 영역 -->
-                    <div class="info-section">
-                        <h3 class="sub-title">공연 정보</h3>
-                        <div class="gray-box info-box">
-                            <div class="info-row">
-                                <span class="label">공연명</span>
-                                <span class="value">앤드 앤드</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">공연일자</span>
-                                <span class="value">2026-01-01 / 오후 12:00</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">회차</span>
-                                <span class="value">1회차</span>
-                            </div>
+<main layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-container">
+            <!-- 제목영역 -->
+            <div class="cancel-success-wrap">
+                <div class="success-header">
+                    <h2 class="main-msg">예매 취소 완료</h2>
+                    <p class="sub-msg">
+                        고객님의 '<span id="header-event-name" style="font-weight:bold;">[[${event.name}]]</span>' 예매취소가 완료되었습니다.
+                    </p>
+                </div>
+                <!-- 공연정보 영역 -->
+                <div class="info-section">
+                    <h3 class="sub-title">공연 정보</h3>
+                    <div class="gray-box info-box">
+                        <div class="info-row">
+                            <span class="label">공연명</span>
+                            <span id="info-event-name" class="value">[[${event.name}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">공연일자</span>
+                            <span id="info-perf-date" class="value">[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / a hh:mm')}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">회차</span>
+                            <span id="info-perf-nth" class="value">[[${ticket.performance.nth} + '회차']]</span>
                         </div>
                     </div>
-                    <!-- 예매정보 영역 -->
-                    <div class="info-section">
-                        <h3 class="sub-title">예매 정보</h3>
-                        <div class="gray-box info-box">
-                            <div class="info-row">
-                                <span class="label">예매번호</span>
-                                <span class="value">RES-2026-001</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">취소 일시</span>
-                                <span class="value">2026-01-01 / 12:00:00</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">취소 좌석</span>
-                                <span class="value">12석 중 2석 (S석 10개, VIP석 2개)</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">좌석별 가격</span>
-                                <span class="value">
-                                    VIP석: 10000원<br>
-                                    S석: 5000원
+                </div>
+                <!-- 예매정보 영역 -->
+                <div class="info-section">
+                    <h3 class="sub-title">예매 정보</h3>
+                    <div class="gray-box info-box">
+                        <div class="info-row">
+                            <span class="label">예매번호</span>
+                            <span id="info-ticket-id" class="value">[[ 'RES-2026-' + ${ticket.id} ]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">취소 일시</span>
+                            <span id="info-cancel-date" class="value">[[${#temporals.format(canceledAt, 'yyyy-MM-dd / HH:mm:ss')}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">취소 좌석</span>
+                            <span id="info-cancel-summary" class="value">[[${ticket.personNumber} + '석 취소 완료']]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">좌석 상세</span>
+                            <span id="info-seat-detail" class="value">
+                                    <th:block th:each="seat : ${payment.paidSeats}">
+                                        <span>[[${seat.name}]] [[${seat.quantity}]]매</span><br>
+                                    </th:block>
                                 </span>
-                            </div>
                         </div>
                     </div>
-                    <!-- 환불정보 영역 -->
-                    <div class="info-section">
-                        <h3 class="sub-title">환불 정보</h3>
-                        <div class="gray-box info-box">
-                            <div class="info-row">
-                                <span class="label">결제수단</span>
-                                <span class="value">크레딧</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">결제 상태</span>
-                                <span class="value">결제 취소</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">취소 수수료</span>
-                                <span class="value">(-) 0원</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">최종 환불 예정 금액</span>
-                                <span class="value highlight">15,000원</span>
-                            </div>
+                </div>
+                <!-- 환불정보 영역 -->
+                <div class="info-section">
+                    <h3 class="sub-title">환불 정보</h3>
+                    <div class="gray-box info-box">
+                        <div class="info-row">
+                            <span class="label">결제수단</span>
+                            <span id="info-payment-method" class="value">[[${payment.method}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">결제 상태</span>
+                            <span id="info-payment-status" class="value">[[${payment.status}]]</span>
+                        </div>
+                        <!-- 취소 수수료 기준은 홈페이지 기준에 따르므로 일단 0원으로함 -->
+                        <div class="info-row">
+                            <span class="label">취소 수수료</span>
+                            <span id="info-cancel-fee" class="value">(-) 0원</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">최종 환불 예정 금액</span>
+                            <span id="info-refund-total" class="value highlight">[[${#numbers.formatInteger(payment.amount, 0, 'COMMA')} + '원']]</span>
                         </div>
                     </div>
-                    <!-- 주의사항 및 버튼 영역 -->
-                    <div class="footer-area">
-                        <p class="caution-note">※ 카드사 사정에 따라 환불까지 영업일 기준 3~5일이 소요될 수 있습니다.</p>
+                </div>
 
-                        <div class="btn-group">
-                            <a href="/" class="btn-list custom-btn">홈페이지</a>
-                            <a href="/myPage/tickets" class="btn-list custom-btn">예매내역 목록</a>
-                        </div>
+                <div class="footer-area">
+                    <p class="caution-note">※ 카드사 사정에 따라 환불까지 영업일 기준 3~5일이 소요될 수 있습니다.</p>
+
+                    <div class="btn-group">
+                        <a href="/" th:href="@{/}" class="btn-list custom-btn">홈페이지</a>
+                        <a href="/myPage/tickets" th:href="@{/myPage/tickets}" class="btn-list custom-btn">예매내역 목록</a>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 </body>
 </html>
