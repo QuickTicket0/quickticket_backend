@@ -21,7 +21,10 @@ public class Ticket {
     private User user;
     private PaymentMethod paymentMethod;
     private TicketStatus status;
-    /// 예매 대기순번에서 이 예매가 선착순 몇번째인지의 번호
+    /// 예매 대기순번에서 이 예매가 선착순 몇번째인지의 번호.
+    /// 한 Performance 안에서는 각 대기순번마다 고유한 Ticket이 있습니다.
+    /// waitingNumber는 한번 배정받으면 변경되지 않습니다. Seat에서 배정되는 숫자가 올라갈 뿐이지 모든 Ticket들의
+    /// 대기순번이 내려오지는 않습니다.
     private Long waitingNumber;
     private Integer personNumber;
     /// 예매가 이뤄졌을시 null이 아님
