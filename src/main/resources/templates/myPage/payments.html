@@ -32,8 +32,8 @@
                                            class="fa-solid fa-coins"></i>
                                     </div>
                                     <div class="card-info">
-                                        <span class="card-name">[[${card.bankName}]]</span>
-                                        <span class="card-number">[[${card.cardNumber}]]</span>
+                                        <span id="bankName" class="card-name">[[${card.bankName}]]</span>
+                                        <span id="cardNumber" class="card-number">[[${card.cardNumber}]]</span>
                                     </div>
 
                                     <button type="button" class="btn-add-card">
@@ -48,6 +48,10 @@
                 </div>
             </div>
         </div>
+        <script>
+            document.getElementById("bankName").innerText = "";
+            document.getElementById("cardNumber").innerText = "";
+        </script>
     </main>
 </body>
 </html>

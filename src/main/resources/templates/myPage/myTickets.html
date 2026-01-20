@@ -39,15 +39,15 @@
                                     <input type="checkbox">
                                 </td>
                                 <td th:text="${stat.count}">1</td>
-                                <td>[[ 'RES-' + ${ticket.id} ]]</td>
-                                <td>
+                                <td id="ticketId">[[ 'RES-' + ${ticket.id} ]]</td>
+                                <td id="eventName">
                                     <a th:href="@{/myTicket/{id}(id=${ticket.id})}" class="link-title">
-                                        [[${ticket.event.name}]]
+                                        [[${event.name}]]
                                     </a>
                                 </td>
-                                <td>[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd')}]]</td>
-                                <td>[[${ticket.personNumber}]]</td>
-                                <td>[[${ticket.reservedAt != null ? #temporals.format(ticket.reservedAt, 'yyyy-MM-dd') : '-'}]]</td>
+                                <td id="performanceStartsAt">[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd')}]]</td>
+                                <td id="personNumber">[[${ticket.personNumber}]]</td>
+                                <td id="reservedAt">[[${ticket.reservedAt != null ? #temporals.format(ticket.reservedAt, 'yyyy-MM-dd') : '-'}]]</td>
                                 <td style="text-align: center; cursor: pointer; color: #999;">
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </td>
@@ -65,6 +65,13 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("ticketId").innerText = "";
+        document.getElementById("eventName").innerText = "";
+        document.getElementById("performanceStartsAt").innerText = "";
+        document.getElementById("personNumber").innerText = "";
+        document.getElementById("reservedAt").innerText = "";
+    </script>
 </main>
 </body>
 </html>

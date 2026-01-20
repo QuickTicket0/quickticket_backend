@@ -16,7 +16,7 @@
                 <div class="success-header">
                     <h2 class="main-msg">예매 취소 완료</h2>
                     <p class="sub-msg">
-                        고객님의 '<span id="header-event-name" style="font-weight:bold;">[[${event.name}]]</span>' 예매취소가 완료되었습니다.
+                        고객님의 '<span id="eventName" style="font-weight:bold;">[[${event.name}]]</span>' 예매취소가 완료되었습니다.
                     </p>
                 </div>
                 <!-- 공연정보 영역 -->
@@ -25,15 +25,15 @@
                     <div class="gray-box info-box">
                         <div class="info-row">
                             <span class="label">공연명</span>
-                            <span id="info-event-name" class="value">[[${event.name}]]</span>
+                            <span id="infoEventName" class="value">[[${event.name}]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">공연일자</span>
-                            <span id="info-perf-date" class="value">[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / a hh:mm')}]]</span>
+                            <span id="infoPerformanceStartsAt" class="value">[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / a hh:mm')}]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">회차</span>
-                            <span id="info-perf-nth" class="value">[[${ticket.performance.nth} + '회차']]</span>
+                            <span id="infoNth" class="value">[[${ticket.performance.nth} + '회차']]</span>
                         </div>
                     </div>
                 </div>
@@ -43,19 +43,19 @@
                     <div class="gray-box info-box">
                         <div class="info-row">
                             <span class="label">예매번호</span>
-                            <span id="info-ticket-id" class="value">[[ 'RES-2026-' + ${ticket.id} ]]</span>
+                            <span id="infoTicketId" class="value">[[ 'RES-2026-' + ${ticket.id} ]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">취소 일시</span>
-                            <span id="info-cancel-date" class="value">[[${#temporals.format(canceledAt, 'yyyy-MM-dd / HH:mm:ss')}]]</span>
+                            <span id="infoCanceledAt" class="value">[[${#temporals.format(canceledAt, 'yyyy-MM-dd / HH:mm:ss')}]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">취소 좌석</span>
-                            <span id="info-cancel-summary" class="value">[[${ticket.personNumber} + '석 취소 완료']]</span>
+                            <span id="infoCancelSummary" class="value">[[${ticket.personNumber} + '석 취소 완료']]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">좌석 상세</span>
-                            <span id="info-seat-detail" class="value">
+                            <span id="infoSeatDetail" class="value">
                                     <th:block th:each="seat : ${payment.paidSeats}">
                                         <span>[[${seat.name}]] [[${seat.quantity}]]매</span><br>
                                     </th:block>
@@ -69,20 +69,20 @@
                     <div class="gray-box info-box">
                         <div class="info-row">
                             <span class="label">결제수단</span>
-                            <span id="info-payment-method" class="value">[[${payment.method}]]</span>
+                            <span id="paymentMethod" class="value">[[${payment.method}]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">결제 상태</span>
-                            <span id="info-payment-status" class="value">[[${payment.status}]]</span>
+                            <span id="paymentStatus" class="value">[[${payment.status}]]</span>
                         </div>
                         <!-- 취소 수수료 기준은 홈페이지 기준에 따르므로 일단 0원으로함 -->
                         <div class="info-row">
                             <span class="label">취소 수수료</span>
-                            <span id="info-cancel-fee" class="value">(-) 0원</span>
+                            <span id="cancelFee" class="value">(-) 0원</span>
                         </div>
                         <div class="info-row">
                             <span class="label">최종 환불 예정 금액</span>
-                            <span id="info-refund-total" class="value highlight">[[${#numbers.formatInteger(payment.amount, 0, 'COMMA')} + '원']]</span>
+                            <span id="refundAmount" class="value highlight">[[${#numbers.formatInteger(payment.amount, 0, 'COMMA')} + '원']]</span>
                         </div>
                     </div>
                 </div>
@@ -98,6 +98,20 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("eventName").innerText = "";
+        document.getElementById("infoEventName").innerText = "";
+        document.getElementById("infoPerformanceStartsAt").innerText = "";
+        document.getElementById("infoNth").innerText = "";
+        document.getElementById("infoTicketId").innerText = "";
+        document.getElementById("infoCanceledAt").innerText = "";
+        document.getElementById("infoCancelSummary").innerText = "";
+        document.getElementById("infoSeatDetail").innerText = "";
+        document.getElementById("paymentMethod").innerText = "";
+        document.getElementById("paymentStatus").innerText = "";
+        document.getElementById("cancelFee").innerText = "";
+        document.getElementById("refundAmount").innerText = "";
+    </script>
 </main>
 </body>
 </html>

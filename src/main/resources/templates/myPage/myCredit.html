@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="text-group">
                                     <span class="label">현재 잔액</span>
-                                    <strong class="amount">[[${#numbers.formatInteger(creditDto, 0, 'COMMA')}]] Credit</strong>
+                                    <strong id="changeAmount" class="amount">[[${#numbers.formatInteger(creditDto.changeAmount, 0, 'COMMA')}]] Credit</strong>
                                 </div>
                             </div>
                             <div class="balance-actions">
@@ -41,17 +41,17 @@
                             <h3 class="sub-title" style="font-size: 16px; margin-bottom: 15px;">크레딧 내역</h3>
 
                             <div class="history-group" th:each="item : ${transactionList}">
-                                <div class="date-label">[[${#temporals.format(item.createdAt, 'yyyy년 M월 d일')}]]</div>
+                                <div id="createdAt" class="date-label">[[${#temporals.format(item.createdAt, 'yyyy년 M월 d일')}]]</div>
                                 <div class="history-card">
                                     <div class="card-left">
-                                        <span class="type-text" th:classappend="${item.changeAmount < 0} ? 'concert-name' : ''">
+                                        <span id="summary" class="type-text" th:classappend="${item.changeAmount < 0} ? 'concert-name' : ''">
                                             [[${item.summary}]]
                                         </span>
                                     </div>
                                     <div class="card-right">
-                                        <span class="amount-text" th:classappend="${item.changeAmount >= 0} ? 'plus' : 'minus'">
-                                            <span th:if="${item.changeAmount >= 0}">(+)</span>
-                                            <span th:unless="${item.changeAmount >= 0}">(-)</span>
+                                        <span id="changeAmountCard" class="amount-text" th:classappend="${item.changeAmount >= 0} ? 'plus' : 'minus'">
+                                            <span id="plus" th:if="${item.changeAmount >= 0}">(+)</span>
+                                            <span id="minus" th:unless="${item.changeAmount >= 0}">(-)</span>
                                             [[${#numbers.formatInteger(T(java.lang.Math).abs(item.changeAmount), 0, 'COMMA')}]] Credit
                                         </span>
                                     </div>
@@ -66,6 +66,13 @@
                 </div>
             </div>
         </div>
+        <script>
+            document.getElementById("changeAmount").innerText = "";
+            document.getElementById("summary").innerText = "";
+            document.getElementById("plus").innerText = "";
+            document.getElementById("minus").innerText = "";
+            document.getElementById("changeAmountCard").innerText = "";
+        </script>
     </main>
 </body>
 </html>
