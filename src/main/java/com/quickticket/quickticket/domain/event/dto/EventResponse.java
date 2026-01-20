@@ -8,6 +8,7 @@ import lombok.Builder;
 import java.sql.Blob;
 
 public class EventResponse {
+    /// 어드민 대시보드중 Event가 리스트에 나열될때 필요한 간략한 정보들
     @Builder
     public record ListItem(
         String name,
@@ -23,6 +24,7 @@ public class EventResponse {
         Blob thumbnailImage
     ) {}
 
+    /// Event 하나의 상세 정보
     @Builder
     public record Details(
         Long id,

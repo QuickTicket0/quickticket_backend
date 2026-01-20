@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 public class TicketRequest {
+    /// 사용자가 예매가 시작되기 전 예매 정보들을 사전 설정할때
     @Builder
     public record Preset(
         @NotNull
@@ -18,6 +19,7 @@ public class TicketRequest {
         Integer personNumber
     ) {}
 
+    /// 사용자가 예매가 열린 상황에서 실제 예매를 할때
     @Builder
     public record Ticket(
         @NotNull

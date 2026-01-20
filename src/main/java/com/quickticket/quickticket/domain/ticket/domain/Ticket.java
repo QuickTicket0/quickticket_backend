@@ -6,6 +6,10 @@ import com.quickticket.quickticket.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
+/// 한 Performance에 대해 사용자가 여러개의 좌석을 선택하고 선착순을 기다리는 예매 정보
+///
+/// Ticket은 아직 예매가 시작되지 않은 상태에서의 사전 설정 정보도 저장합니다.
+/// 따라서 Ticket이란 객체는 반드시 예매중인 Performance의 선착순으로 들어가 있다는 보장이 없습니다.
 @Builder
 @Getter
 public class Ticket {

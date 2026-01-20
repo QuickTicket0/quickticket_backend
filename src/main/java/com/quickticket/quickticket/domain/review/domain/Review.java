@@ -13,7 +13,8 @@ public class Review {
     private Long id;
     private Event event;
     private User user;
-    private Short userRating;
+    /// 0.5점부터 5.0점까지 5성 별점제로 합니다.
+    private Float userRating;
     private LocalDateTime createdAt;
     private String content;
 

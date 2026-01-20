@@ -9,7 +9,7 @@ public class ReviewResponse {
     public record EventPageReviewListItem(
         Long id,
         String username,
-        Short userRating,
+        Float userRating,
         LocalDateTime createdAt,
         String content
     ) {}

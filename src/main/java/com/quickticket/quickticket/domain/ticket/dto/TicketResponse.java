@@ -10,13 +10,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class TicketResponse {
+    /// 예매 상세정보 페이지
     @Builder
     public record Details(
         Long id,
 
         TicketEventInfo event,
 
-        TicketPerormanceInfo performance,
+        TicketPerformanceInfo performance,
 
         PaymentMethodCommonDto paymentMethod,
 
@@ -36,7 +37,7 @@ public class TicketResponse {
         ) {}
 
         @Builder
-        public record TicketPerormanceInfo(
+        public record TicketPerformanceInfo(
             Integer nth,
 
             LocalDateTime ticketingStartsAt,

@@ -6,22 +6,10 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 public class PaymentMethodResponse {
-    private interface MethodDetails {
-    }
-
-    @Builder
-    private record CardPayment(
-        String cardNumber,
-        String cvs,
-        LocalDate expirationPeriod,
-        Boolean isActive,
-        String bankName
-    ) implements MethodDetails {}
-
+    /// 사용자가 본인의 결제수단 목록 전체를 조회할때
     @Builder
     public record Details(
         Long id,
-        PaymentMethodType methodType,
-        MethodDetails methodDetails
+        PaymentMethodCommonDto method
     ) {}
 }

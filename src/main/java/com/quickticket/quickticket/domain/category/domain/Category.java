@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import static lombok.AccessLevel.PRIVATE;
 
+/// 공연을 쉽게 분류하고 찾기 위한 카테고리
 @Builder(access = PRIVATE)
 @Getter
 public class Category {

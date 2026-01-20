@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+/// Event에서 파생되는 각 일자별 공연 회차의 단위.
+/// 회차에 따라서 달라질 수 있는 정보들, 가령 연기자는 특정 요일에만 나올수도 있기 때문에 그런건 Performance에 저장합니다
+/// 또 예매에 대한 것들, 가령 예매 순번같은건 전적으로 회차에 대해 이루어지고 순서가 매겨집니다.
 @Builder
 @Getter
 public class Performance {

@@ -6,6 +6,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 public class CreditTransactionResponse {
+    /// 사용자가 Credit 변동내역 전체를 리스트로 조회할때
     @Builder
     public record Details(
         Long id,

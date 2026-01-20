@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 public class ReviewRequest {
+    /// 사용자가 Event에 대한 감상평을 작성할때
     @Builder
     public record Create(
         @NotNull
@@ -15,7 +16,7 @@ public class ReviewRequest {
 
         @NotNull
         @Min(0)
-        Short userRating,
+        Float userRating,
 
         @NotBlank
         @Size(max = 1000)
