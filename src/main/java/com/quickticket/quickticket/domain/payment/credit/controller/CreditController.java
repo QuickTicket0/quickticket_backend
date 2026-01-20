@@ -9,5 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class CreditController {
     @GetMapping("/myPage/myCredit")
-    public String myCredit(Model model) { return "myPage/myCredit"; }
+    public String myCredit(Model model) {
+
+        // model.addAttribute("credit", creditDto);
+        // model.addAttribute("transactionList", transactionList);
+        return "myPage/myCredit";
+    }
 }

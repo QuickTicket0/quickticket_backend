@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="text-group">
                                     <span class="label">현재 잔액</span>
-                                    <strong class="amount">81,000 Credit</strong>
+                                    <strong class="amount">[[${#numbers.formatInteger(creditDto, 0, 'COMMA')}]] Credit</strong>
                                 </div>
                             </div>
                             <div class="balance-actions">
@@ -40,48 +40,32 @@
                         <div class="credit-history-section">
                             <h3 class="sub-title" style="font-size: 16px; margin-bottom: 15px;">크레딧 내역</h3>
 
-                            <div class="history-group">
-                                <div class="date-label">2026년 1월 1일</div>
+                            <div class="history-group" th:each="item : ${transactionList}">
+                                <div class="date-label">[[${#temporals.format(item.createdAt, 'yyyy년 M월 d일')}]]</div>
                                 <div class="history-card">
                                     <div class="card-left">
-                                        <span class="type-text">충전</span>
+                                        <span class="type-text" th:classappend="${item.changeAmount < 0} ? 'concert-name' : ''">
+                                            [[${item.summary}]]
+                                        </span>
                                     </div>
                                     <div class="card-right">
-                                        <span class="amount-text plus">(+)35,000 Credit</span>
+                                        <span class="amount-text" th:classappend="${item.changeAmount >= 0} ? 'plus' : 'minus'">
+                                            <span th:if="${item.changeAmount >= 0}">(+)</span>
+                                            <span th:unless="${item.changeAmount >= 0}">(-)</span>
+                                            [[${#numbers.formatInteger(T(java.lang.Math).abs(item.changeAmount), 0, 'COMMA')}]] Credit
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="history-group">
-                                <div class="date-label">2025년 12월 31일</div>
-                                <div class="history-card">
-                                    <div class="card-left">
-                                        <span class="type-text concert-name">2025-2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원</span>
-                                    </div>
-                                    <div class="card-right">
-                                        <span class="amount-text minus">(-)154,000 Credit</span>
-                                    </div>
-                                </div>
+                            <div th:if="${#lists.isEmpty(transactionList)}" style="text-align: center; padding: 50px 0; color: #999;">
+                                거래 내역이 없습니다.
                             </div>
-
-                            <div class="history-group">
-                                <div class="date-label">2025년 12월 15일</div>
-                                <div class="history-card">
-                                    <div class="card-left">
-                                        <span class="type-text">충전</span>
-                                    </div>
-                                    <div class="card-right">
-                                        <span class="amount-text plus">(+)200,000 Credit</span>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </main>
                 </div>
             </div>
         </div>
     </main>
-
 </body>
 </html>

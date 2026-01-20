@@ -54,81 +54,92 @@
                             <span class="legend-item"><span class="color-box pending"></span> 예매 대기중인 좌석</span>
                         </div>
                     </div>
-
+                    <!-- 좌석정보 영역-->
                     <div class="seat-info-area">
                         <h3 class="sub-title">좌석 선택 / 결제</h3>
-
                         <div class="gray-box mb-20">
                             <div class="info-row">
                                 <span class="label">희망 좌석</span>
-                                <span class="value">12석 중 2석 (S석 10개, VIP석 2개)</span>
+                                <span class="value">총 [[${ticket.personNumber}]]석</span>
                             </div>
                             <div class="info-row">
                                 <span class="label">좌석 예매 상태</span>
-                                <span class="value text-blue">전체 확정</span>
+                                <span class="value text-blue">[[${ticket.status}]]</span>
                             </div>
                             <div class="info-row">
                                 <span class="label">결제된 좌석</span>
-                                <span class="value">2석 (S석 1개, VIP석 1개)</span>
+                                <span class="value">
+                                    [[${ticket.personNumber}]]석
+                                    (
+                                    <th:block th:each="info, stat : ${seatInfoList}">
+                                        [[${info.name}]] [[${info.wishingSeatsId.size()}]]개[[${!stat.last ? ', ' : ''}]]
+                                    </th:block>
+                                    )
+                                </span>
                             </div>
                             <div class="info-row">
                                 <span class="label">좌석별 가격</span>
                                 <span class="value">
-                                    VIP석: 10,000원<br>
-                                    S석: 5,000원
+                                    <th:block th:each="info : ${seatInfoList}">
+                                        [[${info.name}]]: [[${#numbers.formatInteger(info.price, 0, 'COMMA')}]]원<br>
+                                    </th:block>
                                 </span>
                             </div>
                         </div>
 
                         <h3 class="sub-title">예매 확정 좌석</h3>
                         <div class="confirmed-seat-list">
-                            <div class="seat-item-row">
-                                <span class="seat-loc">A구역 R24</span>
-                                <span class="seat-price">VIP석 <span class="price">10,000원</span></span>
-                            </div>
-                            <div class="seat-item-row">
-                                <span class="seat-loc">A구역 R25</span>
-                                <span class="seat-price">VIP석 <span class="price">10,000원</span></span>
-                            </div>
+
+                            <th:block th:each="info : ${seatInfoList}">
+                                <div class="seat-item-row" th:each="seatId : ${info.wishingSeatsId}">
+                                    <span class="seat-loc">좌석번호 [[${seatId}]]</span>
+                                    <span class="seat-price">
+                                        [[${info.name}]]
+                                        <span class="price">[[${#numbers.formatInteger(info.price, 0, 'COMMA')}]]원</span>
+                                    </span>
+                                </div>
+                            </th:block>
                         </div>
                     </div>
                 </section>
+
                 <!-- 예매정보 영역-->
                 <section class="detail-row">
                     <h3 class="sub-title">예매 정보</h3>
                     <div class="gray-box">
                         <div class="info-row">
                             <span class="label">예매번호</span>
-                            <span class="value">RES-2026-001</span>
+                            <span class="value">[[ 'RES-' + ${ticket.id} ]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">예매일자</span>
-                            <span class="value">2026-01-01 / 12:00:00</span>
+                            <span class="value">[[${ticket.reservedAt != null ? #temporals.format(ticket.reservedAt, 'yyyy-MM-dd / HH:mm:ss') : '-'}]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">결제 예상 범위</span>
                             <span class="value">
-                                20,000원 ~ 10,000원<br>
+                                [[${#numbers.formatInteger(payment.amount, 0, 'COMMA')}]]원 (확정)<br>
                                 <span class="sub-text">※ 취소표 발생 시 가장 먼저 매칭된 좌석의 금액으로 자동 결제됩니다.</span>
                             </span>
                         </div>
                     </div>
                 </section>
+
                 <!-- 결제정보 영역-->
                 <section class="detail-row">
                     <h3 class="sub-title">결제 정보</h3>
                     <div class="gray-box">
                         <div class="info-row">
                             <span class="label">결제수단</span>
-                            <span class="value">크레딧</span>
+                            <span class="value">[[${payment.method}]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">결제 상태</span>
-                            <span class="value text-bold">전체 결제 완료</span>
+                            <span class="value text-bold">[[${payment.status}]]</span>
                         </div>
                         <div class="info-row">
                             <span class="label">결제금액</span>
-                            <span class="value text-bold">15,000원</span>
+                            <span class="value text-bold">[[${#numbers.formatInteger(payment.amount, 0, 'COMMA')}]]원</span>
                         </div>
                     </div>
                 </section>

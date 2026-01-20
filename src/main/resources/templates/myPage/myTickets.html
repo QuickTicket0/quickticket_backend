@@ -8,57 +8,63 @@
     <link rel="stylesheet" th:href="@{/css/myPage.css}">
 </head>
 <body>
-    <main layout:fragment="content">
-        <div class="page-wrapper">
-            <div class="main-container">
-                <div class="mypage-body">
+<main layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-container">
+            <div class="mypage-body">
+                <!-- 좌측 사이드바 영역 -->
+                <aside th:replace="~{fragments/sidebar :: sidebarFragment}"></aside>
 
-                    <!-- 좌측 사이드바 영역 -->
-                    <aside th:replace="~{fragments/sidebar :: sidebarFragment}"></aside>
+                <!-- 우측 전체예매목록 영역 -->
+                <main class="mypage-content">
+                    <h2 class="sub-title">전체 예매 목록</h2>
+                    <table class="common-table">
+                        <thead>
+                        <tr>
+                            <th class="col-check" style="text-align: center">
+                                <input type="checkbox">
+                            </th>
+                            <th class="col-no">NO</th>
+                            <th>예매번호</th>
+                            <th>콘서트명</th>
+                            <th>관람일</th>
+                            <th>매수</th>
+                            <th>예매날</th>
+                            <th class="col-action"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="ticket, stat : ${ticketList}">
+                                <td style="text-align: center;">
+                                    <input type="checkbox">
+                                </td>
+                                <td th:text="${stat.count}">1</td>
+                                <td>[[ 'RES-' + ${ticket.id} ]]</td>
+                                <td>
+                                    <a th:href="@{/myTicket/{id}(id=${ticket.id})}" class="link-title">
+                                        [[${ticket.event.name}]]
+                                    </a>
+                                </td>
+                                <td>[[${#temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd')}]]</td>
+                                <td>[[${ticket.personNumber}]]</td>
+                                <td>[[${ticket.reservedAt != null ? #temporals.format(ticket.reservedAt, 'yyyy-MM-dd') : '-'}]]</td>
+                                <td style="text-align: center; cursor: pointer; color: #999;">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </td>
+                            </tr>
 
-                    <!-- 우측 전체예매목록 영역 -->
-                    <main class="mypage-content">
-                        <h2 class="sub-title">전체 예매 목록</h2>
-                        <table class="common-table">
-                            <thead>
-                                <tr>
-                                    <th class="col-check" style="text-align: center">
-                                        <input type="checkbox">
-                                    </th>
-                                    <th class="col-no">NO</th>
-                                    <th>예매번호</th>
-                                    <th>콘서트명</th>
-                                    <th>관람일</th>
-                                    <th>매수</th>
-                                    <th>예매날</th>
-                                    <th class="col-action"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="i : ${#numbers.sequence(1, 5)}">
-                                    <td style="text-align: center;">
-                                        <input type="checkbox">
-                                    </td>
-                                    <td th:text="${i}">1</td>
-                                    <td>예매번호</td>
-                                    <td>
-                                        <a th:href="@{/myTicket/{id}(id=${i})}" class="link-title">
-                                            앤드엔드
-                                        </a>
-                                    </td>
-                                    <td>2026-06-27</td>
-                                    <td>2</td>
-                                    <td>2026-01-15</td>
-                                    <td style="text-align: center; cursor: pointer; color: #999;">
-                                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </main>
-                </div>
+                            <tr th:if="${#lists.isEmpty(ticketList)}">
+                                <td colspan="8" style="text-align: center; padding: 50px 0; color: #666;">
+                                    예매 내역이 없습니다.
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </main>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 </body>
 </html>

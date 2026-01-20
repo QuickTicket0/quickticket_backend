@@ -24,34 +24,16 @@
                                 <p class="box-label">연결된 결제수단</p>
 
                                 <div class="card-grid">
-                                    <div class="payment-card">
-                                        <div class="card-icon">
-                                            <i class="fa-regular fa-credit-card"></i>
-                                        </div>
-                                        <div class="card-info">
-                                            <span class="card-name">국민카드</span>
-                                            <span class="card-number">581910******</span>
-                                        </div>
-                                    </div>
+                                    <div class="card-icon">
+                                        <i th:if="${card.methodType.name() == 'CARD'}"
+                                           class="fa-regular fa-credit-card"></i>
 
-                                    <div class="payment-card">
-                                        <div class="card-icon">
-                                            <i class="fa-regular fa-credit-card"></i>
-                                        </div>
-                                        <div class="card-info">
-                                            <span class="card-name">하나카드</span>
-                                            <span class="card-number">581910******</span>
-                                        </div>
+                                        <i th:if="${card.methodType.name() == 'CREDIT'}"
+                                           class="fa-solid fa-coins"></i>
                                     </div>
-
-                                    <div class="payment-card">
-                                        <div class="card-icon">
-                                            <i class="fa-regular fa-credit-card"></i>
-                                        </div>
-                                        <div class="card-info">
-                                            <span class="card-name">우리카드</span>
-                                            <span class="card-number">581910******</span>
-                                        </div>
+                                    <div class="card-info">
+                                        <span class="card-name">[[${card.bankName}]]</span>
+                                        <span class="card-number">[[${card.cardNumber}]]</span>
                                     </div>
 
                                     <button type="button" class="btn-add-card">
