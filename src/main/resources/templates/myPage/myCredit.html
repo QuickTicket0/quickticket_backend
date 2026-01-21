@@ -16,10 +16,9 @@
                     <aside th:replace="~{fragments/sidebar :: sidebarFragment}"></aside>
 
                     <!-- 우측 크레딧 영역 -->
-                    <main class="mypage-content" style="flex: 1; min-width: 0;">
+                    <main class="mypage-content" style="flex: 1; min-width: 0;" th:object="${creditPage}">
                         <h2 class="sub-title">크레딧 관리</h2>
 
-                        <!-- 상단 크레딧잔액 영역 -->
                         <div class="gray-box credit-balance-box">
                             <div class="balance-info">
                                 <div class="icon-circle">
@@ -28,7 +27,7 @@
                                 <div class="text-group">
                                     <span class="label">현재 잔액</span>
                                     <strong id="changeAmount" class="amount">
-                                        [[${creditDto?.changeAmount != null ? #numbers.formatInteger(creditDto.changeAmount, 0, 'COMMA') : '0'}]] Credit
+                                        [[${creditPage?.totalBalance != null ? #numbers.formatInteger(creditPage.totalBalance, 0, 'COMMA') : '0'}]] Credit
                                     </strong>
                                 </div>
                             </div>
@@ -38,31 +37,32 @@
                             </div>
                         </div>
 
-                        <!-- 하단 크레딧내역 영역 -->
                         <div class="credit-history-section">
                             <h3 class="sub-title" style="font-size: 16px; margin-bottom: 15px;">크레딧 내역</h3>
 
                             <div id="historyListContainer">
-                                <div class="history-group" th:each="item : ${transactionList}">
-                                    <div class="date-label">[[${item.createdAt != null ? #temporals.format(item.createdAt, 'yyyy년 M월 d일') : ''}]]</div>
+                                <div class="history-group" th:each="item : ${creditPage?.transactionList}">
+                                    <div class="date-label">
+                                        [[${item.createdAt}]]
+                                    </div>
                                     <div class="history-card">
                                         <div class="card-left">
                                             <span class="type-text" th:classappend="${item.changeAmount < 0} ? 'concert-name' : ''">
                                                 [[${item.summary}]]
                                             </span>
-                                        </div>
-                                        <div class="card-right">
+                                            </div>
+                                            <div class="card-right">
                                             <span class="amount-text" th:classappend="${item.changeAmount >= 0} ? 'plus' : 'minus'">
-                                                <span th:if="${item.changeAmount >= 0}">(+)</span>
-                                                <span th:unless="${item.changeAmount >= 0}">(-)</span>
-                                                [[${item.changeAmount != null ? #numbers.formatInteger(T(java.lang.Math).abs(item.changeAmount), 0, 'COMMA') : '0'}]] Credit
+                                                [[${item.changeAmount >= 0 ? '(+)' : '(-)'}]]
+                                                [[${item.changeAmount}]] Credit
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div th:if="${#lists.isEmpty(transactionList)}" style="text-align: center; padding: 50px 0; color: #999;">
+                            <div th:if="${creditPage == null || #lists.isEmpty(creditPage.transactionList)}"
+                                 style="text-align: center; padding: 50px 0; color: #999;">
                                 거래 내역이 없습니다.
                             </div>
                         </div>

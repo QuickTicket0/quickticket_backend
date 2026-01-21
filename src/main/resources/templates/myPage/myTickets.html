@@ -20,18 +20,18 @@
                         <h2 class="sub-title">전체 예매 목록</h2>
                         <table class="common-table">
                             <thead>
-                            <tr>
-                                <th class="col-check" style="text-align: center">
-                                    <input type="checkbox">
-                                </th>
-                                <th class="col-no">NO</th>
-                                <th>예매번호</th>
-                                <th>콘서트명</th>
-                                <th>관람일</th>
-                                <th>매수</th>
-                                <th>예매날</th>
-                                <th class="col-action"></th>
-                            </tr>
+                                <tr>
+                                    <th class="col-check" style="text-align: center">
+                                        <input type="checkbox">
+                                    </th>
+                                    <th class="col-no">NO</th>
+                                    <th>예매번호</th>
+                                    <th>콘서트명</th>
+                                    <th>관람일</th>
+                                    <th>매수</th>
+                                    <th>예매날</th>
+                                    <th class="col-action"></th>
+                                </tr>
                             </thead>
                             <tbody id="ticketListContainer">
                                 <tr th:each="ticket, stat : ${ticketList}">
@@ -39,25 +39,25 @@
                                         <input type="checkbox">
                                     </td>
                                     <td th:text="${stat.count}">1</td>
-                                    <td>[[ 'RES-' + ${ticket?.id} ]]</td>
+                                    <td>RES-[[${ticket?.id}]]</td>
                                     <td>
                                         <a th:href="@{/myTicket/{id}(id=${ticket?.id})}" class="link-title">
-                                            [[${event?.name}]]
+                                            [[${ticket?.event?.name}]]
                                         </a>
                                     </td>
                                     <td>
-                                        [[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd') : ''}]]
+                                        [[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd') : '-'}]]
                                     </td>
-                                    <td>[[${ticket?.personNumber}]]</td>
+                                    <td>[[${ticket?.personNumber}]]매</td>
                                     <td>
-                                        [[${ticket?.reservedAt != null ? #temporals.format(ticket.reservedAt, 'yyyy-MM-dd') : '-'}]]
+                                        [[${ticket?.createdAt != null ? #temporals.format(ticket.createdAt, 'yyyy-MM-dd') : '-'}]]
                                     </td>
                                     <td style="text-align: center; cursor: pointer; color: #999;">
                                         <i class="fa-solid fa-ellipsis-vertical"></i>
                                     </td>
                                 </tr>
 
-                                <tr id="noTicketMsg" th:if="${#lists.isEmpty(ticketList)}">
+                                <tr id="noTicketMsg" th:if="${ticketList == null || #lists.isEmpty(ticketList)}">
                                     <td colspan="8" style="text-align: center; padding: 50px 0; color: #666;">
                                         예매 내역이 없습니다.
                                     </td>
@@ -68,7 +68,6 @@
                 </div>
             </div>
         </div>
-
         <script th:inline="javascript">
             const tempTickets = [
                 { id: 101, name: "2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원", date: "2026-02-09", count: 2, reservedAt: "2026-01-15" },

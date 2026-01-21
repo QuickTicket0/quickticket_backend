@@ -24,13 +24,23 @@
                                 <p class="box-label">연결된 결제수단</p>
 
                                 <div class="card-grid">
-                                    <div class="payment-card">
+                                    <div class="payment-card" th:each="item : ${methodList}">
+                                        <div class="card-icon">
+                                            <i class="fa-regular fa-credit-card"></i>
+                                        </div>
+                                        <div class="card-info">
+                                            <span class="card-name">[[${item.method?.methodDetails?.bankName}]]</span>
+                                            <span class="card-number">[[${item.method?.methodDetails?.cardNumber}]]</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="payment-card" th:if="${#lists.isEmpty(methodList)}">
                                         <div class="card-icon">
                                             <i id="methodIcon" class="fa-regular fa-credit-card"></i>
                                         </div>
                                         <div class="card-info">
-                                            <span id="bankName" class="card-name">[[${card?.bankName}]]</span>
-                                            <span id="cardNumber" class="card-number">[[${card?.cardNumber}]]</span>
+                                            <span id="bankName" class="card-name"></span>
+                                            <span id="cardNumber" class="card-number"></span>
                                         </div>
                                     </div>
 
@@ -40,6 +50,11 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <div th:if="${#lists.isEmpty(methodList)}"
+                                 style="text-align: center; padding: 50px 0; color: #999;">
+                                등록된 결제 수단이 없습니다.
+                            </div>
                         </div>
                     </main>
                 </div>
@@ -47,19 +62,18 @@
         </div>
         <script th:inline="javascript">
             const tempCard = {
-                bankName: "신한카드 (국민체크)",
+                bankName: "신한카드",
                 cardNumber: "4518-****-****-1234",
                 methodType: "CARD"
             };
 
-            // 임시데이터로 대체
+            // 이제 서버 데이터가 없을 때, 덮어써짐
             const bankEl = document.getElementById("bankName");
             const numEl = document.getElementById("cardNumber");
 
             if (bankEl) bankEl.innerText = tempCard.bankName;
             if (numEl) numEl.innerText = tempCard.cardNumber;
 
-            // 아이콘 변경 로직
             const iconEl = document.getElementById("methodIcon");
             if (iconEl) {
                 if (tempCard.methodType === "CREDIT") {

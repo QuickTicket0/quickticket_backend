@@ -11,144 +11,106 @@
     <main layout:fragment="content">
         <div class="page-wrapper">
             <div class="main-container">
-
                 <h2 class="page-title" style="border-bottom:none;">예매 상세정보</h2>
 
-                <!-- 공연정보 영역 -->
                 <section class="detail-layout top-section">
                     <div class="poster-area">
-                        <img th:src="@{/images/concertImage5.png}" alt="concert5">
+                        <img th:src="@{/images/concertImage5.png}" alt="poster">
                     </div>
-
                     <div class="info-area">
                         <h3 class="sub-title">공연 정보</h3>
-
                         <div class="gray-box">
                             <div class="info-row">
                                 <span class="label">공연명</span>
-                                <span id="eventName" class="value">[[${event?.name}]]</span>
+                                <span id="eventName" class="value">[[${ticket?.event?.name ?: ''}]]</span>
                             </div>
                             <div class="info-row">
                                 <span class="label">공연일자</span>
                                 <span id="startsAt" class="value">
-                                        [[${event?.startsAt != null ? #temporals.format(event.startsAt, 'yyyy-MM-dd / a hh:mm') : ''}]]
-                                    </span>
+                                [[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy-MM-dd / a hh:mm') : ''}]]
+                            </span>
                             </div>
                             <div class="info-row">
                                 <span class="label">회차</span>
-                                <span id="nth" class="value">[[${event?.nth}]]회차</span>
+                                <span id="nth" class="value">[[${ticket?.performance?.nth ?: ''}]]회차</span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- 좌석선택 영역 -->
                 <section class="detail-layout seat-section">
-                    <div class="map-view-area">
-                        <div class="seat-map-area">
-                            <div>
-                                <p>좌석선택영역입니다.</p>
-                            </div>
-                        </div>
-                        <div class="map-legend">
-                            <span class="legend-item"><span class="color-box confirmed"></span> 예매 확정된 좌석</span>
-                            <span class="legend-item"><span class="color-box pending"></span> 예매 대기중인 좌석</span>
-                        </div>
-                    </div>
-                    <div class="seat-info-area">
+                    <div class="seat-info-area" style="width: 100%;">
                         <h3 class="sub-title">좌석 선택 / 결제</h3>
                         <div class="gray-box mb-20">
                             <div class="info-row">
                                 <span class="label">희망 좌석</span>
-                                <span id="personNumbers" class="value">총 [[${ticket?.personNumber}]]석</span>
+                                <span id="personNumbers" class="value">총 [[${ticket?.personNumber ?: 0}]]석</span>
                             </div>
                             <div class="info-row">
                                 <span class="label">좌석 예매 상태</span>
-                                <span id="status" class="value text-blue">[[${ticket?.status}]]</span>
+                                <span id="status" class="value text-blue">[[${ticket?.status ?: ''}]]</span>
                             </div>
-
                             <div class="info-row">
                                 <span class="label">결제된 좌석</span>
                                 <span id="paidSeatContainer" class="value">
-                                        [[${ticket?.personNumber}]]석
-                                        (
-                                        <th:block th:each="info, stat : ${seatInfoList}">
-                                            [[${info?.name}]] [[${info?.wishingSeatsId?.size()}]]개[[${!stat.last ? ', ' : ''}]]
-                                        </th:block>
-                                        )
-                                    </span>
+                                [[${ticket?.seatPayments?.size() ?: 0}]]석
+                                (
+                                <th:block th:each="pay, stat : ${ticket?.seatPayments}">
+                                    [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.name ?: ''}]][[${!stat.last ? ', ' : ''}]]
+                                </th:block>
+                                )
+                            </span>
                             </div>
-
                             <div class="info-row">
                                 <span class="label">좌석별 가격</span>
                                 <span id="seatPriceContainer" class="value">
-                                        <th:block th:each="info : ${seatInfoList}">
-                                            [[${info?.name}]]: [[${info?.price != null ? #numbers.formatInteger(info.price, 0, 'COMMA') : 0}]]원<br>
-                                        </th:block>
-                                    </span>
+                                <th:block th:each="pay : ${ticket?.seatPayments}">
+                                    [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.name ?: ''}]]: [[${pay?.amount != null ? #numbers.formatInteger(pay.amount, 0, 'COMMA') : 0}]]원<br>
+                                </th:block>
+                            </span>
                             </div>
                         </div>
 
                         <h3 class="sub-title">예매 확정 좌석</h3>
                         <div id="confirmedSeatListContainer" class="confirmed-seat-list">
-                            <th:block th:each="info : ${seatInfoList}">
-                                <div class="seat-item-row" th:each="seatId : ${info?.wishingSeatsId}">
-                                    <span class="seat-loc">좌석번호 [[${seatId}]]</span>
+                            <th:block th:each="pay : ${ticket?.seatPayments}">
+                                <div class="seat-item-row">
+                                    <span class="seat-loc">좌석번호 [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.name ?: ''}]]</span>
                                     <span class="seat-price">
-                                            [[${info?.name}]]
-                                            <span class="price">[[${info?.price != null ? #numbers.formatInteger(info.price, 0, 'COMMA') : 0}]]원</span>
-                                        </span>
+                                    [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.seatClass ?: ''}]]
+                                    <span class="price">[[${pay?.amount != null ? #numbers.formatInteger(pay.amount, 0, 'COMMA') : 0}]]원</span>
+                                </span>
                                 </div>
                             </th:block>
                         </div>
                     </div>
                 </section>
 
-                <!-- 예매 정보 영역 -->
-                <section class="detail-row">
-                    <h3 class="sub-title">예매 정보</h3>
-                    <div class="gray-box">
-                        <div class="info-row">
-                            <span class="label">예매번호</span>
-                            <span id="ticketId" class="value">[[ 'RES-' + ${ticket?.id} ]]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">예매일자</span>
-                            <span id="reservedAt" class="value">[[${ticket?.reservedAt != null ? #temporals.format(ticket.reservedAt, 'yyyy-MM-dd / HH:mm:ss') : '-'}]]</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">결제 예상 범위</span>
-                            <span id="amount" class="value">
-                                    [[${payment?.amount != null ? #numbers.formatInteger(payment.amount, 0, 'COMMA') : 0}]]원 (확정)<br>
-                                    <span class="sub-text">※ 취소표 발생 시 가장 먼저 매칭된 좌석의 금액으로 자동 결제됩니다.</span>
-                                </span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 결제 정보 영역 -->
                 <section class="detail-row">
                     <h3 class="sub-title">결제 정보</h3>
                     <div class="gray-box">
                         <div class="info-row">
-                            <span class="label">결제수단</span>
-                            <span id="paymentMethod" class="value">[[${payment?.method}]]</span>
+                            <span class="label">예매번호</span>
+                            <span id="ticketId" class="value">RES-[[${ticket?.id ?: ''}]]</span>
                         </div>
                         <div class="info-row">
-                            <span class="label">결제 상태</span>
-                            <span id="paymentStatus" class="value text-bold">[[${payment?.status}]]</span>
+                            <span class="label">예매일자</span>
+                            <span id="reservedAt" class="value">[[${ticket?.createdAt != null ? #temporals.format(ticket.createdAt, 'yyyy-MM-dd / HH:mm:ss') : '-'}]]</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">결제수단</span>
+                            <span id="paymentMethod" class="value">
+                            [[${ticket?.paymentMethod?.methodDetails != null ? ticket.paymentMethod.methodDetails['bankName'] : ''}]]
+                        </span>
                         </div>
                         <div class="info-row">
                             <span class="label">결제금액</span>
-                            <span id="paymentAmount" class="value text-bold">[[${payment?.amount != null ? #numbers.formatInteger(payment.amount, 0, 'COMMA') : 0}]]원</span>
+                            <span id="paymentAmount" class="value text-bold">
+                            [[${ticket?.seatPayments != null && !ticket.seatPayments.isEmpty() ? #numbers.formatInteger(ticket.seatPayments[0].amount, 0, 'COMMA') : 0}]]원
+                        </span>
                         </div>
                     </div>
                 </section>
-
-                <div class="form-footer-buttons">
-                    <button class="btn-submit" style="width: 110px;" onclick="openReviewModal()">감상평 등록</button>
-                    <a th:href="@{/cancelTicketSuccess}" class="btn-list" style="width: 110px;">등록취소</a>
-                </div>
             </div>
         </div>
 
@@ -264,6 +226,5 @@
             }
         </script>
     </main>
-
 </body>
 </html>
