@@ -3,8 +3,6 @@ package com.quickticket.quickticket.domain.ticket.dto;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import com.quickticket.quickticket.domain.payment.method.dto.PaymentMethodCommonDto;
 import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssueStatus;
-import com.quickticket.quickticket.domain.payment.seatPayment.dto.SeatPaymentResponse;
-import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.domain.SeatStatus;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import lombok.Builder;
@@ -50,7 +48,11 @@ public class TicketResponse {
     ) {
         @Builder
         public record TicketEventInfo(
+            String name,      // 공연명(20260120_조민지추가)
+            String dateRange, // 공연기간(20260120_조민지추가)
+            String cast,      // 출연진(20260120_조민지추가)
             String ageRating,
+            String thumbnailImageUrl,
             Blob thumbnailImage,
             LocationCommonDto location
         ) {}

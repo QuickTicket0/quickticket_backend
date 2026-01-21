@@ -8,45 +8,67 @@
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-    <main layout:fragment="content">
-        <div class="page-wrapper">
-            <div class="main-container">
-                <!-- 제목 -->
-                <div class="event-header">
-                    <h2 class="event-title">2025-2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원</h2>
-                    <div class="event-meta">
-                        <span class="meta-date">2026.01.24 ~ 2026.01.25</span>
-                        <span class="meta-location"><i class="fa-solid fa-location-dot"></i> 수원실내체육관</span>
-                        <!--<button class="btn-share"><i class="fa-solid fa-share-nodes"></i></button>-->
-                    </div>
+<main layout:fragment="content">
+    <div class="page-wrapper">
+        <div class="main-container">
+            <div class="event-header">
+                <h2 class="event-title" id="eventTitle">
+                    [[${ticket?.event?.name != null ? ticket.event.name : '공연 정보 없음'}]]
+                </h2>
+                <div class="event-meta">
+                    <span class="meta-date" id="eventPeriod">
+                        [[${ticket?.event?.dateRange != null ? ticket.event.dateRange : '2026.01.01'}]]
+                    </span>
+                    <span class="meta-location">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="eventLocation">
+                            [[${ticket?.event?.location?.name != null ? ticket.event.location.name : '장소 정보 없음'}]]
+                        </span>
+                    </span>
                 </div>
+            </div>
 
-                <div class="event-body-wrap">
-                    <div class="top-section">
-                        <!-- 포스터 영역 -->
-                        <div class="poster-area">
-                            <div class="poster-box">
-                                <img th:src="@{/images/concertImage5.png}" alt="concert5">
-                            </div>
+            <div class="event-body-wrap">
+                <div class="top-section">
+                    <div class="poster-area">
+                        <div class="poster-box">
+                            <img th:src="@{/images/concertImage5.png}" alt="concert5" id="posterImage">
                         </div>
-                        <!-- 상세내용 영역 -->
-                        <div class="info-area">
-                            <div class="info-list">
-                                <div class="info-row">
-                                    <span class="label">등급</span>
-                                    <span class="content">만 7세 이상 관람가</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="label">관람시간</span>
-                                    <span class="content">120분</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="label">출연</span>
-                                    <span class="content">이창섭</span>
-                                </div>
-                                <div class="info-row price-row">
-                                    <span class="label">가격</span>
-                                    <div class="content price-list">
+                    </div>
+
+                    <div class="info-area">
+                        <div class="info-list">
+                            <div class="info-row">
+                                <span class="label">등급</span>
+                                <span class="content" id="ageRating">
+                                    [[${ticket?.event?.ageRating != null ? ticket.event.ageRating : '전체 관람가'}]]
+                                </span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">관람시간</span>
+                                <span class="content" id="runningTime">
+                                    [[${ticket?.performance?.runningTime != null ? (ticket.performance.runningTime.hour * 60 + ticket.performance.runningTime.minute) + '분' : '0분'}]]
+                                </span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">출연</span>
+                                <span class="content" id="cast">
+                                    [[${ticket?.event?.cast != null ? ticket.event.cast : '-'}]]
+                                </span>
+                            </div>
+                            <div class="info-row price-row">
+                                <span class="label">가격</span>
+                                <div class="content price-list" id="priceListContainer">
+                                    <th:block th:if="${ticket?.seatClasses != null}" th:each="seatClass, stat : ${ticket.seatClasses}">
+                                        <div class="price-item">
+                                            <span class="seat-type">[[${seatClass.name}]]</span>
+                                            <span class="seat-price" th:classappend="${stat.first} ? 'highlight'">
+                                                [[${#numbers.formatInteger(seatClass.price, 0, 'COMMA')}]]원
+                                            </span>
+                                        </div>
+                                    </th:block>
+
+                                    <th:block th:if="${ticket?.seatClasses == null}">
                                         <div class="price-item">
                                             <span class="seat-type">VIP석</span>
                                             <span class="seat-price highlight">154,000원</span>
@@ -55,74 +77,66 @@
                                             <span class="seat-type">R석</span>
                                             <span class="seat-price">143,000원</span>
                                         </div>
-                                        <div class="price-item">
-                                            <span class="seat-type">S석</span>
-                                            <span class="seat-price">132,000원</span>
-                                        </div>
-                                    </div>
+                                    </th:block>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="divider"></div>
+                        <div class="divider"></div>
 
-                            <div class="sub-info">
-                                <strong>공연시간 안내</strong>
-                                <p>2026년 1월 24일(토) 오후 6시<br>2026년 1월 25일(일) 오후 5시</p>
+                        <div class="sub-info">
+                            <strong>공연시간 안내</strong>
+                            <p id="performanceTimeInfo">
+                                [[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'yyyy년 M월 d일(E) a h시') : ''}]]
+                            </p>
+                        </div>
+
+                        <div class="sub-info">
+                            <strong>배송정보</strong>
+                            <p>현장 수령만 가능</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-section">
+                    <div class="selection-box">
+                        <div class="selection-header">날짜/시간 선택</div>
+                        <div class="selection-body">
+                            <div class="calendar-wrap">
+                                <div class="cal-nav">
+                                    <button>&lt;</button><strong>2026. 01</strong><button>&gt;</button>
+                                </div>
+                                <table class="custom-calendar">
+                                    <thead><tr><th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class="sat">토</th></tr></thead>
+                                    <tbody>
+                                    <tr><td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td></tr>
+                                    <tr><td class="sun">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td class="sat">10</td></tr>
+                                    <tr><td class="sun">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td class="sat">17</td></tr>
+                                    <tr><td class="sun">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td class="sat active">24</td></tr>
+                                    <tr><td class="sun">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="sat">31</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <div class="sub-info">
-                                <strong>배송정보</strong>
-                                <p>현장 수령만 가능</p>
+                            <div class="time-select-wrap">
+                                <button class="time-btn active" id="timeBtn">
+                                    [[${ticket?.performance?.nth != null ? ticket.performance.nth + '회' : ''}]]
+                                    [[${ticket?.performance?.performanceStartsAt != null ? #temporals.format(ticket.performance.performanceStartsAt, 'a h시 mm분') : ''}]]
+                                </button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="bottom-section">
-                        <!--날짜 선택 영역-->
-                        <div class="selection-box">
-                            <div class="selection-header">날짜/시간 선택</div>
-                            <div class="selection-body">
-                                <div class="calendar-wrap">
-                                    <div class="cal-nav">
-                                        <button>&lt;</button>
-                                        <strong>2026. 01</strong>
-                                        <button>&gt;</button>
-                                    </div>
-                                    <table class="custom-calendar">
-                                        <thead>
-                                        <tr>
-                                            <th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class="sat">토</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sun">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td class="sat">10</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sun">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td class="sat">17</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sun">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
-                                            <td class="sat active">24</td> </tr>
-                                        <tr>
-                                            <td class="sun">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="sat">31</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                    <div class="seat-summary-box">
+                        <div class="selection-header">예매 가능 좌석</div>
+                        <div class="seat-status-list" id="seatStatusListContainer">
+                            <th:block th:if="${ticket?.seatClasses != null}" th:each="seatClass : ${ticket.seatClasses}">
+                                <div class="seat-status-item">
+                                    <span class="name">[[${seatClass.name}]]</span>
+                                    <span class="status">[[${#numbers.formatInteger(seatClass.price, 0, 'COMMA')}]]원</span>
                                 </div>
+                            </th:block>
 
-                                <div class="time-select-wrap">
-                                    <button class="time-btn active">1회 오후 6시 00분</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 예매가능좌석 영역 -->
-                        <div class="seat-summary-box">
-                            <div class="selection-header">예매 가능 좌석</div>
-                            <div class="seat-status-list">
+                            <th:block th:if="${ticket?.seatClasses == null}">
                                 <div class="seat-status-item">
                                     <span class="name">VIP석</span>
                                     <span class="status">154,000원</span>
@@ -131,24 +145,57 @@
                                     <span class="name">R석</span>
                                     <span class="status">143,000원</span>
                                 </div>
-                                <div class="seat-status-item">
-                                    <span class="name">S석</span>
-                                    <span class="status">132,000원</span>
-                                </div>
-                            </div>
+                            </th:block>
                         </div>
                     </div>
-
-                    <!-- 예매하기 페이지 이동 -->
-                    <div class="action-footer">
-                        <button type="button" class="btn-book" th:onclick="|location.href='@{/registTicket}'|">
-                            예매하기
-                        </button>
-                    </div>
-
                 </div>
+
+                <div class="action-footer">
+                    <button type="button" class="btn-book" th:onclick="|location.href='@{/registTicket}'|">
+                        예매하기
+                    </button>
+                </div>
+
             </div>
         </div>
-    </main>
+    </div>
+    <script th:inline="javascript">
+        const tempData = {
+            eventName:"2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원",
+            status: "예매 확정",
+            ageRating: "만 7세 이상",
+            startsAt:"2026-02-09 / 17:00",
+            nth: "1회차",
+            ticketId: "RES-2026-1234567",
+            personNumber: "2명",
+            waitingNumber: "-",
+            seatInfo: "VIP석 1매, R석 1매",
+            payMethod:  "신용카드",
+            payStatus: "결제 완료",
+            amount: "165,000원"
+        };
+
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerText = value;
+            }
+        };
+
+        setText("eventTitle", tempData.eventName);
+        setText("ticketStatus", tempData.status);
+        setText("ageRating", tempData.ageRating);
+        setText("eventPeriod", tempData.startsAt);
+        setText("nth", tempData.nth);
+        setText("ticketId", tempData.ticketId);
+        setText("personNumber", tempData.personNumber);
+        setText("waitingNumber", tempData.waitingNumber);
+        setText("seatInfo", tempData.seatInfo);
+        setText("paymentMethod", tempData.payMethod);
+        setText("paymentStatus", tempData.payStatus);
+        setText("paymentAmount", tempData.amount);
+    </script>
+
+</main>
 </body>
 </html>
