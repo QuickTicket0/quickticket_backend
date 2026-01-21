@@ -4,6 +4,7 @@ import com.quickticket.quickticket.domain.seat.entity.SeatId;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Getter
 public class WantingSeatsId implements Serializable {
     private Long ticketIssueId;
     private SeatId seatId;
