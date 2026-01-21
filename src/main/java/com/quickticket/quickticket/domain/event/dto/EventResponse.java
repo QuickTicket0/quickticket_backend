@@ -21,6 +21,8 @@ public class EventResponse {
 
         AgeRating ageRating,
 
+        String cast,   // 출연자
+
         Blob thumbnailImage
     ) {}
 

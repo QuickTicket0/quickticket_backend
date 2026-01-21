@@ -53,42 +53,53 @@
             <div class="table-container">
                 <table class="common-table">
                     <thead>
-                    <tr>
-                        <th class="col-check" style="text-align: center">
-                            <input type="checkbox">
-                        </th>
-                        <th class="col-no">NO</th>
-                        <th class="col-thumb">썸네일</th>
-                        <th>카테고리</th>
-                        <th>공연명</th>
-                        <th>출연자</th>
-                        <th>공연장소</th>
-                        <th>상태</th>
-                        <th class="col-action"></th>
-                    </tr>
+                        <tr>
+                            <th class="col-check" style="text-align: center">
+                                <input type="checkbox">
+                            </th>
+                            <th class="col-no">NO</th>
+                            <th class="col-thumb">썸네일</th>
+                            <th>카테고리</th>
+                            <th>공연명</th>
+                            <th>출연자</th>
+                            <th>공연장소</th>
+                            <th>상태</th>
+                            <th class="col-action"></th>
+                        </tr>
                     </thead>
-                    <tbody>
-                    <tr th:each="i : ${#numbers.sequence(1, 5)}">
-                        <td style="text-align: center;">
-                            <input type="checkbox">
-                        </td>
-                        <td th:text="${i}">1</td>
-                        <td>
-                            <div class="thumb-box"></div>
-                        </td>
-                        <td>KPOP</td>
-                        <td>
-                            <a th:href="@{/editEvent/{id}(id=${i})}" class="link-title">
-                                2025 임영웅 아임 히어로 콘서트
-                            </a>
-                        </td>
-                        <td>임영웅</td>
-                        <td>서울월드컵경기장</td>
-                        <td>판매중</td>
-                        <td style="text-align: center; cursor: pointer; color: #999;">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </td>
-                    </tr>
+                    <tbody id="eventListContainer">
+                        <tr th:each="event, stat : ${eventList}" th:id="'event-row-' + ${stat.count}">
+                            <td style="text-align: center;">
+                                <input type="checkbox">
+                            </td>
+                            <td th:text="${stat.count}">1</td>
+                            <td>
+                                <div class="thumb-box">
+                                    <img th:if="${event?.thumbnailImage != null}"
+                                         th:src="@{/display(fileName=${event?.name})}"
+                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                            </td>
+                            <td>
+                                [[${event?.category1Name ?: ''}]]
+                                [[${event?.category2Name != null ? ' > ' + event.category2Name : ''}]]
+                            </td>
+                            <td>
+                                <a th:href="@{/editEvent/{id}(id=${event?.name ?: ''})}" class="link-title">
+                                    [[${event?.name ?: '-'}]]
+                                </a>
+                            </td>
+                            <td>[[${event?.cast ?: '-'}]]</td>
+                            <td>[[${event?.description ?: '장소 미정'}]]</td>
+                            <td>
+                                <span class="status-tag">
+                                    [[${event?.ageRating?.description ?: '미지정'}]]
+                                </span>
+                            </td>
+                            <td style="text-align: center; cursor: pointer; color: #999;">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -104,6 +115,61 @@
 
         </div>
     </div>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const eventListContainer = document.getElementById('eventListContainer');
+
+            // 데이터가 없으면
+            if (eventListContainer.children.length === 0) {
+                // 임시데이터
+                const tempEvents = [
+                    {
+                        no: 1,
+                        category: "CONCERT > KPOP",
+                        name: "2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원",
+                        cast: "이창섭",
+                        location: "수원 실내체육관",
+                        age: "전체 관람가"
+                    },
+                    {
+                        no: 2,
+                        category: "CONCERT > TROT",
+                        name: "2026 임영웅 아임 히어로 콘서트",
+                        cast: "임영웅",
+                        location: "서울 월드컵경기장",
+                        age: "전체 관람가"
+                    },
+                    {
+                        no: 3,
+                        category: "CLASSIC > OPERA",
+                        name: "라 트라비아타",
+                        cast: "조수미 외",
+                        location: "예술의 전당",
+                        age: "만 7세 이상"
+                    }
+                ];
+
+                tempEvents.forEach(event => {
+                    const row = `
+                    <tr id="event-row-${event.no}">
+                        <td style="text-align: center;"><input type="checkbox"></td>
+                        <td>${event.no}</td>
+                        <td><div class="thumb-box"></div></td>
+                        <td>${event.category}</td>
+                        <td><a href="/editEvent/${event.no}" class="link-title">${event.name}</a></td>
+                        <td>${event.cast}</td>
+                        <td>${event.location}</td>
+                        <td><span class="status-tag">${event.age}</span></td>
+                        <td style="text-align: center; cursor: pointer; color: #999;">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </td>
+                    </tr>
+                `;
+                    eventListContainer.innerHTML += row;
+                });
+            }
+        });
+    </script>
 </main>
 
 </body>
