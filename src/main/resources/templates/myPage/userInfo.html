@@ -24,7 +24,7 @@
                                 <!-- 아이디  -->
                                 <div class="form-field">
                                     <label for="username" class="form-label">아이디</label>
-                                    <input type="text" id="username" name="username" class="simple-input" placeholder="아이디를 입력하세요" readonly>
+                                    <input type="text" id="username" name="username" class="simple-input" th:value="${user?.username}" readonly>
                                 </div>
                                 <!-- 비밀번호 -->
                                 <div class="form-field">
@@ -39,31 +39,34 @@
                                 <!-- 이름 -->
                                 <div class="form-field">
                                     <label for="name" class="form-label">이름</label>
-                                    <input type="text" id="name" name="name" class="simple-input" placeholder="이름을 입력하세요" readonly>
+                                    <input type="text" id="name" name="name" class="simple-input" th:value="${user?.realname}" readonly>
                                 </div>
                                 <!-- 생년월일 -->
                                 <div class="form-field">
                                     <label class="form-label">생년월일</label>
                                     <div class="birth-container">
-                                        <input type="text" name="birthYear" class="simple-input" placeholder="년" readonly>
-                                        <input type="text" name="birthMonth" class="simple-input" placeholder="월" readonly>
-                                        <input type="text" name="birthDay" class="simple-input" placeholder="일" readonly>
+                                        <input type="text" name="birthYear" class="simple-input" th:value="${user?.birthday?.year}" placeholder="년" readonly>
+                                        <span>년</span>
+                                        <input type="text" name="birthMonth" class="simple-input" th:value="${user?.birthday?.monthValue}" placeholder="월" readonly>
+                                        <span>월</span>
+                                        <input type="text" name="birthDay" class="simple-input" th:value="${user?.birthday?.dayOfMonth}" placeholder="일" readonly>
+                                        <span>일</span>
                                     </div>
                                 </div>
                                 <!-- 전화번호 -->
                                 <div class="form-field">
                                     <label for="phoneNumber" class="form-label">전화번호</label>
-                                    <input type="text" id="phoneNumber" name="phoneNumber" class="simple-input" placeholder="010-1234-5678">
+                                    <input type="text" id="phoneNumber" name="phoneNumber" class="simple-input" th:value="${user?.phone}" placeholder="010-1234-5678">
                                 </div>
                                 <!-- 이메일 -->
                                 <div class="form-field">
                                     <label for="email" class="form-label">이메일</label>
-                                    <input type="email" id="email" name="email" class="simple-input" placeholder="example@email.com">
+                                    <input type="email" id="email" name="email" class="simple-input" th:value="${user?.email}" placeholder="example@email.com">
                                 </div>
                                 <!-- 주소 -->
                                 <div class="form-field">
                                     <label for="address" class="form-label">주소</label>
-                                    <input type="text" id="address" name="address" class="simple-input" placeholder="주소를 입력하세요">
+                                    <input type="text" id="address" name="address" class="simple-input" th:value="${user?.address}" placeholder="주소를 입력하세요">
 
                                     <button type="button" class="address-search-btn">
                                         주소 검색 <i class="fa-solid fa-magnifying-glass"></i>
@@ -78,6 +81,46 @@
                 </div>
             </div>
         </div>
+        <script>
+            const tempData = {
+                username: "sjg04142@naver.com",
+                name: "조민지",
+                birthYear: "1995",
+                birthMonth: "2",
+                birthDay: "13",
+                phone: "010-3176-5678",
+                email: "test@quickticket.com",
+                address: "서울시 마포구 양화로 123 401호"
+            };
+
+            const usernameInput = document.getElementById("username");
+            if(usernameInput) usernameInput.value = tempData.username;
+
+            // 이름
+            const nameInput = document.getElementById("name");
+            if(nameInput) nameInput.value = tempData.name;
+
+            // 생년월일
+            const yearInput = document.querySelector('input[name="birthYear"]');
+            const monthInput = document.querySelector('input[name="birthMonth"]');
+            const dayInput = document.querySelector('input[name="birthDay"]');
+
+            if(yearInput) yearInput.value = tempData.birthYear;
+            if(monthInput) monthInput.value = tempData.birthMonth;
+            if(dayInput) dayInput.value = tempData.birthDay;
+
+            // 전화번호
+            const phoneInput = document.getElementById("phoneNumber");
+            if(phoneInput) phoneInput.value = tempData.phone;
+
+            // 이메일
+            const emailInput = document.getElementById("email");
+            if(emailInput) emailInput.value = tempData.email;
+
+            // 주소
+            const addressInput = document.getElementById("address");
+            if(addressInput) addressInput.value = tempData.address;
+        </script>
     </main>
 </body>
 </html>

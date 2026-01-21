@@ -21,6 +21,8 @@ public class UserResponse {
 
         String phone,
 
+        String address, // 주소
+
         Long credit,
 
         UserRole role,
