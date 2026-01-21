@@ -23,6 +23,6 @@ public class CreditTransactionResponse {
         Long changeAmount,
         Long balanceAfter,
         LocalDateTime createdAt,
-        String summary  // 크레딧내역(myCredit.html)의 사용내역(20260120_조민지추가)
+        String summary  // 크레딧내역(myCredit.html)의 사용내역
     ) {}
 }

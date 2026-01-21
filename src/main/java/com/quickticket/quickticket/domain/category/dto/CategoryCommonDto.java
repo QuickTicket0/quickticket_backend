@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.category.dto;
 
+import com.quickticket.quickticket.domain.category.entity.CategoryEntity;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,4 +24,11 @@ public record CategoryCommonDto(
 
     @NotBlank
     String name
-) {}
+) {
+    public static CategoryCommonDto from(CategoryEntity category) {
+        return CategoryCommonDto.builder()
+                .id(category.getCategoryId())
+                .name(category.getName())
+                .build();
+    }
+}

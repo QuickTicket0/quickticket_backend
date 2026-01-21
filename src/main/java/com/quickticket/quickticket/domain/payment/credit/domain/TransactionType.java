@@ -7,9 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TransactionType implements OrdinalEnum {
+    /// 좌석 결제
     SEAT_PAYMENT(0),
-    CHARGE(1),       // 크레딧 충전
-    REFUND(2);       // 예매 취소/환불
+    /// 예매 취소/환불
+    REFUND(1),
+    /// 크레딧 충전
+    CHARGE(2);
 
-    public final int code;
+    private final int code;
 }

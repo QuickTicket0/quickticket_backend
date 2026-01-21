@@ -1,12 +1,16 @@
 package com.quickticket.quickticket.domain.event.domain;
 
+import com.quickticket.quickticket.shared.converters.OrdinalEnum;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
+@AllArgsConstructor
 @Getter
-@RequiredArgsConstructor
-public enum AgeRating {
-    ALL("전체 관람가");
+public enum AgeRating implements OrdinalEnum {
+    ALL(0),
+    SEVEN(1),
+    FIFTEEN(2),
+    ADULT(3);
 
-    private final String description; // 화면에 보여줄 한글 이름
+    private final int code;
 }

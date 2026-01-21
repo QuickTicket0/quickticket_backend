@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.location.dto;
 
+import com.quickticket.quickticket.domain.location.entity.LocationEntity;
 import com.quickticket.quickticket.shared.validators.NumberString;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -29,4 +30,18 @@ public record LocationCommonDto(
     
     @NumberString
     String phone
-) {}
+) {
+    public static LocationCommonDto from(LocationEntity location) {
+        return LocationCommonDto.builder()
+                .doroCode(location.getDoroCode())
+                .doroName(location.getDoro())
+                .eupMyun(location.getEupmyun())
+                .id(location.getLocationId())
+                .name(location.getLocationName())
+                .phone(location.getPhone())
+                .sido(location.getSido())
+                .siGunGu(location.getSigungu())
+                .zipNumber(location.getZipNumber())
+                .build();
+    }
+}
