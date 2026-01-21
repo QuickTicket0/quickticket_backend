@@ -18,9 +18,11 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 public class Seat {
     private Long id;
+    private String name;
     private Performance performance;
     private SeatClass seatClass;
     private SeatArea seatArea;
+    private SeatStatus status;
     /// 한 공연 회차의 좌석에 대해, 지금 선착순 몇빈째가 배정되었는지의 번호.
     ///
     /// waitingNumber는 곧 Ticket이 Performance에서 몇빈째 선착순으로 들어왔는지 나타냅니다.
@@ -39,11 +41,13 @@ public class Seat {
 
     public static Seat create(
         Performance performance,
+        String name,
         SeatClass seatClass,
         SeatArea seatArea
     ) {
         return Seat.builder()
                 .performance(performance)
+                .name(name)
                 .seatClass(seatClass)
                 .seatArea(seatArea)
                 .build();
@@ -51,6 +55,7 @@ public class Seat {
 
     public static Seat recreate(
             Long id,
+            String name,
             Performance performance,
             SeatClass seatClass,
             SeatArea seatArea,
@@ -58,6 +63,7 @@ public class Seat {
     ) {
         return Seat.builder()
                 .id(id)
+                .name(name)
                 .performance(performance)
                 .seatClass(seatClass)
                 .seatArea(seatArea)

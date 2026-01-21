@@ -42,17 +42,10 @@ public class TicketIssueEntity {
     @Column(name = "ticket_status", nullable = false)
     private TicketStatus status;
 
-    @NotNull
-    @Column(nullable = false)
-    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @NotNull
-    @Column(nullable = false)
     private LocalDateTime canceledAt;
 
-    @NotNull
-    @Column(nullable = false)
     private Long waitingNumber;
 
     @NotNull

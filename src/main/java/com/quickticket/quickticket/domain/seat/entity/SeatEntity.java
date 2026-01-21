@@ -2,6 +2,8 @@ package com.quickticket.quickticket.domain.seat.entity;
 
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 
+import com.quickticket.quickticket.domain.seat.domain.SeatClass;
+import com.quickticket.quickticket.domain.seat.domain.SeatStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -44,6 +46,13 @@ public class SeatEntity {
     })
     private SeatAreaEntity area;
 
+    @NotNull
+    @Column(length = 10, nullable = false)
+    private String name;
+
+    @NotNull
+    @Column(nullable = false)
+    private SeatStatus status;
 
     private Long currentWaitingNumber;
 }

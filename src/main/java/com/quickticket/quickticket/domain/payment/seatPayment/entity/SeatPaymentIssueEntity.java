@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "SEAT_PAYMENT_ISSUE")
@@ -43,4 +46,13 @@ public class SeatPaymentIssueEntity {
     @NotNull
     @Column(nullable = false)
     private SeatPaymentIssueStatus status;
+
+    @NotNull
+    @Column(nullable = false)
+    private Long amount;
+
+    @NotNull
+    @Column(nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
