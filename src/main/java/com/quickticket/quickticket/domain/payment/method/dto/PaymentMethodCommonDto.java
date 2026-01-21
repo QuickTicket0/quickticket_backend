@@ -1,6 +1,7 @@
 package com.quickticket.quickticket.domain.payment.method.dto;
 
 import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethodType;
+import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -14,4 +15,21 @@ public record PaymentMethodCommonDto(
     /// 그 형식은 위의 methodType에 대응되는 것이어야 합니다.
     @NotNull
     PaymentMethodDetailsCommonDto methodDetails
-) {}
+) {
+    public static PaymentMethodCommonDto from(PaymentMethodEntity method) {
+        switch (method.getType()) {
+            case CARD -> {
+                return PaymentMethodCommonDto.builder()
+                    .methodType(PaymentMethodType.CARD)
+                    .methodDetails(CardPaymentCommonDto.from(method))
+                    .build();
+            }
+            case CREDIT -> {
+                throw new RuntimeException("미구현 기능");
+            }
+            default -> {
+                throw new IllegalStateException();
+            }
+        }
+    }
+}
