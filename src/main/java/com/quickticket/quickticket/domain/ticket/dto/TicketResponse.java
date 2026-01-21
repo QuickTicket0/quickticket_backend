@@ -35,9 +35,9 @@ public class TicketResponse {
     ) {
         public static EventInfo from(EventEntity event) {
             return EventInfo.builder()
-                    .name(event.getEventName())
-                    .range()
-                    .casting()
+                    .name(event.getName())
+//                    .range()
+//                    .casting()
                     .ageRating(event.getAgeRating())
                     .thumbnailImage(event.getThumbnailImage())
                     .location(LocationCommonDto.from(event.getLocation()))
