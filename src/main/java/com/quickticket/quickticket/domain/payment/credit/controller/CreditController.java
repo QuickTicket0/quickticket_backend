@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.payment.credit.controller;
 
 import com.quickticket.quickticket.domain.payment.credit.domain.TransactionType;
 import com.quickticket.quickticket.domain.payment.credit.dto.CreditTransactionResponse;
+import com.quickticket.quickticket.domain.payment.credit.service.CreditTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,8 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class CreditController {
+    private final CreditTransactionService service;
+
     @GetMapping("/myPage/myCredit")
     public String myCredit(Model model) {
         // 임시 리스트 데이터 생성
@@ -54,6 +57,8 @@ public class CreditController {
                 .totalBalance(215000L) // 현재 총 잔액
                 .transactionList(historyList)
                 .build();
+
+        // var details = service.getResponseDetailsByUserId();
 
         // 모델에 받아 넘김
         model.addAttribute("creditPage", response);
