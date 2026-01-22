@@ -30,7 +30,7 @@ public class UserRequest {
 
         @NotBlank
         @Size(max = 20)
-        String realname,
+        String realName,
 
         @NotNull
         LocalDate birthday,
@@ -59,7 +59,7 @@ public class UserRequest {
         String password,
 
         @Size(max = 20)
-        String realname,
+        String realName,
         
         LocalDate birthday,
         

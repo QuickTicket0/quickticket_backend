@@ -1,6 +1,7 @@
 package com.quickticket.quickticket.domain.user.dto;
 
 import com.quickticket.quickticket.domain.user.domain.UserRole;
+import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -21,12 +22,24 @@ public class UserResponse {
 
         String phone,
 
-        String address, // 주소
-
         Long credit,
 
         UserRole role,
         
         LocalDateTime createdAt
-    ) {}
+    ) {
+        public static Details from(UserEntity user) {
+            return Details.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .realname(user.getRealName())
+                    .birthday(user.getBirthday())
+                    .email(user.getEmail())
+                    .phone(user.getPhone())
+                    .credit(user.getCredit())
+                    .role(user.getRole())
+                    .createdAt(user.getCreatedAt())
+                    .build();
+        }
+    }
 }

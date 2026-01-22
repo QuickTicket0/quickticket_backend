@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.event.dto;
 
 import com.quickticket.quickticket.domain.category.dto.CategoryCommonDto;
 import com.quickticket.quickticket.domain.event.domain.AgeRating;
+import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import lombok.Builder;
 
@@ -50,5 +51,21 @@ public class EventResponse {
         String contactData,
 
         LocationCommonDto location
-    ) {}
+    ) {
+        public static Details from(EventEntity event) {
+            return Details.builder()
+                    .id(event.getEventId())
+                    .name(event.getName())
+                    .description(event.getDescription())
+                    .category1(CategoryCommonDto.from(event.getCategory1()))
+                    .category2(CategoryCommonDto.from(event.getCategory2()))
+                    .ageRating(event.getAgeRating())
+                    .thumbnailImage(event.getThumbnailImage())
+                    .agentName(event.getAgentName())
+                    .hostName(event.getHostName())
+                    .contactData(event.getContactData())
+                    .location(LocationCommonDto.from(event.getLocation()))
+                    .build();
+        }
+    }
 }

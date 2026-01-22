@@ -38,7 +38,7 @@ public class UserEntity {
 
     @NotNull
     @Column(length = 30, nullable = false)
-    private String name;
+    private String realName;
 
     private LocalDate birthday;
 

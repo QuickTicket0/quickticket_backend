@@ -15,7 +15,7 @@ public class PerformanceResponse {
     public record ListItem(
         Long id,
 
-        PerformanceEventInfo event,
+        EventInfo event,
 
         Integer nth,
 
@@ -32,7 +32,7 @@ public class PerformanceResponse {
         LocalTime runningTime
     ) {
         @Builder
-        public record PerformanceEventInfo(
+        public record EventInfo(
             Long id,
 
             String name,

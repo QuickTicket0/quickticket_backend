@@ -36,6 +36,9 @@ public class CreditTransactionEntity {
     @Column(nullable = false)
     private TransactionType transactionType;
 
+    @JoinColumn
+    private SeatPaymentIssueEntity relatedSeatPaymentIssue;
+
     @NotNull
     @Column(nullable = false)
     private Long changeAmount;
