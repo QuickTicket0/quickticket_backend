@@ -1,6 +1,6 @@
 package com.quickticket.quickticket.domain.user.entity;
 
-import com.quickticket.quickticket.domain.user.domain.UserRole;
+import com.quickticket.quickticket.domain.account.domain.AccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -29,12 +29,9 @@ public class UserEntity {
     @Column(length = 30, nullable = false)
     private String username;
 
-    // SHA-256 해싱을 사용하면 256비트 즉 32바이트의 데이터가 나옵니다
-    // 일반적인 CHAR 타입보다 BINARY 타입으로 설정하는게 메모리 절약성 측면에서 우수합니다
-    // 그 이유를 알려면 CHAR 타입이 문자를 어떻게 저장하는지 알아보면 됩니다.
     @NotNull
-    @Column(columnDefinition = "BINARY(32)", length = 32, nullable = false)
-    private byte[] password;
+    @Column(length = 100, nullable = false)
+    private String password;
 
     @NotNull
     @Column(length = 30, nullable = false)
@@ -50,7 +47,7 @@ public class UserEntity {
 
     @NotNull
     @Column(nullable = false)
-    private Long credit;
+    private Long credit = 0L;
 
     // 스프링부트 데이터 JPA에서 Enum 타입을 ORDINAL로 처리하면, Enum을 정의한 순서대로 번호를 매깁니다
     // 근데 이러면 사소한 순서 변경에도 DB로 읽고 쓰는 기준이 달라지니 유지보수가 힘듭니다
@@ -58,7 +55,7 @@ public class UserEntity {
     // 따라서 Enum에 code 필드를 기준으로 convert하도록 합니다.
     @NotNull
     @Column(nullable = false)
-    private UserRole role;
+    private AccountType type;
 
     @NotNull
     @Column(nullable = false)

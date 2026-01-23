@@ -1,15 +1,10 @@
 package com.quickticket.quickticket.domain.user.controller;
 
-import com.quickticket.quickticket.domain.user.domain.UserRole;
-import com.quickticket.quickticket.domain.user.dto.UserResponse;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 package com.quickticket.quickticket.domain.user.dto;
 
-import com.quickticket.quickticket.domain.user.domain.UserRole;
+import com.quickticket.quickticket.domain.account.domain.AccountType;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import lombok.Builder;
 
@@ -24,7 +24,7 @@ public class UserResponse {
 
         Long credit,
 
-        UserRole role,
+        AccountType role,
         
         LocalDateTime createdAt
     ) {
@@ -37,7 +37,7 @@ public class UserResponse {
                     .email(user.getEmail())
                     .phone(user.getPhone())
                     .credit(user.getCredit())
-                    .role(user.getRole())
+                    .role(user.getType())
                     .createdAt(user.getCreatedAt())
                     .build();
         }

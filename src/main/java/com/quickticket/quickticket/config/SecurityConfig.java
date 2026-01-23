@@ -1,10 +1,12 @@
 package com.quickticket.quickticket.config;
 
-import com.quickticket.quickticket.domain.user.domain.UserRole;
+import com.quickticket.quickticket.domain.account.domain.AccountType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -29,12 +31,12 @@ public class SecurityConfig {
                                 "/myTicket/**",
                                 "/ticketSuccess/**",
                                 "/cancelTicketSuccess/**"
-                        ).hasRole(UserRole.USER.getName())
+                        ).hasRole(AccountType.USER.getName())
                         .requestMatchers(
                                 "/admin/**",
                                 "/editEvent",
                                 "/newEvent"
-                        ).hasRole(UserRole.ADMIN.getName())
+                        ).hasRole(AccountType.ADMIN.getName())
                         .anyRequest().authenticated()
             )
             .formLogin((formLogin) ->
@@ -55,6 +57,11 @@ public class SecurityConfig {
             );
 
         return http.build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     private final AuthenticationEntryPoint unauthorizedEntryPoint =

@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.user.domain;
+package com.quickticket.quickticket.domain.account.domain;
 
 import com.quickticket.quickticket.shared.converters.OrdinalEnum;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum UserRole implements OrdinalEnum {
+public enum AccountType implements OrdinalEnum {
     USER(0, "USER"),
     ADMIN(1, "ADMIN");
 
