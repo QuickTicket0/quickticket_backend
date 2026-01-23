@@ -1,7 +1,9 @@
 package com.quickticket.quickticket.shared.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 public interface DomainErrorCode {
     String getCode();
-    String getStatus();
+    HttpStatus getStatus();
     String getMessage();
 }

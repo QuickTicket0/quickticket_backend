@@ -21,14 +21,12 @@ public class AccountController {
     }
 
     @PostMapping("/api/account/login")
-    public String login(@ModelAttribute AccountRequest.Login requestDto) {
+    public void login(@ModelAttribute AccountRequest.Login requestDto) {
         var user = userService.findUserByUsername(requestDto.username());
-
-
     }
 
     @PostMapping("/api/account/logout")
-    public String logout() {
+    public void logout() {
 
     }
 
@@ -38,7 +36,7 @@ public class AccountController {
     }
 
     @PostMapping("/api/account/signup")
-    public String signup(@ModelAttribute AccountRequest.Signup requestDto) {
+    public void signup(@ModelAttribute AccountRequest.Signup requestDto) {
         var newUser = userService.signupNewUser(requestDto);
     }
 
