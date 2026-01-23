@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface SeatRepository extends JpaRepository<SeatEntity, SeatId> {
-    List<SeatEntity> getByEvent_EventId(Long eventId);
+    List<SeatEntity> getByPerformance_PerformanceId(Long performanceId);
 }

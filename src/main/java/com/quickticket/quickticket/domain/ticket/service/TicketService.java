@@ -33,10 +33,8 @@ public class TicketService {
         var performanceEntity = ticketEntity.getPerformance();
         var eventEntity = performanceEntity.getEvent();
 
-        var eventId = eventEntity.getEventId();
-
-        Map<Long, Seat> seats = seatService.getSeatsByEventId(eventId);
-        Map<Long, SeatClass> seatClasses = seatService.getSeatClassesByEventId(eventId);
+        Map<Long, Seat> seats = seatService.getSeatsByPerformanceId(performanceEntity.getPerformanceId());
+        Map<Long, SeatClass> seatClasses = seatService.getSeatClassesByEventId(eventEntity.getEventId());
 
         Map<Long, TicketResponse.SeatInfo> seatInfos = seats.entrySet().stream()
                 .collect(Collectors.toMap(
