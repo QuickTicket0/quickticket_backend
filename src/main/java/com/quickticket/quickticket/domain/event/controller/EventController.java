@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.event.controller;
 
 import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import com.quickticket.quickticket.domain.event.dto.EventResponse;
+import com.quickticket.quickticket.domain.event.service.EventService;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,10 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class EventController {
-    @GetMapping("/event")
-    public String event(Model model) {
+    private final EventService service;
+
+    @GetMapping("/event/{eventId}")
+    public String event(Model model, @PathVariable Long eventId) {
         /*
         LocationCommonDto locationInfo = LocationCommonDto.builder()
                 .id(1L)
@@ -63,6 +66,7 @@ public class EventController {
                 .seatClasses(seatClasses)
                 .build();
         */
+        // var details = service.getResponseDetailsById(eventId);
         // 모델에 담기
         //model.addAttribute("ticket", ticketDto);
         return "event";

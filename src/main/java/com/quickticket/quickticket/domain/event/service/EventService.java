@@ -15,4 +15,10 @@ public class EventService {
                 repository.getById(id)
         );
     }
+
+    public EventResponse.ListItem getResponseListItemById(Long id) {
+        return EventResponse.ListItem.from(
+                repository.getById(id)
+        );
+    }
 }

@@ -25,7 +25,19 @@ public class EventResponse {
         String cast,   // 출연자
 
         Blob thumbnailImage
-    ) {}
+    ) {
+        public static ListItem from(EventEntity entity) {
+            return ListItem.builder()
+                    .name(entity.getName())
+                    .description(entity.getDescription())
+                    .category1Name(entity.getCategory1().getName())
+                    .category2Name(entity.getCategory2().getName())
+                    .ageRating(entity.getAgeRating())
+//                    .cast(entity.per)
+                    .thumbnailImage(entity.getThumbnailImage())
+                    .build();
+        }
+    }
 
     /// Event 하나의 상세 정보
     @Builder
