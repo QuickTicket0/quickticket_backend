@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.performance.dto;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -26,12 +27,15 @@ public class PerformanceRequest {
         List<String> performersName,
 
         @NotNull
+        @FutureOrPresent
         LocalDateTime ticketingStartsAt,
 
         @NotNull
+        @FutureOrPresent
         LocalDateTime ticketingEndsAt,
 
         @NotNull
+        @FutureOrPresent
         LocalDateTime performanceStartsAt,
 
         @NotNull
