@@ -1,4 +1,4 @@
-package com.quickticket.quickticket;
+package com.quickticket.quickticket.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
