@@ -13,6 +13,7 @@ public class User {
     private Long id;
     private String username;
     private String realName;
+    private byte[] password;
     private LocalDate birthday;
     private String email;
     private String phone;

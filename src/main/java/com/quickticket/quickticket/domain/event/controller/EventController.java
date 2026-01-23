@@ -17,8 +17,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class EventController {
-    private final EventController controller;
-
     @GetMapping("/event")
     public String event(Model model) {
         /*

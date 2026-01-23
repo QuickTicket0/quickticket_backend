@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.category.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,6 +8,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 /// 공연을 쉽게 분류하고 찾기 위한 카테고리
 @Builder(access = PRIVATE)
+@AllArgsConstructor
 @Getter
 public class Category {
     /// 카테고리 고유 id. Primary key로서 완전히 고유핟

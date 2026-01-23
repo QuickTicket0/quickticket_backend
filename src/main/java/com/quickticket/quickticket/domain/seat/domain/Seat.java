@@ -4,6 +4,7 @@ import com.quickticket.quickticket.domain.payment.credit.domain.CreditTransactio
 import com.quickticket.quickticket.domain.payment.credit.domain.TransactionType;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 ///
 /// Seat는 기본적으로 회차에서 발생한 예매들에서 몇번째 순번을 이 좌석에 지정할건지의 정보도 갖습니다.
 @Builder(access = PRIVATE)
+@AllArgsConstructor
 @Getter
 public class Seat {
     private Long id;

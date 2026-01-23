@@ -36,6 +36,7 @@ public class CreditTransactionEntity {
     @Column(nullable = false)
     private TransactionType transactionType;
 
+    @OneToOne
     @JoinColumn
     private SeatPaymentIssueEntity relatedSeatPaymentIssue;
 
