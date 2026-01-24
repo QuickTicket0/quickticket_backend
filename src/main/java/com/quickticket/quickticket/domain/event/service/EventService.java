@@ -20,12 +20,14 @@ public class EventService {
     public EventResponse.Details getResponseDetailsById(Long id) {
         return EventResponse.Details.from(
                 repository.getById(id)
+                    .orElseThrow(() -> new BusinessException(EventErrorCode.NOT_FOUND))
         );
     }
 
     public EventResponse.ListItem getResponseListItemById(Long id) {
         return EventResponse.ListItem.from(
                 repository.getById(id)
+                    .orElseThrow(() -> new BusinessException(EventErrorCode.NOT_FOUND))
         );
     }
 }
