@@ -20,16 +20,68 @@ import java.util.stream.Collectors;
 public class TicketService {
     private final SeatService seatService;
     private final SeatPaymentService seatPaymentService;
-    private final TicketIssueRepository ticketRepository;
+    private final PerformanceService performanceService;
+    private final UserService userService;
+    private final PaymentMethodService paymentMethodService;
+    private final TicketIssueRepository ticketIssueRepository;
     private final WantingSeatsRepositoryCustom wantingSeatsRepository;
     private final SeatResponseMapper seatMapper;
     private final SeatPaymentIssueResponseMapper seatPaymentIssueMapper;
     private final SeatClassResponseMapper seatClassMapper;
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
+    private final TicketIssueMapper ticketIssueMapper;
+    
+    public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
+        var wantingSeats = dto.wantingSeatsId.stream()
+                .map((id) -> seatService.findSeatById(id))
+                .collect(Collector.toList());
+        
+        var newTicket = Ticket.builder()
+                .performance(performanceService.findPerformanceById(dto.performanceId))
+                .user(userService.findUserById(userId))
+                .paymentMethod(paymentMethodService.findPaymentMethodById(dto.paymentMethodId))
+                .personNumber(dto.personNumber)
+                .wantingSeats(wantingSeats)
+                .status(TicketStatus.PRESET)
+                .build();
+
+        newTicket = ticketIssueMapper.toDomain(ticketIssueRepository.save(ticketIssueMapper.toEntity(newTicket)));
+
+        return newTicket;
+    }
+
+    // redis 캐싱 필요
+    public Long getCurrentWaitingLengthOfPerformance(Long performanceId) {
+        return ticketIssueRepositoryCustom.getMaxWaitingNumberOfPerformance(performanceId);
+    }
+
+    @Transactional
+    public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
+        var waitingNumber = this.getCurrentWaitingLengthOfPerformance(dto.performanceId) + 1;
+        
+        var wantingSeats = dto.wantingSeatsId.stream()
+                .map((id) -> seatService.findSeatById(id))
+                .collect(Collector.toList());
+        
+        var newTicket = Ticket.builder()
+                .performance(performanceService.findPerformanceById(dto.performanceId))
+                .user(userService.findUserById(userId))
+                .paymentMethod(paymentMethodService.findPaymentMethodById(dto.paymentMethodId))
+                .personNumber(dto.personNumber)
+                .waitingNumber(waitingNumber)
+                .wantingSeats(wantingSeats)
+                .status(TicketStatus.WAITING)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        newTicket = ticketIssueMapper.toDomain(ticketIssueRepository.save(ticketIssueMapper.toEntity(newTicket)));
+
+        return newTicket;
+    }
 
     public TicketResponse.Details getResponseDetailsById(Long ticketId) {
-        var ticketEntity = ticketRepository.getById(ticketId);
+        var ticketEntity = ticketIssueRepository.getById(ticketId);
         var performanceEntity = ticketEntity.getPerformance();
         var eventEntity = performanceEntity.getEvent();
 
