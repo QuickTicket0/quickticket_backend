@@ -16,7 +16,9 @@ public class TicketRequest {
         Long paymentMethodId,
 
         @Min(1)
-        Integer personNumber
+        Integer personNumber,
+
+        List<Long> wantingSeatsId
     ) {}
 
     /// 사용자가 예매가 열린 상황에서 실제 예매를 할때
@@ -32,7 +34,9 @@ public class TicketRequest {
 
         @NotNull
         @Min(1)
-        Integer personNumber
+        Integer personNumber,
+
+        List<Long> wantingSeatsId
     ) {}
 
     @Builder
