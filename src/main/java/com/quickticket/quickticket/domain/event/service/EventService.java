@@ -9,6 +9,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EventService {
     private final EventRepository repository;
+    private final EventMapper mapper;
+    
+    public List<Event> getHotEventsTopN(int topN) {
+        return repository.getAllByOrderByViewsDesc(PageRequest.of(0, topN)).stream()
+                .map(mapper::toDomain)
+                .collect(Collector.toList());
+    }
 
     public EventResponse.Details getResponseDetailsById(Long id) {
         return EventResponse.Details.from(
