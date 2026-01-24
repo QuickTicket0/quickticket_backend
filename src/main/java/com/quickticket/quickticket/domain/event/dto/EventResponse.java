@@ -39,6 +39,14 @@ public class EventResponse {
         }
     }
 
+    public record ReviewInfo(
+        Long id,
+        String username,
+        Float userRating,
+        LocalDateTime createdAt,
+        String content
+    ) {}
+
     /// Event 하나의 상세 정보
     @Builder
     public record Details(
@@ -62,7 +70,9 @@ public class EventResponse {
 
         String contactData,
 
-        LocationCommonDto location
+        LocationCommonDto location,
+
+        List<ReviewInfo> reviews
     ) {
         public static Details from(EventEntity event) {
             return Details.builder()
