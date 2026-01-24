@@ -15,6 +15,16 @@ import java.util.ArrayList;
 public class TicketController {
     private final TicketService service;
 
+    @PostMapping("/api/ticket/preset")
+    public void presetTicket(@ModelAttribute TicketRequest.Preset dto, UserDetails user) {
+        service.presetTicket(dto, user.id);
+    }
+
+    @PostMapping("/api/ticket/create")
+    public void createNewTicket(@ModelAttribute TicketRequest.Ticket dto, UserDetails user) {
+        service.createNewTicket(dto, user.id);
+    }
+
     @GetMapping("/ticketSuccess/{ticketId}")
     public String ticketSuccess(Model model, @PathVariable Long ticketId) {
         var details = service.getResponseDetailsById(ticketId);
