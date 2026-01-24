@@ -12,10 +12,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository repository;
+    private final ReviewMapper mapper;
 
     public List<ReviewResponse.EventPageReviewListItem> getEventResponseByEventId(Long eventId) {
         return repository.getByEvent_EventId(eventId).stream()
                 .map(ReviewResponse.EventPageReviewListItem::from)
                 .collect(Collectors.toList());
+    }
+
+    public List<Review> getReviewsByEventId(Long eventId) {
+        return repository.getByEvent_EventId(eventId).stream()
+            .map(mapper::toDomain)
+            .collect(Collectors.toList());
     }
 }
