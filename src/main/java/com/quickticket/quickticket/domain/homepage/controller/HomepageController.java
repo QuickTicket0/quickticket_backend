@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 @RequiredArgsConstructor
 public class HomepageController {
+    private final EventService eventService;
+    
     @GetMapping("/")
     public String homepage(Model model) {
+        var hotEvents = eventService.getHotEventsTopN(10);
+        
         if (true) {
             return "index";
         } else {
