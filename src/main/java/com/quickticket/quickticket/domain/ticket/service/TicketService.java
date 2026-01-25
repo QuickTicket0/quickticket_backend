@@ -62,7 +62,7 @@ public class TicketService {
         
         var wantingSeats = dto.wantingSeatsId.stream()
                 .map((id) -> seatService.findSeatById(id))
-                .collect(Collector.toList());
+                .toList();
         
         var newTicket = Ticket.builder()
                 .performance(performanceService.findPerformanceById(dto.performanceId))
