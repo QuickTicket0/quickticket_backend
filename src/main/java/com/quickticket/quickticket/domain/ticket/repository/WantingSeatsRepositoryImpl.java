@@ -24,4 +24,23 @@ public class WantingSeatsRepositoryImpl implements WantingSeatsRepositoryCustom 
                 .where(wantingSeat.ticketIssue.ticketIssueId.eq(ticketId))
                 .fetch()).orElseThrow();
     }
+
+    @Override
+    public boolean doesWaitingNthWantsTheSeat(Long nth, Long performanceId, Long seatId) {
+        var ticket = QTicketIssueEntity.ticketIssueEntity;
+        var wantingSeat = QWantingSeats.wantingSeats;
+        
+        var fetchOne = queryFactory
+            .selectOne()
+            .from(ticket)
+            .innerJoin(wantingSeat).on(ticket.ticketId.eq(wantingSeat.ticketId))
+            .where(
+                ticket.performanceId.eq(performanceId),
+                ticket.waitingNumber.eq(nth),
+                wantingSeat.seatId.eq(seatId)
+            )
+            .fetchFirst();
+
+        return fetchOne != null;
+    };
 }
