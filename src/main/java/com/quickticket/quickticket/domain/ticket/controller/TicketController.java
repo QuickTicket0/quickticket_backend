@@ -4,6 +4,9 @@ import com.quickticket.quickticket.domain.ticket.dto.TicketRequest;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Request;
+import org.apache.coyote.Response;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,34 +23,32 @@ public class TicketController {
 
     @PostMapping("/api/ticket/preset")
     @ResponseBody
-    public ResponseEntity<TicketResponse.Preset> presetTicket(
+    public void presetTicket(
             @ModelAttribute TicketRequest.Preset dto,
             @AuthenticationPrincipal UserDetails user
     ) {
-        TicketResponse.Preset res = service.presetTicket(dto, user.id);
-        return ResponseEntity.ok(res);
+        TicketRequest.Preset res = service.presetTicket(dto, user.id);
     }
 
 
     @PostMapping("/api/ticket/create")
     @ResponseBody
-    public ResponseEntity<TicketResponse.Ticket> createNewTicket(
+    public void createNewTicket(
             @ModelAttribute TicketRequest.Ticket dto,
             @AuthenticationPrincipal UserDetails user
     ) {
         // service가 TicketResponse.Ticket을 반환한다고 가정
-        TicketResponse.Ticket res = service.createNewTicket(dto, user.id);
-        return ResponseEntity.ok(res);
+        TicketRequest.Ticket res = service.createNewTicket(dto, user.id);
+
     }
 
     @PostMapping("/ticketSuccess/cancel")
     @ResponseBody
-    public ResponseEntity<TicketResponse.Cancel> cancelTicket(
+    public void cancelTicket(
             @ModelAttribute TicketRequest.Cancel dto,
-            @AuthenticationPrincipal UserDetail user
+            @AuthenticationPrincipal UserDetails user
     ){
-        TicketResponse.Cancel res = service.cancelTicket(dto, user.id);
-        return ResponseEntity.ok(res);
+        TicketRequest.Cancel res = service.cancelTicket(dto, user.id);
     }
 
     @GetMapping("/cancelTicketSuccess/{ticketId}")

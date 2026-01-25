@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 public enum TicketStatus implements OrdinalEnum {
     WAITING(0),
-    PRESET(1);
+    PRESET(1),
+    CANCELED(2);
 
     public final int code;
 }

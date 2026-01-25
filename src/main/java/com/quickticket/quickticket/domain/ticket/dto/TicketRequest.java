@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
+import java.util.List;
+
 public class TicketRequest {
     /// 사용자가 예매가 시작되기 전 예매 정보들을 사전 설정할때
     @Builder

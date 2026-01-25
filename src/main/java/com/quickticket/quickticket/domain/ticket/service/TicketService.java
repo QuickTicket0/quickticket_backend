@@ -1,17 +1,26 @@
 package com.quickticket.quickticket.domain.ticket.service;
 
 import com.quickticket.quickticket.domain.payment.method.dto.PaymentMethodCommonDto;
+import com.quickticket.quickticket.domain.payment.method.service.PaymentMethodService;
 import com.quickticket.quickticket.domain.payment.seatPayment.service.SeatPaymentService;
+import com.quickticket.quickticket.domain.performance.service.PerformanceService;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.domain.SeatClass;
 import com.quickticket.quickticket.domain.seat.service.SeatService;
+import com.quickticket.quickticket.domain.ticket.domain.Ticket;
+import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
+import com.quickticket.quickticket.domain.ticket.dto.TicketRequest;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
 import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepository;
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepositoryCustom;
+import com.quickticket.quickticket.domain.user.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,7 +50,7 @@ public class TicketService {
                 .performance(performanceService.findPerformanceById(dto.performanceId))
                 .user(userService.findUserById(userId))
                 .paymentMethod(paymentMethodService.findPaymentMethodById(dto.paymentMethodId))
-                .personNumber(dto.personNumber)
+                .personNumber(dto.personNumber())
                 .wantingSeats(wantingSeats)
                 .status(TicketStatus.PRESET)
                 .build();
@@ -58,17 +67,17 @@ public class TicketService {
 
     @Transactional
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
-        var waitingNumber = this.getCurrentWaitingLengthOfPerformance(dto.performanceId) + 1;
+        var waitingNumber = this.getCurrentWaitingLengthOfPerformance(dto.performanceId()) + 1;
         
-        var wantingSeats = dto.wantingSeatsId.stream()
+        var wantingSeats = dto.wantingSeatsId().stream()
                 .map((id) -> seatService.findSeatById(id))
                 .toList();
         
         var newTicket = Ticket.builder()
-                .performance(performanceService.findPerformanceById(dto.performanceId))
+                .performance(performanceService.findPerformanceById(dto.performanceId()))
                 .user(userService.findUserById(userId))
-                .paymentMethod(paymentMethodService.findPaymentMethodById(dto.paymentMethodId))
-                .personNumber(dto.personNumber)
+                .paymentMethod(paymentMethodService.findPaymentMethodById(dto.paymentMethodId()))
+                .personNumber(dto.personNumber())
                 .waitingNumber(waitingNumber)
                 .wantingSeats(wantingSeats)
                 .status(TicketStatus.WAITING)
@@ -129,4 +138,20 @@ public class TicketService {
                 .wantingSeatsId(wantingSeatsId)
                 .build();
     }
-}
+    @Transactional
+    public TicketRequest.Cancel cancelTicket(TicketRequest.Cancel dto,Long userId) {
+
+        Ticket ticket = ticketIssueRepository.findById(dto.id())
+                .orElseThrow(() -> new IllegalArgumentException("티켓이 없습니다."));
+
+        if (!userId.equals(userId)) {
+            throw new AccessDeniedException("본인 티켓만 취소할 수 있습니다.");
+        }
+        if (ticket.getStatus() == TicketStatus.CANCELED) {
+            throw new IllegalStateException("이미 취소된 티켓입니다.");
+        }
+        ticket.cancel();
+
+        return dto;
+
+    }
