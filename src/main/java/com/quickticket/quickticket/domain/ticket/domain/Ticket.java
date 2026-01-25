@@ -34,7 +34,8 @@ public class Ticket {
     /// 배정받길 원하는 좌석.
     /// 원하는 좌석 내에 모든 좌석들이 배정받는 것은 아닙니다.
     /// 인원이 2명이라면 그 범위 내에서 가장 빨리 선착순이 난 좌석 2개를 차례대로 배정받습니다.
-    private List<Seat> wantingSeats;
+    /// 키: Seat의 id
+    private Map<Long, Seat> wantingSeats;
 
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
     public void assignId(Long id) {
