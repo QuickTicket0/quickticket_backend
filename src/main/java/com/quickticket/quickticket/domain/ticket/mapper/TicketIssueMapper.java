@@ -20,6 +20,15 @@ import java.util.List;
 })
 public interface TicketIssueMapper {
     @Mapping(target = "id", source = "entity.ticketIssueId")
-    @Mapping(target = "wantingSeats", source = "wantingSeatEntities")
+    @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
     Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
+
+    @Named("wantingSeatEntitiesToDomainMap")
+    default Map<Long, Seat> wantingSeatEntitiesToDomainMap(List<SeatEntity> entities) {
+        return entities.stream()
+                .collect(Collectors.toMap(
+                        e -> e.getSeatId(),
+                        SeatMapper::toDomain
+                ));
+    }
 }
