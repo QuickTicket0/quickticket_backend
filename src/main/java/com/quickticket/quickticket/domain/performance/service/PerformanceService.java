@@ -19,15 +19,13 @@ public class PerformanceService {
     private final PerformanceMapper performanceMapper;
 
     public List<Performance> findPerformancesByEventId(Long eventId) {
-        // ✅ 이벤트 존재 검증 (다른 도메인 스타일과도 잘 맞음)
         eventRepository.findById(eventId)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Event not found. id=" + eventId));
+                .orElseThrow(() -> new DomainException(PerformanceErrorCode.NOT_FOUND));
 
         return performanceRepository
                 .findAllByEvent_EventId(eventId)
                 .stream()
                 .map(performanceMapper::toDomain)
-                .collect(Collector.toList());
+                .toList();
     }
 }
