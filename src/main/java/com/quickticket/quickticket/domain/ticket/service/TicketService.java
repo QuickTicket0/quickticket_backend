@@ -47,15 +47,18 @@ public class TicketService {
                 .toList();
 
         var newTicket = Ticket.builder()
-                .performance(performanceService.findPerformanceById(dto.performanceId))
+                .performance(performanceService.findById(dto.performanceId))
                 .user(userService.findUserById(userId))
-                .paymentMethod(paymentMethodService.findPaymentMethodById(dto.paymentMethodId))
+                .paymentMethod(paymentMethodService.findById(dto.paymentMethodId))
                 .personNumber(dto.personNumber())
                 .wantingSeats(wantingSeats)
                 .status(TicketStatus.PRESET)
                 .build();
-
-        newTicket = ticketIssueMapper.toDomain(ticketIssueRepository.save(ticketIssueMapper.toEntity(newTicket)));
+        
+        // 이건 ticket에서 추가시 자동으로 대기 길이 +1 하게 만들어야함
+        // performance.addCurrentWaitingLength();
+        newTicket.allocateToPerformance(performance);
+        newTicket = ticketIssueRepository.saveDomain(newTicket);
 
         return newTicket;
     }
@@ -90,7 +93,7 @@ public class TicketService {
     }
 
     public TicketResponse.Details getResponseDetailsById(Long ticketId) {
-        var ticketEntity = ticketIssueRepository.getById(ticketId);
+        var ticketEntity = ticketIssueRepository.getEntityById(ticketId);
         var performanceEntity = ticketEntity.getPerformance();
         var eventEntity = performanceEntity.getEvent();
 
@@ -141,19 +144,36 @@ public class TicketService {
 
     @Transactional
     public TicketRequest.Cancel cancelTicket(TicketRequest.Cancel dto, Long userId) {
-
         Ticket ticket = ticketIssueRepository.findById(dto.id())
-                .orElseThrow(() -> new IllegalArgumentException("티켓이 없습니다."));
+                .orElseThrow(() -> new DomainException("예매 정보가 없습니다."));
 
-        if (!userId.equals(userId)) {
-            throw new AccessDeniedException("본인 티켓만 취소할 수 있습니다.");
+        if (!ticket.getUser().getId().equals(userId)) {
+            throw new DomainException("본인 티켓만 취소할 수 있습니다.");
         }
         if (ticket.getStatus() == TicketStatus.CANCELED) {
-            throw new IllegalStateException("이미 취소된 티켓입니다.");
+            throw new DomainException("이미 취소된 티켓입니다.");
         }
         ticket.cancel();
-
+        // ticket.cancel() 메서드 안에서 호출해야할듯
+        // this.allocateSeatsToNextTickets(ticket);
+        ticketIssueRepository.saveDomain(ticket);
+        
         return dto;
-
     }
+
+    // private void allocateSeatsToNextTickets(Ticket ticket) {
+    //     var waitingNth = ticket.getWaitingNumber() + 1;
+    //     var waitingLength = ticket.getPerformance().getWaitingLength();
+    //     var performanceId = ticket.getPerformance().getId();
+    //     var seatId = 0;
+        
+    //     while (waitingNth <= waitingLength) {
+    //         if (wantingSeatsRepository.doesWaitingNthWantsTheSeat(waitingNth, performanceId, seatId)) {
+    //             break;
+    //         }
+            
+    //         waitingNth++;
+    // // 도메인객체 변하면 saveDomain() 호출하기
+    //     }
+    // }
 }
