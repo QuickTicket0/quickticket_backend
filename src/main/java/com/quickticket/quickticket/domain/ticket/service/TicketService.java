@@ -40,12 +40,12 @@ public class TicketService {
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
     private final TicketIssueMapper ticketIssueMapper;
-    
+
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
         var wantingSeats = dto.wantingSeatsId.stream()
                 .map((id) -> seatService.findSeatById(id))
                 .toList();
-        
+
         var newTicket = Ticket.builder()
                 .performance(performanceService.findPerformanceById(dto.performanceId))
                 .user(userService.findUserById(userId))
@@ -68,11 +68,11 @@ public class TicketService {
     @Transactional
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
         var waitingNumber = this.getCurrentWaitingLengthOfPerformance(dto.performanceId()) + 1;
-        
+
         var wantingSeats = dto.wantingSeatsId().stream()
                 .map((id) -> seatService.findSeatById(id))
                 .toList();
-        
+
         var newTicket = Ticket.builder()
                 .performance(performanceService.findPerformanceById(dto.performanceId()))
                 .user(userService.findUserById(userId))
@@ -138,8 +138,9 @@ public class TicketService {
                 .wantingSeatsId(wantingSeatsId)
                 .build();
     }
+
     @Transactional
-    public TicketRequest.Cancel cancelTicket(TicketRequest.Cancel dto,Long userId) {
+    public TicketRequest.Cancel cancelTicket(TicketRequest.Cancel dto, Long userId) {
 
         Ticket ticket = ticketIssueRepository.findById(dto.id())
                 .orElseThrow(() -> new IllegalArgumentException("티켓이 없습니다."));
@@ -155,3 +156,4 @@ public class TicketService {
         return dto;
 
     }
+}

@@ -37,6 +37,16 @@ public class Ticket {
     /// 키: Seat의 id
     private Map<Long, Seat> wantingSeats;
 
+    public boolean isCanceled() {
+        return this.status == TicketStatus.CANCELED || this.canceledAt != null;
+    }
+
+    public void cancel() {
+        if (isCanceled()) throw new IllegalStateException("이미 취소된 티켓입니다.");
+        this.status = TicketStatus.CANCELED;
+        this.canceledAt = LocalDateTime.now();
+    }
+
     /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
     public void assignId(Long id) {
         if (this.id != null) throw new IllegalStateException();
