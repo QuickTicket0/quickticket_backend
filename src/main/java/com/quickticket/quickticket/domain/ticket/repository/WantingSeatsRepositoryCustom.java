@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface WantingSeatsRepositoryCustom {
     List<Long> getSeatIdsByTicketIssueId(Long ticketId);
+
+    boolean doesWaitingNthWantsTheSeat(Long nth, Long performanceId, Long seatId);
 }
