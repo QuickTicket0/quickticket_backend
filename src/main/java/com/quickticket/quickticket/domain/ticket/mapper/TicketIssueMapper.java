@@ -31,4 +31,14 @@ public interface TicketIssueMapper {
                         SeatMapper::toDomain
                 ));
     }
+        
+    @Mapping(target = "ticketIssueId", source = "id")
+    TicketIssueEntity toEntity(Ticket domain);
+        
+    default List<SeatEntity> wantingSeatsToEntity(Ticket domain) {
+        return domain.wantingSeats.entrySet().stream()
+                .map(e -> e.getValue())
+                .map(SeatMapper::toEntity)
+                .toList();
+    }
 }
