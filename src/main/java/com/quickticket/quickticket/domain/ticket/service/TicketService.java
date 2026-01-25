@@ -35,7 +35,7 @@ public class TicketService {
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
         var wantingSeats = dto.wantingSeatsId.stream()
                 .map((id) -> seatService.findSeatById(id))
-                .collect(Collector.toList());
+                .toList();
         
         var newTicket = Ticket.builder()
                 .performance(performanceService.findPerformanceById(dto.performanceId))
@@ -101,11 +101,11 @@ public class TicketService {
                 .distinct()
                 .map(seatClasses::get)
                 .map(seatClassMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
 
         var seatPayments = seatPaymentService.getSeatPaymentsByTicketIssueId(ticketId).stream()
                 .map(seatPaymentIssueMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
 
         return TicketResponse.Details.builder()
                 .id(ticketEntity.getTicketIssueId())
