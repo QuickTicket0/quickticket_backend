@@ -4,6 +4,7 @@ import com.quickticket.quickticket.domain.event.repository.EventRepository;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;
 import com.quickticket.quickticket.domain.performance.repository.PerformanceRepository;
+import com.quickticket.quickticket.shared.exceptions.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,11 @@ public class PerformanceService {
                 .stream()
                 .map(performanceMapper::toDomain)
                 .toList();
+    }
+
+    public Performance getDomainById(Long performanceId) {
+        var performanceEntity = performanceRepository.getReferenceById(performanceId);
+
+        return performanceMapper.toDomain(performanceEntity);
     }
 }

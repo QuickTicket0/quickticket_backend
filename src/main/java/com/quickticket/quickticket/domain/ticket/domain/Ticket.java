@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /// 한 Performance에 대해 사용자가 여러개의 좌석을 선택하고 선착순을 기다리는 예매 정보
 ///

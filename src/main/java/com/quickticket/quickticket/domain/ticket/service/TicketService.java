@@ -15,6 +15,7 @@ import com.quickticket.quickticket.domain.ticket.mapper.*;
 import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepository;
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepositoryCustom;
 import com.quickticket.quickticket.domain.user.service.UserService;
+import com.quickticket.quickticket.shared.exceptions.DomainException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -39,17 +40,19 @@ public class TicketService {
     private final SeatClassResponseMapper seatClassMapper;
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
-    private final TicketIssueMapper ticketIssueMapper;
 
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
-        var wantingSeats = dto.wantingSeatsId.stream()
-                .map((id) -> seatService.findSeatById(id))
-                .toList();
+        var wantingSeats = dto.wantingSeatsId().stream()
+                .map((id) -> seatService.getDomainById(id, dto.performanceId()))
+                .collect(Collectors.toMap(
+                        Seat::getId,
+                        seat -> seat
+                ));
 
         var newTicket = Ticket.builder()
-                .performance(performanceService.findById(dto.performanceId))
-                .user(userService.findUserById(userId))
-                .paymentMethod(paymentMethodService.findById(dto.paymentMethodId))
+                .performance(performanceService.getDomainById(dto.performanceId()))
+                .user(userService.getDomainById(userId))
+                .paymentMethod(paymentMethodService.getDomainById(dto.paymentMethodId()))
                 .personNumber(dto.personNumber())
                 .wantingSeats(wantingSeats)
                 .status(TicketStatus.PRESET)
@@ -63,23 +66,21 @@ public class TicketService {
         return newTicket;
     }
 
-    // redis 캐싱 필요
-    public Long getCurrentWaitingLengthOfPerformance(Long performanceId) {
-        return ticketIssueRepositoryCustom.getMaxWaitingNumberOfPerformance(performanceId);
-    }
-
     @Transactional
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
-        var waitingNumber = this.getCurrentWaitingLengthOfPerformance(dto.performanceId()) + 1;
+        var waitingNumber = ticketIssueRepository.getLastWaitingNumberOfPerformance(dto.performanceId()) + 1;
 
         var wantingSeats = dto.wantingSeatsId().stream()
-                .map((id) -> seatService.findSeatById(id))
-                .toList();
+                .map((id) -> seatService.getDomainById(id, dto.performanceId()))
+                .collect(Collectors.toMap(
+                        Seat::getId,
+                        seat -> seat
+                ));
 
         var newTicket = Ticket.builder()
-                .performance(performanceService.findPerformanceById(dto.performanceId()))
-                .user(userService.findUserById(userId))
-                .paymentMethod(paymentMethodService.findPaymentMethodById(dto.paymentMethodId()))
+                .performance(performanceService.getDomainById(dto.performanceId()))
+                .user(userService.getDomainById(userId))
+                .paymentMethod(paymentMethodService.getDomainById(dto.paymentMethodId()))
                 .personNumber(dto.personNumber())
                 .waitingNumber(waitingNumber)
                 .wantingSeats(wantingSeats)
@@ -87,13 +88,12 @@ public class TicketService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        newTicket = ticketIssueMapper.toDomain(ticketIssueRepository.save(ticketIssueMapper.toEntity(newTicket)));
-
+        newTicket = ticketIssueRepository.saveDomain(newTicket);
         return newTicket;
     }
 
     public TicketResponse.Details getResponseDetailsById(Long ticketId) {
-        var ticketEntity = ticketIssueRepository.getEntityById(ticketId);
+        var ticketEntity = ticketIssueRepository.getReferenceById(ticketId);
         var performanceEntity = ticketEntity.getPerformance();
         var eventEntity = performanceEntity.getEvent();
 
@@ -144,14 +144,13 @@ public class TicketService {
 
     @Transactional
     public TicketRequest.Cancel cancelTicket(TicketRequest.Cancel dto, Long userId) {
-        Ticket ticket = ticketIssueRepository.findById(dto.id())
-                .orElseThrow(() -> new DomainException("예매 정보가 없습니다."));
+        Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
 
         if (!ticket.getUser().getId().equals(userId)) {
-            throw new DomainException("본인 티켓만 취소할 수 있습니다.");
+            throw new DomainException(TicketErrorCode.USER_NOT_EQUAL);
         }
         if (ticket.getStatus() == TicketStatus.CANCELED) {
-            throw new DomainException("이미 취소된 티켓입니다.");
+            throw new DomainException(TicketErrorCode.CANCELED_ALREADY);
         }
         ticket.cancel();
         // ticket.cancel() 메서드 안에서 호출해야할듯

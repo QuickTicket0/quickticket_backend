@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.seat.service;
 
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.domain.SeatClass;
+import com.quickticket.quickticket.domain.seat.entity.SeatId;
 import com.quickticket.quickticket.domain.seat.mapper.SeatClassMapper;
 import com.quickticket.quickticket.domain.seat.mapper.SeatMapper;
 import com.quickticket.quickticket.domain.seat.repository.SeatAreaRepository;
@@ -36,5 +37,11 @@ public class SeatService {
                         e -> e.getId().getSeatId(),
                         seatMapper::toDomain
                 ));
+    }
+
+    public Seat getDomainById(Long seatId, Long performanceId) {
+        var seatEntity = seatRepository.getReferenceById(new SeatId(seatId, performanceId));
+
+        return seatMapper.toDomain(seatEntity);
     }
 }

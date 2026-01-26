@@ -1,8 +1,10 @@
 package com.quickticket.quickticket.domain.ticket.controller;
 
+import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.dto.TicketRequest;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.service.TicketService;
+import com.quickticket.quickticket.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Request;
 import org.apache.coyote.Response;
@@ -25,30 +27,27 @@ public class TicketController {
     @ResponseBody
     public void presetTicket(
             @ModelAttribute TicketRequest.Preset dto,
-            @AuthenticationPrincipal UserDetails user
+            @AuthenticationPrincipal User user
     ) {
-        TicketRequest.Preset res = service.presetTicket(dto, user.id);
+        Ticket res = service.presetTicket(dto, user.getId());
     }
-
 
     @PostMapping("/api/ticket/create")
     @ResponseBody
     public void createNewTicket(
             @ModelAttribute TicketRequest.Ticket dto,
-            @AuthenticationPrincipal UserDetails user
+            @AuthenticationPrincipal User user
     ) {
-        // service가 TicketResponse.Ticket을 반환한다고 가정
-        TicketRequest.Ticket res = service.createNewTicket(dto, user.id);
-
+        Ticket res = service.createNewTicket(dto, user.getId());
     }
 
     @PostMapping("/ticketSuccess/cancel")
     @ResponseBody
     public void cancelTicket(
             @ModelAttribute TicketRequest.Cancel dto,
-            @AuthenticationPrincipal UserDetails user
-    ){
-        TicketRequest.Cancel res = service.cancelTicket(dto, user.id);
+            @AuthenticationPrincipal User user
+    ) {
+        Ticket res = service.cancelTicket(dto, user.getId());
     }
 
     @GetMapping("/cancelTicketSuccess/{ticketId}")
@@ -56,13 +55,13 @@ public class TicketController {
         var details = service.getResponseDetailsById(ticketId);
 
         model.addAttribute(details);
-
         return "cancelTicketSuccess";
     }
 
     @GetMapping("/myPage/tickets")
     public String myTickets(Model model) {
         var list = new ArrayList<TicketResponse.ListItem>();
+
         model.addAttribute(list);
         return "myPage/myTickets";
     }
@@ -72,11 +71,11 @@ public class TicketController {
         var details = service.getResponseDetailsById(ticketId);
 
         model.addAttribute(details);
-
         return "myPage/myTicket";
     }
 
     @GetMapping("/registerTicket")
     public String registerTicket(Model model) {
-        return "registerTicket"; }
+        return "registerTicket";
+    }
 }

@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PerformanceRepository extends JpaRepository<PerformanceEntity, Long> {
-
-    List<PerformanceEntity>
-    findAllByEvent_EventIdOrderByPerformanceStartsAtAscPerformanceNthAsc(Long eventId);
+    List<PerformanceEntity> findAllByEvent_EventId(Long eventId);
 }

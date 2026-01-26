@@ -27,9 +27,15 @@ public class UserService implements UserDetailsService {
         return UserResponse.Details.from(entity);
     }
 
-    public User findUserByUsername(String username) {
+    public User getDomainByUsername(String username) {
         var user = repository.getByUsername(username)
                 .orElseThrow(() -> new DomainException(UserErrorCode.NOT_FOUND));
+
+        return mapper.toDomain(user);
+    }
+
+    public User getDomainById(Long userId) {
+        var user = repository.getReferenceById(userId);
 
         return mapper.toDomain(user);
     }
