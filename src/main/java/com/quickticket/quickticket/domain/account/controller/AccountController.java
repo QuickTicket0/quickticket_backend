@@ -4,6 +4,7 @@ import com.quickticket.quickticket.domain.account.dto.AccountRequest;
 import com.quickticket.quickticket.domain.user.domain.User;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class AccountController {
     }
 
     @PostMapping("/api/account/logout")
-    public void logout() {
+    public void logout(@AuthenticationPrincipal User user) {
 
     }
 
