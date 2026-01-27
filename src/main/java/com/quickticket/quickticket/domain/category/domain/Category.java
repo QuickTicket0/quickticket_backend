@@ -7,7 +7,6 @@ import lombok.Getter;
 import static lombok.AccessLevel.PRIVATE;
 
 /// 공연을 쉽게 분류하고 찾기 위한 카테고리
-@Builder(access = PRIVATE)
 @AllArgsConstructor
 @Getter
 public class Category {
@@ -21,27 +20,12 @@ public class Category {
 
         this.name = newName;
     }
-    
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
 
-        this.id = id;
-    }
-
-    public static Category create(String name) {
+    @Builder(builderMethodName = "create")
+    public Category(String name) {
         validateName(name);
 
-        return Category.builder()
-            .name(name)
-            .build();
-    }
-
-    public static Category recreate(Long id, String name) {
-        return Category.builder()
-            .id(id)
-            .name(name)
-            .build();
+        this.name = name;
     }
 
     private static void validateName(String newName) {

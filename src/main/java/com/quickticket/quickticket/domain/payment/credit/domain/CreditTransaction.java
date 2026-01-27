@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import static lombok.AccessLevel.PRIVATE;
 
 /// Credit 원장에서 잔고 변동 각각을 나타내는 데이터
-@Builder(access = PRIVATE)
 @Getter
 public class CreditTransaction {
     private Long id;
@@ -25,43 +24,17 @@ public class CreditTransaction {
     /// 변동이 발생한 시점입니다
     private LocalDateTime createdAt;
 
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
-
-        this.id = id;
-    }
-
-    public static CreditTransaction create(
+    @Builder(builderMethodName = "create")
+    public CreditTransaction(
         TransactionType transactionType,
         Long changeAmount,
-        Long balanceAfter,
-        LocalDateTime createdAt
+        Long balanceAfter
     ) {
         validateBalanceAfter(balanceAfter);
 
-        return CreditTransaction.builder()
-            .type(transactionType)
-            .changeAmount(changeAmount)
-            .balanceAfter(balanceAfter)
-            .createdAt(createdAt)
-            .build();
-    }
-
-    public static CreditTransaction recreate(
-        Long id,
-        TransactionType transactionType,
-        Long changeAmount,
-        Long balanceAfter,
-        LocalDateTime createdAt
-    ) {
-        return CreditTransaction.builder()
-            .id(id)
-            .type(transactionType)
-            .changeAmount(changeAmount)
-            .balanceAfter(balanceAfter)
-            .createdAt(createdAt)
-            .build();
+        this.type = transactionType;
+        this.changeAmount = changeAmount;
+        this.balanceAfter = balanceAfter;
     }
 
     private static void validateBalanceAfter(Long balanceAfter) {

@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.ticket.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
+import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class WantingSeatsRepositoryImpl implements WantingSeatsRepositoryCustom 
             .where(
                 ticket.performance.performanceId.eq(performanceId),
                 ticket.waitingNumber.eq(nth),
+                ticket.status.ne(TicketStatus.CANCELED),
                 wantingSeat.seat.id.seatId.eq(seatId)
             )
             .fetchFirst();

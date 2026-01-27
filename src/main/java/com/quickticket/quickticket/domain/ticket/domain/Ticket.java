@@ -39,19 +39,45 @@ public class Ticket {
     private Map<Long, Seat> wantingSeats;
 
     public boolean isCanceled() {
-        return this.status == TicketStatus.CANCELED || this.canceledAt != null;
+        return this.status == TicketStatus.CANCELED
+                || this.canceledAt != null;
     }
 
     public void cancel() {
         if (isCanceled()) throw new IllegalStateException("이미 취소된 티켓입니다.");
+
         this.status = TicketStatus.CANCELED;
         this.canceledAt = LocalDateTime.now();
     }
 
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
+    public void ticketToPerformance(Performance performance) {
+        this.performance = performance;
+        this.status = TicketStatus.WAITING;
+        this.waitingNumber = performance.getTicketWaitingLength() + 1;
+        this.createdAt = LocalDateTime.now();
 
-        this.id = id;
+        performance.addOneToWaitingLength();
+    }
+
+    public void allocateSeat(Seat seat) {
+        seat.setWaitingNumberTo(this.waitingNumber);
+
+        this.updateAllocationStatus();
+    }
+
+    private void updateAllocationStatus() {
+        var seatAllocatedToThisCount = 0;
+
+        for (var seat: this.wantingSeats.values()) {
+            if (seat.getCurrentWaitingNumber() == this.waitingNumber) {
+                seatAllocatedToThisCount++;
+            }
+        }
+
+        if (seatAllocatedToThisCount == this.wantingSeats.size()) {
+            this.status = TicketStatus.SEAT_ALLOCATED_ALL;
+        } else {
+            this.status = TicketStatus.SEAT_ALLOCATED_PARTIAL;
+        }
     }
 }

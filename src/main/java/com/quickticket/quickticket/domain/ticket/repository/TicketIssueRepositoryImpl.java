@@ -2,12 +2,18 @@ package com.quickticket.quickticket.domain.ticket.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.performance.entity.QPerformanceEntity;
+import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
+import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
+import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.TicketIssueMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,7 +21,7 @@ public abstract class TicketIssueRepositoryImpl implements TicketIssueRepository
     private final JPAQueryFactory queryFactory;
     private final TicketIssueMapper ticketIssueMapper;
 
-    // redis 캐싱 필요
+    // redis 캐싱 필요..?
     @Override
     public Long getLastWaitingNumberOfPerformance(Long performanceId) {
         var performance = QPerformanceEntity.performanceEntity;
@@ -31,21 +37,41 @@ public abstract class TicketIssueRepositoryImpl implements TicketIssueRepository
 
     @Override
     public Ticket getDomainById(Long ticketId) {
-        var seat = QSeatEntity.seatEntity;
-        var wantingSeat = QWantingSeatsEntity.wantingSeatsEntity;
-
         var ticketEntity = this.getReferenceById(ticketId);
+        var wantingSeatEntities = getSeatEntitiesByTicketIssueId(ticketId);
 
-        var wantingSeatEntities = queryFactory
+        return ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+    }
+
+    @Override
+    public Ticket getDomainByWaitingNumber(Long waitingNumber, Long performanceId) {
+        var ticket = QTicketIssueEntity.ticketIssueEntity;
+
+        var ticketEntity = queryFactory
+                .selectFrom(ticket)
+                .where(
+                        ticket.waitingNumber.eq(waitingNumber),
+                        ticket.performance.performanceId.eq(performanceId)
+                )
+                .fetchOne();
+
+        var wantingSeatEntities = getSeatEntitiesByTicketIssueId(ticketEntity.getTicketIssueId());
+
+        return ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+    }
+
+    private List<SeatEntity> getSeatEntitiesByTicketIssueId(Long ticketId) {
+        var wantingSeat = QWantingSeatsEntity.wantingSeatsEntity;
+        var seat = QSeatEntity.seatEntity;
+
+        return queryFactory
                 .select(seat)
                 .from(wantingSeat)
                 .where(
-                        wantingSeat.ticketIssue.ticketIssueId.eq(ticketId)
-                        .and(wantingSeat.seat.id.seatId.eq(seat.id.seatId))
+                        wantingSeat.ticketIssue.ticketIssueId.eq(ticketId),
+                        wantingSeat.seat.id.seatId.eq(seat.id.seatId)
                 )
                 .fetch();
-
-        return ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
     }
 
     @Override

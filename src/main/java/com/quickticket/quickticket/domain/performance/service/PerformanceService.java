@@ -35,4 +35,8 @@ public class PerformanceService {
 
         return performanceMapper.toDomain(performanceEntity);
     }
+
+    public Performance saveDomain(Performance domain) {
+        return performanceRepository.saveDomain(domain);
+    }
 }

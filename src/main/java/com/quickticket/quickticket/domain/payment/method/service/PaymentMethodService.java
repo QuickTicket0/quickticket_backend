@@ -19,7 +19,7 @@ public class PaymentMethodService {
     public List<PaymentMethodResponse.Details> getResponseDetailsByUserId(Long userId) {
         return paymentMethodRepository.getByUser_Id(userId).stream()
                 .map(PaymentMethodResponse.Details::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public PaymentMethod getDomainById(Long methodId) {

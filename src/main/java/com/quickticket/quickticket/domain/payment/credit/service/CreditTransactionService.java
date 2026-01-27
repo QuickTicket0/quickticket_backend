@@ -16,6 +16,6 @@ public class CreditTransactionService {
     public List<CreditTransactionResponse.Details> getResponseDetailsByUserId(Long userId) {
         return repository.getByUser_Id(userId).stream()
                 .map(CreditTransactionResponse.Details::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

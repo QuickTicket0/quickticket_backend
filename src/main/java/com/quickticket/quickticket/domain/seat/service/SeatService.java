@@ -44,4 +44,8 @@ public class SeatService {
 
         return seatMapper.toDomain(seatEntity);
     }
+
+    public Seat saveDomain(Seat domain) {
+        return seatRepository.saveDomain(domain);
+    }
 }

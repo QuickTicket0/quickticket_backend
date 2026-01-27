@@ -17,11 +17,4 @@ public class Review {
     private Float userRating;
     private LocalDateTime createdAt;
     private String content;
-
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
-
-        this.id = id;
-    }
 }

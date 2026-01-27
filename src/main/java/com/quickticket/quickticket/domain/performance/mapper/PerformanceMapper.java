@@ -13,4 +13,8 @@ public interface PerformanceMapper {
     @Mapping(target = "id", source = "performanceId")
     @Mapping(target = "nth", source = "performanceNth")
     Performance toDomain(PerformanceEntity entity);
+
+    @Mapping(target = "performanceId", source = "id")
+    @Mapping(target = "performanceNth", source = "nth")
+    PerformanceEntity toEntity(Performance entity);
 }

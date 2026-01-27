@@ -2,6 +2,8 @@ package com.quickticket.quickticket.domain.ticket.service;
 
 import com.quickticket.quickticket.domain.payment.method.dto.PaymentMethodCommonDto;
 import com.quickticket.quickticket.domain.payment.method.service.PaymentMethodService;
+import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssue;
+import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssueStatus;
 import com.quickticket.quickticket.domain.payment.seatPayment.service.SeatPaymentService;
 import com.quickticket.quickticket.domain.performance.service.PerformanceService;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
@@ -50,26 +52,20 @@ public class TicketService {
                 ));
 
         var newTicket = Ticket.builder()
-                .performance(performanceService.getDomainById(dto.performanceId()))
                 .user(userService.getDomainById(userId))
                 .paymentMethod(paymentMethodService.getDomainById(dto.paymentMethodId()))
                 .personNumber(dto.personNumber())
                 .wantingSeats(wantingSeats)
                 .status(TicketStatus.PRESET)
                 .build();
-        
-        // 이건 ticket에서 추가시 자동으로 대기 길이 +1 하게 만들어야함
-        // performance.addCurrentWaitingLength();
-        newTicket.allocateToPerformance(performance);
-        newTicket = ticketIssueRepository.saveDomain(newTicket);
 
+        newTicket = ticketIssueRepository.saveDomain(newTicket);
         return newTicket;
     }
 
     @Transactional
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
         var waitingNumber = ticketIssueRepository.getLastWaitingNumberOfPerformance(dto.performanceId()) + 1;
-
         var wantingSeats = dto.wantingSeatsId().stream()
                 .map((id) -> seatService.getDomainById(id, dto.performanceId()))
                 .collect(Collectors.toMap(
@@ -77,18 +73,20 @@ public class TicketService {
                         seat -> seat
                 ));
 
+        var performance = performanceService.getDomainById(dto.performanceId());
         var newTicket = Ticket.builder()
-                .performance(performanceService.getDomainById(dto.performanceId()))
                 .user(userService.getDomainById(userId))
                 .paymentMethod(paymentMethodService.getDomainById(dto.paymentMethodId()))
                 .personNumber(dto.personNumber())
                 .waitingNumber(waitingNumber)
                 .wantingSeats(wantingSeats)
-                .status(TicketStatus.WAITING)
-                .createdAt(LocalDateTime.now())
                 .build();
 
+        // 비어있는 좌석 있을시 바로 배정
+        newTicket.ticketToPerformance(performance);
+
         newTicket = ticketIssueRepository.saveDomain(newTicket);
+        performance = performanceService.saveDomain(performance);
         return newTicket;
     }
 
@@ -143,7 +141,7 @@ public class TicketService {
     }
 
     @Transactional
-    public TicketRequest.Cancel cancelTicket(TicketRequest.Cancel dto, Long userId) {
+    public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
         Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
 
         if (!ticket.getUser().getId().equals(userId)) {
@@ -152,27 +150,54 @@ public class TicketService {
         if (ticket.getStatus() == TicketStatus.CANCELED) {
             throw new DomainException(TicketErrorCode.CANCELED_ALREADY);
         }
+
+        if (
+            ticket.getStatus() == TicketStatus.SEAT_ALLOCATED_PARTIAL
+            || ticket.getStatus() == TicketStatus.SEAT_ALLOCATED_ALL
+        ) {
+            for (var seat: ticket.getWantingSeats().values()) {
+                if (seat.getCurrentWaitingNumber() == ticket.getWaitingNumber()) {
+                    this.allocateSeatToNextTicket(seat);
+                }
+            }
+        }
+
         ticket.cancel();
-        // ticket.cancel() 메서드 안에서 호출해야할듯
-        // this.allocateSeatsToNextTickets(ticket);
+
         ticketIssueRepository.saveDomain(ticket);
-        
-        return dto;
+        return ticket;
     }
 
-    // private void allocateSeatsToNextTickets(Ticket ticket) {
-    //     var waitingNth = ticket.getWaitingNumber() + 1;
-    //     var waitingLength = ticket.getPerformance().getWaitingLength();
-    //     var performanceId = ticket.getPerformance().getId();
-    //     var seatId = 0;
+     private void allocateSeatToNextTicket(Seat seat) {
+         var waitingNth = seat.getCurrentWaitingNumber() + 1;
+         var waitingLength = seat.getPerformance().getTicketWaitingLength();
+         var performanceId = seat.getPerformance().getId();
         
-    //     while (waitingNth <= waitingLength) {
-    //         if (wantingSeatsRepository.doesWaitingNthWantsTheSeat(waitingNth, performanceId, seatId)) {
-    //             break;
-    //         }
+         while (waitingNth <= waitingLength) {
+             if (wantingSeatsRepository.doesWaitingNthWantsTheSeat(waitingNth, performanceId, seat.getId())) {
+                 var currentWaitingTicket = ticketIssueRepository.getDomainByWaitingNumber(waitingNth, performanceId);
+                 this._allocateSeatToTicket(seat, currentWaitingTicket);
+                 break;
+             }
             
-    //         waitingNth++;
-    // // 도메인객체 변하면 saveDomain() 호출하기
-    //     }
-    // }
+             waitingNth++;
+         }
+
+         seat.setWaitingNumberTo(waitingNth);
+         seatService.saveDomain(seat);
+     }
+
+     private void _allocateSeatToTicket(Seat seat, Ticket ticket) {
+         ticket.allocateSeat(seat);
+
+         var seatPayment = SeatPaymentIssue.createAndPay()
+                         .seat(seat)
+                         .user(ticket.getUser())
+                         .ticketIssue(ticket)
+                         .amount(seat.getSeatClass().getPrice())
+                         .build();
+
+         seatPaymentService.saveDomain(seatPayment);
+         ticketIssueRepository.saveDomain(ticket);
+     }
 }

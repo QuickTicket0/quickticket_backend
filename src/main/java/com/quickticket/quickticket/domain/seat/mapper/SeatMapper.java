@@ -14,4 +14,7 @@ import org.mapstruct.Mapping;
 public interface SeatMapper {
     @Mapping(target = "id", source = "id.seatId")
     Seat toDomain(SeatEntity entity);
+
+    @Mapping(target = "id.seatId", source = "id")
+    SeatEntity toEntity(Seat domain);
 }

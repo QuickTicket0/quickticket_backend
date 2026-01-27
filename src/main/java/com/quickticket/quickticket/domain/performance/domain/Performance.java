@@ -32,10 +32,7 @@ public class Performance {
     /// 대기 순번이 올라가도 웨이팅 길이를 바꾸지 않습니다. 취소표가 나든 배정받든 전체 예매의 수만 나타냅니다.
     private Long ticketWaitingLength;
 
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
-
-        this.id = id;
+    public void addOneToWaitingLength() {
+        this.nth += 1;
     }
 }

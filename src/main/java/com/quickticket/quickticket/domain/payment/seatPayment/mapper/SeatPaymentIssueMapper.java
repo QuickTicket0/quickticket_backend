@@ -19,4 +19,7 @@ import org.mapstruct.Mapping;
 public interface SeatPaymentIssueMapper {
     @Mapping(target = "id", source = "paymentId")
     SeatPaymentIssue toDomain(SeatPaymentIssueEntity entity);
+
+    @Mapping(target = "paymentId", source = "id")
+    SeatPaymentIssueEntity toEntity(SeatPaymentIssue domain);
 }

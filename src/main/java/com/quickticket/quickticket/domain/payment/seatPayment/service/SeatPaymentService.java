@@ -12,12 +12,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SeatPaymentService {
-    private final SeatPaymentIssueRepository repository;
-    private final SeatPaymentIssueMapper mapper;
+    private final SeatPaymentIssueRepository seatPaymentRepository;
+    private final SeatPaymentIssueMapper seatPaymentMapper;
 
     public List<SeatPaymentIssue> getSeatPaymentsByTicketIssueId(Long ticketId) {
-        return repository.getByTicketIssue_TicketIssueId(ticketId).stream()
-                .map(mapper::toDomain)
-                .collect(Collectors.toList());
+        return seatPaymentRepository.getByTicketIssue_TicketIssueId(ticketId).stream()
+                .map(seatPaymentMapper::toDomain)
+                .toList();
+    }
+
+    public SeatPaymentIssue saveDomain(SeatPaymentIssue domain) {
+        return seatPaymentRepository.saveDomain(domain);
     }
 }

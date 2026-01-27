@@ -32,11 +32,4 @@ public class Event {
     /// 기획사 문의 연락처. 전화번호거나 이메일 등 전부 가능
     private String contactData;
     private Location location;
-
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
-
-        this.id = id;
-    }
 }

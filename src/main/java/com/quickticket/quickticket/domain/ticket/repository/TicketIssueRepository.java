@@ -10,5 +10,7 @@ public interface TicketIssueRepository extends JpaRepository<TicketIssueEntity, 
 
     Ticket getDomainById(Long ticketId);
 
+    Ticket getDomainByWaitingNumber(Long waitingNumber, Long performanceId);
+
     Ticket saveDomain(Ticket domain);
 }
