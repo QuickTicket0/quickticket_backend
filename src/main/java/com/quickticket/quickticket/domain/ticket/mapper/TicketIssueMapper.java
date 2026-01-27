@@ -8,6 +8,7 @@ import com.quickticket.quickticket.domain.seat.mapper.SeatMapper;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
 import com.quickticket.quickticket.domain.user.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -22,27 +23,30 @@ import java.util.stream.Collectors;
         PaymentMethodMapper.class,
         SeatMapper.class
 })
-public interface TicketIssueMapper {
+@RequiredArgsConstructor
+public abstract class TicketIssueMapper {
+    private final SeatMapper seatMapper;
+
     @Mapping(target = "id", source = "entity.ticketIssueId")
     @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
-    Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
+    abstract Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
 
     @Named("wantingSeatEntitiesToDomainMap")
-    default Map<Long, Seat> wantingSeatEntitiesToDomainMap(List<SeatEntity> entities) {
+    public Map<Long, Seat> wantingSeatEntitiesToDomainMap(List<SeatEntity> entities) {
         return entities.stream()
                 .collect(Collectors.toMap(
-                        e -> e.getSeatId(),
-                        SeatMapper::toDomain
+                        e -> e.getId().getSeatId(),
+                        seatMapper::toDomain
                 ));
     }
         
     @Mapping(target = "ticketIssueId", source = "id")
-    TicketIssueEntity toEntity(Ticket domain);
+    abstract TicketIssueEntity toEntity(Ticket domain);
         
-    default List<SeatEntity> wantingSeatsToEntity(Ticket domain) {
+    public List<SeatEntity> wantingSeatsToEntity(Ticket domain) {
         return domain.getWantingSeats().entrySet().stream()
                 .map(e -> e.getValue())
-                .map(SeatMapper::toEntity)
+                .map(seatMapper::toEntity)
                 .toList();
     }
 }
