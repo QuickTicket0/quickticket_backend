@@ -4,6 +4,8 @@ import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethod;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.user.domain.User;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import java.util.Map;
 /// 따라서 Ticket이란 객체는 반드시 예매중인 Performance의 선착순으로 들어가 있다는 보장이 없습니다.
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Ticket {
     private Long id;
     private Performance performance;

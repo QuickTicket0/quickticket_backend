@@ -2,6 +2,8 @@ package com.quickticket.quickticket.domain.review.domain;
 
 import com.quickticket.quickticket.domain.event.domain.Event;
 import com.quickticket.quickticket.domain.user.domain.User;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Review {
     private Long id;
     private Event event;

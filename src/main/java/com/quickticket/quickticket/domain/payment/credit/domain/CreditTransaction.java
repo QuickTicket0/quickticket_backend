@@ -2,6 +2,8 @@ package com.quickticket.quickticket.domain.payment.credit.domain;
 
 import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssue;
 import com.quickticket.quickticket.domain.user.domain.User;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,6 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 /// Credit 원장에서 잔고 변동 각각을 나타내는 데이터
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class CreditTransaction {
     private Long id;
     private User user;

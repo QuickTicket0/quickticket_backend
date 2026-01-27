@@ -4,7 +4,9 @@ import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.user.domain.User;
+import com.quickticket.quickticket.shared.annotations.Default;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 ///
 /// SeatPaymentIssue는 Ticket에서 원하는 자리에 선착순이 올때 비로소 생성됩니다.
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class SeatPaymentIssue {
     private Long id;
     private Ticket ticketIssue;

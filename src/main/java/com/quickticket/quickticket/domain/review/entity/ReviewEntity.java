@@ -4,8 +4,7 @@ import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "REVIEW")
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

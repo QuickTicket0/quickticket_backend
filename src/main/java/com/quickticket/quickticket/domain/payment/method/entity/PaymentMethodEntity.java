@@ -4,15 +4,15 @@ import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethodTyp
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "PAYMENT_METHOD")
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentMethodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

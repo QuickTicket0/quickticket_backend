@@ -1,6 +1,8 @@
 package com.quickticket.quickticket.domain.user.domain;
 
 import com.quickticket.quickticket.domain.account.domain.AccountType;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +17,7 @@ import java.util.List;
 /// 비밀번호나 인증 등은 account 도메인에서 관할하고, user 도메인은 사용자 데이터 처리에 집중합니다.
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class User implements UserDetails {
     private Long id;
     private String username;

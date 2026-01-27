@@ -6,8 +6,7 @@ import com.quickticket.quickticket.domain.seat.domain.SeatClass;
 import com.quickticket.quickticket.domain.seat.domain.SeatStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 // DB의 복합 primary key는 JPA에서 @IdClass 혹은 @EmbeddedId로 구현할 수 있습니다
 // @EmbeddedId는 키로 작용하는 필드들의 묶음 객체로 나타내서 다룰 필요가 있을 때,
@@ -16,7 +15,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "SEAT")
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SeatEntity {
     @EmbeddedId
     private SeatId id;

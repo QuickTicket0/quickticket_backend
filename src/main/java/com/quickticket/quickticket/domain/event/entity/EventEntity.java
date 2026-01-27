@@ -5,15 +5,15 @@ import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import com.quickticket.quickticket.domain.location.entity.LocationEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Blob;
 
 @Entity
 @Table(name = "EVENT")
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

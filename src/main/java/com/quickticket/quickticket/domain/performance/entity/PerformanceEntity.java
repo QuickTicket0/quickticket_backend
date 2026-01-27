@@ -3,8 +3,7 @@ package com.quickticket.quickticket.domain.performance.entity;
 import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -15,7 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "PERFORMANCE")
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,8 +5,7 @@ import com.quickticket.quickticket.domain.payment.seatPayment.entity.SeatPayment
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -14,7 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "CREDIT_TRANSACTION")
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreditTransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

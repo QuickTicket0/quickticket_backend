@@ -1,5 +1,7 @@
 package com.quickticket.quickticket.domain.payment.method.domain;
 
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,6 +10,7 @@ import java.time.LocalDate;
 /// 결제 수단중 카드 결제 수단의 데이터
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class CardPayment extends PaymentMethod {
     private String cardNumber;
     private String cvs;

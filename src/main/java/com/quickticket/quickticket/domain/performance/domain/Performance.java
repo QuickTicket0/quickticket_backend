@@ -1,6 +1,8 @@
 package com.quickticket.quickticket.domain.performance.domain;
 
 import com.quickticket.quickticket.domain.event.domain.Event;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,6 +15,7 @@ import java.util.List;
 /// 또 예매에 대한 것들, 가령 예매 순번같은건 전적으로 회차에 대해 이루어지고 순서가 매겨집니다.
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Performance {
     private Long id;
     private Event event;

@@ -2,6 +2,8 @@ package com.quickticket.quickticket.domain.event.domain;
 
 import com.quickticket.quickticket.domain.category.domain.Category;
 import com.quickticket.quickticket.domain.location.domain.Location;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +14,7 @@ import java.sql.Blob;
 /// Performance는 Event에서 시간별로 파생되는 회차 단위입니다.
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Event {
     private Long id;
     /// 공연이 보여지는 이름 (엔드 앤드 등)

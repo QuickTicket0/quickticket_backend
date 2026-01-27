@@ -3,13 +3,13 @@ package com.quickticket.quickticket.domain.seat.entity;
 import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "SEAT_AREA")
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SeatAreaEntity {
     @EmbeddedId
     private SeatAreaId id;
