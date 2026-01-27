@@ -63,4 +63,8 @@ public class EventEntity {
 
     @Column(length = 30)
     private String contactData;
+
+    @NotNull
+    @Column(nullable = false)
+    private Long views = 0L;
 }

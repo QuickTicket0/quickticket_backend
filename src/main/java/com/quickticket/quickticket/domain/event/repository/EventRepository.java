@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long> {
-    Optional<EventEntity> getOneById(Long id);
+    Optional<EventEntity> getOneByEventId(Long id);
 
     List<EventEntity> getAllByOrderByViewsDesc(Pageable pageable);
 }

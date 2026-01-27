@@ -35,4 +35,5 @@ public class Event {
     /// 기획사 문의 연락처. 전화번호거나 이메일 등 전부 가능
     private String contactData;
     private Location location;
+    private Long views;
 }
