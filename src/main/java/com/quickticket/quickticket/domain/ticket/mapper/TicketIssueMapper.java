@@ -29,7 +29,7 @@ public abstract class TicketIssueMapper {
 
     @Mapping(target = "id", source = "entity.ticketIssueId")
     @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
-    abstract Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
+    public abstract Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
 
     @Named("wantingSeatEntitiesToDomainMap")
     public Map<Long, Seat> wantingSeatEntitiesToDomainMap(List<SeatEntity> entities) {
@@ -41,7 +41,7 @@ public abstract class TicketIssueMapper {
     }
         
     @Mapping(target = "ticketIssueId", source = "id")
-    abstract TicketIssueEntity toEntity(Ticket domain);
+    public abstract TicketIssueEntity toEntity(Ticket domain);
         
     public List<SeatEntity> wantingSeatsToEntity(Ticket domain) {
         return domain.getWantingSeats().entrySet().stream()
