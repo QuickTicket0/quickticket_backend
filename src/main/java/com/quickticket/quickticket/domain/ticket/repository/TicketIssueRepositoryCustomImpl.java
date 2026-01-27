@@ -8,7 +8,10 @@ import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
+import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.TicketIssueMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +20,23 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public abstract class TicketIssueRepositoryImpl implements TicketIssueRepository {
+public class TicketIssueRepositoryCustomImpl implements TicketIssueRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private final TicketIssueMapper ticketIssueMapper;
+
+    @PersistenceContext
+    private final EntityManager em;
+
+    private TicketIssueEntity getEntityById(Long ticketId) {
+        var ticket = QTicketIssueEntity.ticketIssueEntity;
+
+        return queryFactory
+                .selectFrom(ticket)
+                .where(
+                        ticket.ticketIssueId.eq(ticketId)
+                )
+                .fetchOne();
+    }
 
     // redis 캐싱 필요..?
     @Override
@@ -37,7 +54,7 @@ public abstract class TicketIssueRepositoryImpl implements TicketIssueRepository
 
     @Override
     public Ticket getDomainById(Long ticketId) {
-        var ticketEntity = this.getReferenceById(ticketId);
+        var ticketEntity = this.getEntityById(ticketId);
         var wantingSeatEntities = getSeatEntitiesByTicketIssueId(ticketId);
 
         return ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
@@ -79,7 +96,11 @@ public abstract class TicketIssueRepositoryImpl implements TicketIssueRepository
         var wantingSeatEntities = ticketIssueMapper.wantingSeatsToEntity(domain);
         var ticketEntity = ticketIssueMapper.toEntity(domain);
 
-        this.save(ticketEntity);
+        if (ticketEntity.getTicketIssueId() == null) {
+            em.persist(ticketEntity);
+        } else {
+            em.merge(ticketEntity);
+        }
 
         return ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
     }

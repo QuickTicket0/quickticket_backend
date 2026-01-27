@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class WantingSeatsRepositoryImpl implements WantingSeatsRepositoryCustom {
+public class WantingSeatsRepositoryCustomImpl implements WantingSeatsRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override

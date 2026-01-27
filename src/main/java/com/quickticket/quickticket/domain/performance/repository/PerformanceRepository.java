@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface PerformanceRepository extends JpaRepository<PerformanceEntity, Long> {
+public interface PerformanceRepository
+        extends JpaRepository<PerformanceEntity, Long>, PerformanceRepositoryCustom {
     List<PerformanceEntity> findAllByEvent_EventId(Long eventId);
-
-    Performance saveDomain(Performance domain);
 }

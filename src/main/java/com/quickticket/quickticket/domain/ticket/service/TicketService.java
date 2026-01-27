@@ -15,6 +15,7 @@ import com.quickticket.quickticket.domain.ticket.dto.TicketRequest;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
 import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepository;
+import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepository;
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepositoryCustom;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
@@ -36,7 +37,7 @@ public class TicketService {
     private final UserService userService;
     private final PaymentMethodService paymentMethodService;
     private final TicketIssueRepository ticketIssueRepository;
-    private final WantingSeatsRepositoryCustom wantingSeatsRepository;
+    private final WantingSeatsRepository wantingSeatsRepository;
     private final SeatResponseMapper seatMapper;
     private final SeatPaymentIssueResponseMapper seatPaymentIssueMapper;
     private final SeatClassResponseMapper seatClassMapper;
