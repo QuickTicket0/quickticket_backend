@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: redis
   jakson:
     serialization:
       write-dates-as-timestamps: false
