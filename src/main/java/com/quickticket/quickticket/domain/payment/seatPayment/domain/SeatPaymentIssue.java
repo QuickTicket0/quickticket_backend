@@ -47,6 +47,8 @@ public class SeatPaymentIssue {
     private void pay() {
         var paymentMethod = this.ticketIssue.getPaymentMethod();
 
+        // TODO 각 결제수단별 지불 로직 구현하기
+
         switch (paymentMethod.getType()) {
             case CREDIT -> {
 

@@ -152,6 +152,7 @@ public class TicketService {
             throw new DomainException(TicketErrorCode.CANCELED_ALREADY);
         }
 
+        // TODO 좌석 다음 표 배정 로직에 batch 처리 구현
         if (
             ticket.getStatus() == TicketStatus.SEAT_ALLOCATED_PARTIAL
             || ticket.getStatus() == TicketStatus.SEAT_ALLOCATED_ALL
