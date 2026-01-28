@@ -10,6 +10,7 @@ import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
     // TODO Performance 엔티티에 currentWaitingLength를 저장하지 말고,
     //  Ticket의 대기순번중 가장 큰 값을 구해서 DB 캐시에 저장
     @Override
+    @Cacheable(value = "performanceTicketWaitingLength", key = "#performanceId")
     public Long getWaitingLengthOfPerformance(Long performanceId) {
         var ticket = QTicketIssueEntity.ticketIssueEntity;
 

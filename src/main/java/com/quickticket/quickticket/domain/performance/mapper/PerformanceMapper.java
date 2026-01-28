@@ -17,7 +17,7 @@ import org.mapstruct.Mapping;
 public interface PerformanceMapper {
     @Mapping(target = "id", source = "performanceId")
     @Mapping(target = "nth", source = "performanceNth")
-    Performance toDomain(PerformanceEntity entity);
+    Performance toDomain(PerformanceEntity entity, Long ticketWaitingLength);
 
     @Mapping(target = "performanceId", source = "id")
     @Mapping(target = "performanceNth", source = "nth")
