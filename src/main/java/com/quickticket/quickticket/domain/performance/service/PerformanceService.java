@@ -39,4 +39,8 @@ public class PerformanceService {
     public Performance saveDomain(Performance domain) {
         return performanceRepository.saveDomain(domain);
     }
+
+    public Long getWaitingLengthOfPerformance(Long performanceId) {
+        return performanceRepository.getWaitingLengthOfPerformance(performanceId);
+    }
 }

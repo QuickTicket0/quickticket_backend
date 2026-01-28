@@ -38,21 +38,6 @@ public class TicketIssueRepositoryCustomImpl implements TicketIssueRepositoryCus
                 .fetchOne();
     }
 
-    // TODO Performance 엔티티에 currentWaitingLength를 저장하지 말고,
-    //  Ticket의 대기순번중 가장 큰 값을 구해서 DB 캐시에 저장
-    @Override
-    public Long getLastWaitingNumberOfPerformance(Long performanceId) {
-        var performance = QPerformanceEntity.performanceEntity;
-
-        var query = queryFactory
-                .select(performance.ticketWaitingLength)
-                .from(performance)
-                .where(performance.performanceId.eq(performanceId))
-                .fetchOne();
-
-        return query;
-    }
-
     @Override
     public Ticket getDomainById(Long ticketId) {
         var ticketEntity = this.getEntityById(ticketId);

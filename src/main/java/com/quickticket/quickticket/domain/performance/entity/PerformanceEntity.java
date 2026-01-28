@@ -56,6 +56,4 @@ public class PerformanceEntity {
     @NotNull
     @Column(nullable = false)
     private LocalTime runningTime;
-
-    private Long ticketWaitingLength;
 }

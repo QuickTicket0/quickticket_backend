@@ -66,7 +66,7 @@ public class TicketService {
 
     @Transactional
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
-        var waitingNumber = ticketIssueRepository.getLastWaitingNumberOfPerformance(dto.performanceId()) + 1;
+        var waitingNumber = performanceService.getWaitingLengthOfPerformance(dto.performanceId()) + 1;
         var wantingSeats = dto.wantingSeatsId().stream()
                 .map((id) -> seatService.getDomainById(id, dto.performanceId()))
                 .collect(Collectors.toMap(
