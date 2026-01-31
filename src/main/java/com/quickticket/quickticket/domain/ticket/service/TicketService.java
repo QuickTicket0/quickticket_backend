@@ -67,6 +67,7 @@ public class TicketService {
     }
 
     @Transactional
+    @DistributedLock(key = "#dto.performanceId()")
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
         var waitingNumber = performanceService.getWaitingLengthOfPerformance(dto.performanceId()) + 1;
         var wantingSeats = dto.wantingSeatsId().stream()
@@ -144,6 +145,7 @@ public class TicketService {
     }
 
     @Transactional
+    @DistributedLock(key = "#dto.performanceId()")
     public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
         Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
 
