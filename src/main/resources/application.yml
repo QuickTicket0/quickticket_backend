@@ -1,4 +1,6 @@
 spring:
+  session:
+    store-type: redis
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
