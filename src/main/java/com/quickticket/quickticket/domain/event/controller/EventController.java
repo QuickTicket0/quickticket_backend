@@ -1,31 +1,31 @@
 package com.quickticket.quickticket.domain.event.controller;
 
-import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import com.quickticket.quickticket.domain.event.dto.EventResponse;
 import com.quickticket.quickticket.domain.event.service.EventService;
-import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.service.PerformanceService;
-import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class EventController {
+
     private final EventService service;
     private final PerformanceService performanceService;
 
     @GetMapping("/event/{eventId}")
     public String event(Model model, @PathVariable Long eventId) {
+
         /*
+        =========================
+        📌 더미 데이터 (참고용)
+        =========================
         LocationCommonDto locationInfo = LocationCommonDto.builder()
                 .id(1L)
                 .name("수원실내체육관")
@@ -33,7 +33,6 @@ public class EventController {
                 .siGunGu("수원시")
                 .build();
 
-        // 공연 기본 정보 (EventInfo)
         TicketResponse.Details.TicketEventInfo eventInfo =
                 TicketResponse.Details.TicketEventInfo.builder()
                         .name("2025-2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원")
@@ -45,34 +44,12 @@ public class EventController {
                                 .name("수원실내체육관")
                                 .build())
                         .build();
-
-        // 회차 정보 (PerformanceInfo)
-        TicketResponse.Details.TicketPerformanceInfo performanceInfo =
-                TicketResponse.Details.TicketPerformanceInfo.builder()
-                        .nth(1)
-                        .performanceStartsAt(LocalDateTime.of(2026, 1, 24, 18, 0)) // 1회 18시
-                        .runningTime(LocalTime.of(2, 0)) // 120분
-                        .build();
-
-        // 좌석 가격 정보 (SeatClasses)
-        List<TicketResponse.Details.TicketSeatClassInfo> seatClasses = List.of(
-                new TicketResponse.Details.TicketSeatClassInfo(1L, "VIP석", 154000L),
-                new TicketResponse.Details.TicketSeatClassInfo(2L, "R석", 143000L),
-                new TicketResponse.Details.TicketSeatClassInfo(3L, "S석", 132000L)
-        );
-
-        // 전체 DTO
-        TicketResponse.Details ticketDto = TicketResponse.Details.builder()
-                .id(null) // 상세페이지라 예매ID는 없음
-                .event(eventInfo)
-                .performance(performanceInfo)
-                .seatClasses(seatClasses)
-                .build(); //
-
         */
-        // var details = service.getResponseDetailsById(eventId);
-        // 모델에 담기
-        //model.addAttribute("ticket", ticketDto);
+
+        // =========================
+        // ✅ 실제 구현 파트
+        // =========================
+
         // 1️⃣ 이벤트 상세 정보
         EventResponse.Details eventDetails =
                 service.getResponseDetailsById(eventId);
@@ -81,14 +58,20 @@ public class EventController {
         List<Performance> performances =
                 performanceService.findPerformancesByEventId(eventId);
 
+        // 3️⃣ 모델에 담기
         model.addAttribute("event", eventDetails);
         model.addAttribute("performances", performances);
+
         return "event";
     }
 
     @GetMapping("/admin/event")
     public String adminEvent(Model model) {
+
         /*
+        =========================
+        📌 더미 이벤트 목록 (참고용)
+        =========================
         List<EventResponse.ListItem> eventList = List.of(
                 EventResponse.ListItem.builder()
                         .name("2026 이창섭 단독 콘서트 〈EndAnd〉")
@@ -108,6 +91,10 @@ public class EventController {
                         .build()
         );
         */
+
+        // =========================
+        // ✅ 실제 구현 파트
+        // =========================
         List<EventResponse.ListItem> eventList =
                 service.getEventListForAdmin();
 
@@ -117,8 +104,9 @@ public class EventController {
     }
 
     @GetMapping("/editEvent/{eventId}")
-    public String editEvent(Model model, @PathVariable String eventId) {
+    public String editEvent(Model model, @PathVariable Long eventId) {
 
+        // 이벤트 수정 페이지용 상세 데이터
         EventResponse.Details eventDetails =
                 service.getResponseDetailsById(eventId);
 
@@ -129,7 +117,6 @@ public class EventController {
 
     @GetMapping("/newEvent")
     public String newEvent(Model model) {
-
         return "admin/newEvent";
     }
 }
