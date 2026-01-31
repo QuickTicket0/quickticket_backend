@@ -155,6 +155,9 @@ public class TicketService {
         if (ticket.getStatus() == TicketStatus.CANCELED) {
             throw new DomainException(TicketErrorCode.CANCELED_ALREADY);
         }
+        if (ticket.getStatus() == TicketStatus.PRESET) {
+            // throw new DomainException(TicketErrorCode.NOT_ALLOCATED);
+        }
 
         // TODO 좌석 다음 표 배정 로직에 batch 처리 구현
         if (
