@@ -7,12 +7,14 @@ import com.quickticket.quickticket.domain.performance.repository.PerformanceRepo
 import com.quickticket.quickticket.shared.exceptions.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collector;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PerformanceService {
 
     private final PerformanceRepository performanceRepository;
@@ -36,6 +38,7 @@ public class PerformanceService {
         return performanceMapper.toDomain(performanceEntity);
     }
 
+    @Transactional
     public Performance saveDomain(Performance domain) {
         return performanceRepository.saveDomain(domain);
     }

@@ -19,10 +19,10 @@ import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsReposito
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepositoryCustom;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TicketService {
     private final SeatService seatService;
     private final SeatPaymentService seatPaymentService;
@@ -44,6 +45,7 @@ public class TicketService {
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
 
+    @Transactional
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
         var wantingSeats = dto.wantingSeatsId().stream()
                 .map((id) -> seatService.getDomainById(id, dto.performanceId()))

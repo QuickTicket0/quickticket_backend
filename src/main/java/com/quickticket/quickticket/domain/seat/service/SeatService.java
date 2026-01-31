@@ -10,12 +10,14 @@ import com.quickticket.quickticket.domain.seat.repository.SeatClassRepository;
 import com.quickticket.quickticket.domain.seat.repository.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SeatService {
     private final SeatRepository seatRepository;
     private final SeatClassRepository seatClassRepository;
@@ -45,7 +47,9 @@ public class SeatService {
         return seatMapper.toDomain(seatEntity);
     }
 
+    @Transactional
     public Seat saveDomain(Seat domain) {
+
         return seatRepository.saveDomain(domain);
     }
 }

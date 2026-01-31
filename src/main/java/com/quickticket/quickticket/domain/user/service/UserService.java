@@ -12,9 +12,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final UserMapper mapper;
@@ -48,6 +50,7 @@ public class UserService implements UserDetailsService {
         return mapper.toDomain(user);
     }
 
+    @Transactional
     public User signupNewUser(AccountRequest.Signup signupDto) {
         var usernameExists = repository.getByUsername(signupDto.username()).isPresent();
 
