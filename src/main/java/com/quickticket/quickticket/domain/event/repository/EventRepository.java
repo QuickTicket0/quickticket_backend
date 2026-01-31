@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long> {
     Optional<EventEntity> getById(Long id);
+    
+    Optional<AgeRating> getAgeRatingById(Long id);
 
     List<EventEntity> getAllByOrderByViewsDesc(Pageable pageable);
 }
