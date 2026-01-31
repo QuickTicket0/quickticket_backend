@@ -1,4 +1,10 @@
 spring:
+  cache:
+    type: redis
+  jakson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: Asia/Seoul
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQLDialect

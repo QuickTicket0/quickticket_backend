@@ -4,12 +4,17 @@ import com.quickticket.quickticket.domain.payment.method.domain.CardPayment;
 import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethod;
 import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
 import com.quickticket.quickticket.domain.user.mapper.UserMapper;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {
+@Mapper(
+    componentModel = "spring",
+    builder = @Builder(disableBuilder = true),
+    uses = {
         UserMapper.class
-})
+    }
+)
 public interface PaymentMethodMapper {
     default PaymentMethod toDomain(PaymentMethodEntity entity) {
         switch (entity.getType()) {

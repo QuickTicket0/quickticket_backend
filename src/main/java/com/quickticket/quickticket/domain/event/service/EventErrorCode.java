@@ -1,3 +1,10 @@
+package com.quickticket.quickticket.domain.event.service;
+
+import com.quickticket.quickticket.shared.exceptions.DomainErrorCode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
 @AllArgsConstructor
 @Getter
 public enum EventErrorCode implements DomainErrorCode {

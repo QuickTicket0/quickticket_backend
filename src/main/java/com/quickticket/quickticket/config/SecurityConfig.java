@@ -48,7 +48,9 @@ public class SecurityConfig {
             )
             .logout((logoutConfig) ->
                     logoutConfig
+                            .logoutUrl("/api/account/logout")
                             .logoutSuccessUrl("/")
+                            .invalidateHttpSession(true)
             )
             .exceptionHandling((exceptionConfig) ->
                 exceptionConfig

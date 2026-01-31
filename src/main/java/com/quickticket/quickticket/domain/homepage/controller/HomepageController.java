@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.homepage.controller;
 
+import com.quickticket.quickticket.domain.event.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

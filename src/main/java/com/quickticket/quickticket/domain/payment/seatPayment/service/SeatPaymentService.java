@@ -5,19 +5,25 @@ import com.quickticket.quickticket.domain.payment.seatPayment.mapper.SeatPayment
 import com.quickticket.quickticket.domain.payment.seatPayment.repository.SeatPaymentIssueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SeatPaymentService {
-    private final SeatPaymentIssueRepository repository;
-    private final SeatPaymentIssueMapper mapper;
+    private final SeatPaymentIssueRepository seatPaymentRepository;
+    private final SeatPaymentIssueMapper seatPaymentMapper;
 
     public List<SeatPaymentIssue> getSeatPaymentsByTicketIssueId(Long ticketId) {
-        return repository.getByTicketIssue_TicketIssueId(ticketId).stream()
-                .map(mapper::toDomain)
-                .collect(Collectors.toList());
+        return seatPaymentRepository.getByTicketIssue_TicketIssueId(ticketId).stream()
+                .map(seatPaymentMapper::toDomain)
+                .toList();
+    }
+    @Transactional
+    public SeatPaymentIssue saveDomain(SeatPaymentIssue domain) {
+        return seatPaymentRepository.saveDomain(domain);
     }
 }

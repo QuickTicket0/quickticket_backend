@@ -3,10 +3,8 @@ package com.quickticket.quickticket.domain.seat.domain;
 import com.quickticket.quickticket.domain.payment.credit.domain.CreditTransaction;
 import com.quickticket.quickticket.domain.payment.credit.domain.TransactionType;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +13,8 @@ import static lombok.AccessLevel.PRIVATE;
 /// Performance를 기준으로 파생되는 한 좌석의 정보
 ///
 /// Seat는 기본적으로 회차에서 발생한 예매들에서 몇번째 순번을 이 좌석에 지정할건지의 정보도 갖습니다.
-@Builder(access = PRIVATE)
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Seat {
     private Long id;
     private String name;
@@ -34,42 +31,24 @@ public class Seat {
     /// 그건 그 대기순번의 Ticket이 이 좌석을 선택했느냐에 달렸습니다.
     private Long currentWaitingNumber;
 
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
+    public void setWaitingNumberTo(Long waitingNumber) {
+        this.currentWaitingNumber = waitingNumber;
 
-        this.id = id;
+        if (this.currentWaitingNumber > performance.getTicketWaitingLength()) {
+            this.status = SeatStatus.AVAILABLE;
+        }
     }
 
-    public static Seat create(
+    @Builder(builderMethodName = "create")
+    public Seat(
         Performance performance,
         String name,
         SeatClass seatClass,
         SeatArea seatArea
     ) {
-        return Seat.builder()
-                .performance(performance)
-                .name(name)
-                .seatClass(seatClass)
-                .seatArea(seatArea)
-                .build();
-    }
-
-    public static Seat recreate(
-            Long id,
-            String name,
-            Performance performance,
-            SeatClass seatClass,
-            SeatArea seatArea,
-            Long currentWaitingNumber
-    ) {
-        return Seat.builder()
-                .id(id)
-                .name(name)
-                .performance(performance)
-                .seatClass(seatClass)
-                .seatArea(seatArea)
-                .currentWaitingNumber(currentWaitingNumber)
-                .build();
+        this.performance = performance;
+        this.name = name;
+        this.seatClass = seatClass;
+        this.seatArea = seatArea;
     }
 }

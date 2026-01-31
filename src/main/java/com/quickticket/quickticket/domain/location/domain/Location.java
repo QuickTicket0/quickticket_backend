@@ -1,11 +1,14 @@
 package com.quickticket.quickticket.domain.location.domain;
 
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 /// 주로 Event가 열리는 공연장을 나타내기 위한 장소 데이터
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Location {
     private Long id;
     /// 공연장 이름
@@ -23,11 +26,4 @@ public class Location {
     private String doroName;
     /// 공연장측 전화번호
     private String phone;
-
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
-
-        this.id = id;
-    }
 }

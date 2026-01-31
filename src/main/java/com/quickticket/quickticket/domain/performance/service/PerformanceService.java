@@ -5,21 +5,21 @@ import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;
 import com.quickticket.quickticket.domain.performance.repository.PerformanceRepository;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collector;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PerformanceService {
 
     private final PerformanceRepository performanceRepository;
     private final EventRepository eventRepository;
     private final PerformanceMapper performanceMapper;
-    private final PerformanceRoundRepository roundRepository;
 
     public List<Performance> findPerformancesByEventId(Long eventId) {
         eventRepository.findById(eventId)
@@ -31,13 +31,19 @@ public class PerformanceService {
                 .map(performanceMapper::toDomain)
                 .toList();
     }
-    @Transactional
-    public void createNextRounds() {
-        // DB 조회 → 중복 생성 방지 → 저장
+
+    public Performance getDomainById(Long performanceId) {
+        var performanceEntity = performanceRepository.getReferenceById(performanceId);
+
+        return performanceMapper.toDomain(performanceEntity);
     }
 
     @Transactional
-    public void updateRoundStatusByTime() {
-        // 현재 시간 기준으로 OPEN/CLOSED/END 상태 변경
+    public Performance saveDomain(Performance domain) {
+        return performanceRepository.saveDomain(domain);
+    }
+
+    public Long getWaitingLengthOfPerformance(Long performanceId) {
+        return performanceRepository.getWaitingLengthOfPerformance(performanceId);
     }
 }

@@ -4,10 +4,13 @@ import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethod;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.user.domain.User;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /// 한 Performance에 대해 사용자가 여러개의 좌석을 선택하고 선착순을 기다리는 예매 정보
 ///
@@ -15,6 +18,7 @@ import java.util.List;
 /// 따라서 Ticket이란 객체는 반드시 예매중인 Performance의 선착순으로 들어가 있다는 보장이 없습니다.
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Ticket {
     private Long id;
     private Performance performance;
@@ -38,19 +42,45 @@ public class Ticket {
     private Map<Long, Seat> wantingSeats;
 
     public boolean isCanceled() {
-        return this.status == TicketStatus.CANCELED || this.canceledAt != null;
+        return this.status == TicketStatus.CANCELED
+                || this.canceledAt != null;
     }
 
     public void cancel() {
         if (isCanceled()) throw new IllegalStateException("이미 취소된 티켓입니다.");
+
         this.status = TicketStatus.CANCELED;
         this.canceledAt = LocalDateTime.now();
     }
 
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
+    public void ticketToPerformance(Performance performance) {
+        this.performance = performance;
+        this.status = TicketStatus.WAITING;
+        this.waitingNumber = performance.getTicketWaitingLength() + 1;
+        this.createdAt = LocalDateTime.now();
 
-        this.id = id;
+        performance.addOneToWaitingLength();
+    }
+
+    public void allocateSeat(Seat seat) {
+        seat.setWaitingNumberTo(this.waitingNumber);
+
+        this.updateAllocationStatus();
+    }
+
+    private void updateAllocationStatus() {
+        var seatAllocatedToThisCount = 0;
+
+        for (var seat: this.wantingSeats.values()) {
+            if (seat.getCurrentWaitingNumber() == this.waitingNumber) {
+                seatAllocatedToThisCount++;
+            }
+        }
+
+        if (seatAllocatedToThisCount == this.wantingSeats.size()) {
+            this.status = TicketStatus.SEAT_ALLOCATED_ALL;
+        } else {
+            this.status = TicketStatus.SEAT_ALLOCATED_PARTIAL;
+        }
     }
 }

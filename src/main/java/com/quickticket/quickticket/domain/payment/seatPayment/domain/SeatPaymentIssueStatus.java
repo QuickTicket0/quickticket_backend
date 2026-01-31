@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum SeatPaymentIssueStatus implements OrdinalEnum {
     FAILED(0),
-    SUCCESS(0);
+    SUCCESS(1);
 
     private final int code;
 }

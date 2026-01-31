@@ -1,6 +1,8 @@
 package com.quickticket.quickticket.domain.performance.domain;
 
 import com.quickticket.quickticket.domain.event.domain.Event;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,6 +15,7 @@ import java.util.List;
 /// 또 예매에 대한 것들, 가령 예매 순번같은건 전적으로 회차에 대해 이루어지고 순서가 매겨집니다.
 @Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class Performance {
     private Long id;
     private Event event;
@@ -32,10 +35,7 @@ public class Performance {
     /// 대기 순번이 올라가도 웨이팅 길이를 바꾸지 않습니다. 취소표가 나든 배정받든 전체 예매의 수만 나타냅니다.
     private Long ticketWaitingLength;
 
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
-
-        this.id = id;
+    public void addOneToWaitingLength() {
+        this.nth += 1;
     }
 }

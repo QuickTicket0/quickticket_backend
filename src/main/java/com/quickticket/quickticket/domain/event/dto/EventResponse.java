@@ -7,6 +7,8 @@ import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import lombok.Builder;
 
 import java.sql.Blob;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class EventResponse {
     /// 어드민 대시보드중 Event가 리스트에 나열될때 필요한 간략한 정보들

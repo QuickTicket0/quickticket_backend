@@ -4,6 +4,9 @@ import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.user.domain.User;
+import com.quickticket.quickticket.shared.annotations.Default;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,8 +16,8 @@ import java.time.LocalDateTime;
 /// 그 결제에 관한 정보를 다루기 위한 도메인 객체
 ///
 /// SeatPaymentIssue는 Ticket에서 원하는 자리에 선착순이 올때 비로소 생성됩니다.
-@Builder
 @Getter
+@AllArgsConstructor(onConstructor_ = {@Default})
 public class SeatPaymentIssue {
     private Long id;
     private Ticket ticketIssue;
@@ -26,10 +29,34 @@ public class SeatPaymentIssue {
     private Long amount;
     private LocalDateTime createdAt;
 
-    /// 반드시 create로 생성된 객체가 DB에 할당되었을 상황에만 호출하세요
-    public void assignId(Long id) {
-        if (this.id != null) throw new IllegalStateException();
+    @Builder(builderMethodName = "createAndPay")
+    public SeatPaymentIssue(
+            Ticket ticketIssue,
+            User user,
+            Seat seat,
+            Long amount
+    ) {
+        this.ticketIssue = ticketIssue;
+        this.user = user;
+        this.seat = seat;
+        this.amount = amount;
 
-        this.id = id;
+        this.pay();
+    }
+
+    private void pay() {
+        var paymentMethod = this.ticketIssue.getPaymentMethod();
+
+        // TODO 각 결제수단별 지불 로직 구현하기
+
+        switch (paymentMethod.getType()) {
+            case CREDIT -> {
+
+            }
+            case CARD -> {
+
+            }
+            default -> {}
+        }
     }
 }

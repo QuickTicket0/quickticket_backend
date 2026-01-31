@@ -7,12 +7,17 @@ import com.quickticket.quickticket.domain.user.mapper.UserMapper;
 import com.quickticket.quickticket.domain.user.repository.UserRepository;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+@Transactional(readOnly = true)
+public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
@@ -24,13 +29,28 @@ public class UserService {
         return UserResponse.Details.from(entity);
     }
 
-    public User findUserByUsername(String username) {
+    public User getDomainByUsername(String username) {
         var user = repository.getByUsername(username)
                 .orElseThrow(() -> new DomainException(UserErrorCode.NOT_FOUND));
 
         return mapper.toDomain(user);
     }
 
+    public User getDomainById(Long userId) {
+        var user = repository.getReferenceById(userId);
+
+        return mapper.toDomain(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var user = repository.getByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(""));
+
+        return mapper.toDomain(user);
+    }
+
+    @Transactional
     public User signupNewUser(AccountRequest.Signup signupDto) {
         var usernameExists = repository.getByUsername(signupDto.username()).isPresent();
 
