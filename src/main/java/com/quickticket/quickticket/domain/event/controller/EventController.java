@@ -4,6 +4,8 @@ import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import com.quickticket.quickticket.domain.event.dto.EventResponse;
 import com.quickticket.quickticket.domain.event.service.EventService;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
+import com.quickticket.quickticket.domain.performance.domain.Performance;
+import com.quickticket.quickticket.domain.performance.service.PerformanceService;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EventController {
     private final EventService service;
+    private final PerformanceService performanceService;
 
     @GetMapping("/event/{eventId}")
     public String event(Model model, @PathVariable Long eventId) {
@@ -64,11 +67,22 @@ public class EventController {
                 .event(eventInfo)
                 .performance(performanceInfo)
                 .seatClasses(seatClasses)
-                .build();
+                .build(); //
+
         */
         // var details = service.getResponseDetailsById(eventId);
         // 모델에 담기
         //model.addAttribute("ticket", ticketDto);
+        // 1️⃣ 이벤트 상세 정보
+        EventResponse.Details eventDetails =
+                service.getResponseDetailsById(eventId);
+
+        // 2️⃣ 해당 이벤트의 회차 목록
+        List<Performance> performances =
+                performanceService.findPerformancesByEventId(eventId);
+
+        model.addAttribute("event", eventDetails);
+        model.addAttribute("performances", performances);
         return "event";
     }
 
@@ -94,18 +108,28 @@ public class EventController {
                         .build()
         );
         */
-        //model.addAttribute("eventList", eventList);
+        List<EventResponse.ListItem> eventList =
+                service.getEventListForAdmin();
+
+        model.addAttribute("eventList", eventList);
 
         return "admin/event";
     }
 
     @GetMapping("/editEvent/{eventId}")
     public String editEvent(Model model, @PathVariable String eventId) {
+
+        EventResponse.Details eventDetails =
+                service.getResponseDetailsById(eventId);
+
+        model.addAttribute("event", eventDetails);
+
         return "admin/editEvent";
     }
 
     @GetMapping("/newEvent")
     public String newEvent(Model model) {
+
         return "admin/newEvent";
     }
 }

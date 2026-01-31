@@ -5,6 +5,8 @@ import com.quickticket.quickticket.domain.event.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -29,5 +31,8 @@ public class EventService {
                 repository.getById(id)
                     .orElseThrow(() -> new BusinessException(EventErrorCode.NOT_FOUND))
         );
+    }
+
+    public List<EventResponse.ListItem> getEventListForAdmin() {
     }
 }
