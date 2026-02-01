@@ -23,8 +23,7 @@ public class EventController {
     public String event(Model model, @PathVariable Long eventId) {
 
         /*
-        =========================
-        📌 더미 데이터 (참고용)
+
         =========================
         LocationCommonDto locationInfo = LocationCommonDto.builder()
                 .id(1L)
@@ -46,19 +45,13 @@ public class EventController {
                         .build();
         */
 
-        // =========================
-        // ✅ 실제 구현 파트
-        // =========================
 
-        // 1️⃣ 이벤트 상세 정보
         EventResponse.Details eventDetails =
                 service.getResponseDetailsById(eventId);
 
-        // 2️⃣ 해당 이벤트의 회차 목록
         List<Performance> performances =
                 performanceService.findPerformancesByEventId(eventId);
 
-        // 3️⃣ 모델에 담기
         model.addAttribute("event", eventDetails);
         model.addAttribute("performances", performances);
 
@@ -70,7 +63,7 @@ public class EventController {
 
         /*
         =========================
-        📌 더미 이벤트 목록 (참고용)
+        더미 이벤트 목록 (참고용)
         =========================
         List<EventResponse.ListItem> eventList = List.of(
                 EventResponse.ListItem.builder()
@@ -93,7 +86,7 @@ public class EventController {
         */
 
         // =========================
-        // ✅ 실제 구현 파트
+        // 실제 구현 파트
         // =========================
         List<EventResponse.ListItem> eventList =
                 service.getEventListForAdmin();

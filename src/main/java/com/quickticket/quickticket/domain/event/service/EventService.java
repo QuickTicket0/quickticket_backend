@@ -42,5 +42,6 @@ public class EventService {
     }
 
     public List<EventResponse.ListItem> getEventListForAdmin() {
+        return null;
     }
 }
