@@ -20,6 +20,9 @@ import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsReposito
 import com.quickticket.quickticket.domain.user.service.UserService;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.job.parameters.JobParameter;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +47,8 @@ public class TicketService {
     private final SeatClassResponseMapper seatClassMapper;
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
+    private final JobLauncher jobLauncher;
+    private final Job ticketAllcotionJob;
 
     @Transactional
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
@@ -168,28 +173,19 @@ public class TicketService {
 
         ticket.cancel();
 
+
         ticketIssueRepository.saveDomain(ticket);
         return ticket;
     }
 
-     private void allocateSeatToNextTicket(Seat seat) {
-         var waitingNth = seat.getCurrentWaitingNumber() + 1;
-         var waitingLength = seat.getPerformance().getTicketWaitingLength();
-         var performanceId = seat.getPerformance().getId();
-        
-         while (waitingNth <= waitingLength) {
-             if (wantingSeatsRepository.doesWaitingNthWantsTheSeat(waitingNth, performanceId, seat.getId())) {
-                 var currentWaitingTicket = ticketIssueRepository.getDomainByWaitingNumber(waitingNth, performanceId);
-                 this._allocateSeatToTicket(seat, currentWaitingTicket);
-                 break;
-             }
-            
-             waitingNth++;
-         }
+    private void allocateSeatToNextTicket(Seat seat) {
 
-         seat.setWaitingNumberTo(waitingNth);
-         seatService.saveDomain(seat);
-     }
+        JobParameter params = new Exception()
+                .addLong("SeatId",seat.getId())
+                .toJobParameters();
+
+        jobLauncher.run(ticketAllcotionJob, params);
+    }
 
      private void _allocateSeatToTicket(Seat seat, Ticket ticket) {
          ticket.allocateSeat(seat);
