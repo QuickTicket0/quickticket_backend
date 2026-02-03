@@ -15,8 +15,8 @@ import org.mapstruct.Mapping;
     }
 )
 public interface PerformanceMapper {
-    @Mapping(target = "id", source = "performanceId")
-    @Mapping(target = "nth", source = "performanceNth")
+    @Mapping(target = "id", source = "entity.performanceId")
+    @Mapping(target = "nth", source = "entity.performanceNth")
     Performance toDomain(PerformanceEntity entity, Long ticketWaitingLength);
 
     @Mapping(target = "performanceId", source = "id")

@@ -28,14 +28,15 @@ public class PerformanceService {
         return performanceRepository
                 .findAllByEvent_EventId(eventId)
                 .stream()
-                .map(performanceMapper::toDomain)
+                .map(e ->
+                        performanceMapper.toDomain(e, this.getWaitingLengthOfPerformance(e.getPerformanceId())))
                 .toList();
     }
 
     public Performance getDomainById(Long performanceId) {
         var performanceEntity = performanceRepository.getReferenceById(performanceId);
 
-        return performanceMapper.toDomain(performanceEntity);
+        return performanceMapper.toDomain(performanceEntity, this.getWaitingLengthOfPerformance(performanceId));
     }
 
     @Transactional

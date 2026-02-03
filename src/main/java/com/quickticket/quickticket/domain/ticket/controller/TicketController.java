@@ -19,9 +19,7 @@ public class TicketController {
     private final UserService userService;
 
     private Long getUserId(UserDetails user) {
-        // AccountController에서 이미 쓰는 흐름 그대로: username으로 유저 조회
-        return userService.findUserByUsername(user.getUsername()).getId();
-        // ⚠️ getId()가 아니라 getUserId()면 그에 맞게 1줄 수정
+        return userService.getDomainByUsername(user.getUsername()).getId();
     }
 
     @PostMapping("/api/ticket/preset")
@@ -57,14 +55,14 @@ public class TicketController {
     @GetMapping("/cancelTicketSuccess/{ticketId}")
     public String cancelTicketSuccess(Model model, @PathVariable Long ticketId) {
         TicketResponse.Details details = service.getResponseDetailsById(ticketId);
-        model.addAttribute("ticket", details); // ✅ key 추가
+        model.addAttribute("ticket", details);
         return "cancelTicketSuccess";
     }
 
     @GetMapping("/myTicket/{ticketId}")
     public String myTicket(Model model, @PathVariable Long ticketId) {
         TicketResponse.Details details = service.getResponseDetailsById(ticketId);
-        model.addAttribute("ticket", details); // ✅ key 추가
+        model.addAttribute("ticket", details);
         return "myPage/myTicket";
     }
 
@@ -72,11 +70,9 @@ public class TicketController {
     public String myTickets(Model model, @AuthenticationPrincipal UserDetails user) {
         Long userId = getUserId(user);
 
-        // ✅ 여기만 서비스에 "내 티켓 목록" 메서드가 있어야 합니다.
-        // (없다면 만들어야 함)
         var list = service.getMyTickets(userId);
 
-        model.addAttribute("tickets", list); // ✅ key 추가
+        model.addAttribute("tickets", list);
         return "myPage/myTickets";
     }
 

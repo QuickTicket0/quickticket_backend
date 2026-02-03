@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,19 @@ public class TicketService {
     private final SeatClassResponseMapper seatClassMapper;
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
+
+    public List<TicketResponse.ListItem> getMyTickets(Long userId) {
+        return ticketIssueRepository.getAllByUser_Id(userId).stream()
+                .map(e -> TicketResponse.ListItem.builder()
+                        .id(e.getTicketIssueId())
+                        .createdAt(e.getCreatedAt())
+                        .performanceStartsAt(e.getPerformance().getPerformanceStartsAt())
+                        .eventName(e.getPerformance().getEvent().getName())
+                        .personNumber(e.getPersonNumber())
+                        .build()
+                )
+                .toList();
+    }
 
     @Transactional
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
