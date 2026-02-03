@@ -29,6 +29,7 @@ public class EventRepositoryCustomImpl {
                     .fetchOne()
                 )
                 .map(e -> new EventCache(
+                        e.getEventId(),
                         e.getName(),
                         e.getAgeRating(),
                         e.getLocation().getLocationId()

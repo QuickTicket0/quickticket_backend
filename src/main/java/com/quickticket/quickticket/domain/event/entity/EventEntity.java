@@ -12,6 +12,7 @@ import java.sql.Blob;
 @Entity
 @Table(name = "EVENT")
 @Getter
+@EntityListeners(EventCacheListener.class)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventEntity {

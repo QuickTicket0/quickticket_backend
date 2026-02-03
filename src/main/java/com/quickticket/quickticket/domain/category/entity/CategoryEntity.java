@@ -7,6 +7,7 @@ import lombok.*;
 @Entity
 @Table(name = "CATEGORY")
 @Getter
+@EntityListeners(CategoryCacheListener.class)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryEntity {
