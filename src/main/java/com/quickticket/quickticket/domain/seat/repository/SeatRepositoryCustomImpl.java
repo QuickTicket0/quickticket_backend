@@ -2,8 +2,10 @@ package com.quickticket.quickticket.domain.seat.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
+import com.quickticket.quickticket.domain.seat.dto.SeatCache;
 import com.quickticket.quickticket.domain.seat.dto.SeatClassCache;
 import com.quickticket.quickticket.domain.seat.entity.QSeatClassEntity;
+import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
 import com.quickticket.quickticket.domain.seat.mapper.SeatMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -23,26 +25,29 @@ public class SeatRepositoryCustomImpl implements SeatRepositoryCustom {
 
     /**
      * seat ID로 조회하여 SeatClassCache 변환하여 반환
-     * @param seatCacheCacheId 조회할 seat의 PK
+     * @param seatId 조회할 seat의 PK
      * @return 조회된 seat 정보를 담은 SeatClassCache (없을 경우엔 null로 반환)
      */
-    public SeatClassCache getSeatClassCacheId(Long seatClassCacheId) {
-        var seatClass = QSeatClassEntity.seatClassEntity;
+    public SeatCache getCacheById(Long seatId, Long performanceId) {
+        var seat = QSeatEntity.seatEntity;
 
-        var query =  Optional.ofNullable(queryFactory
-                    .select(seatClass)
-                    .from(seatClass)
-                    .where(seatClass.id.seatClassId.eq(seatClassCacheId))
-                    .fetchOne()
-            )
-            .map(e -> new SeatClassCache(
-                    e.getId().getSeatClassId(),
-                    e.getEvent().getEventId(),
-                    e.getName(),
-                    e.getPrice()
-            ))
-            .orElse(null);
-        return query;
+        var query = Optional.ofNullable(queryFactory
+                .selectFrom(seat)
+                .where(
+                        seat.id.seatId.eq(seatId),
+                        seat.id.performanceId.eq(performanceId)
+                )
+                .fetchOne()).orElseThrow();
+
+        return SeatCache.builder()
+                .id(seatId)
+                .performanceId(performanceId)
+                .currentWaitingNumber(query.getCurrentWaitingNumber())
+                .name(query.getName())
+                .seatAreaId(query.getArea().getId().getSeatAreaId())
+                .seatClassId(query.getSeatClass().getId().getSeatClassId())
+                .status(query.getStatus())
+                .build();
     }
 
     @Override

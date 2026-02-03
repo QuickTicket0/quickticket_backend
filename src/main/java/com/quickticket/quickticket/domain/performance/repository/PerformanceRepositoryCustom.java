@@ -2,11 +2,16 @@ package com.quickticket.quickticket.domain.performance.repository;
 
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.dto.PerformanceCache;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 public interface PerformanceRepositoryCustom {
-    PerformanceCache getPerformanceCacheId(Long performanceCacheId);
+    @Cacheable(value = "performance_cacheDto", key = "#performanceId")
+    PerformanceCache getCacheById(Long performanceId);
 
+    @Cacheable(value = "performance_TicketWaitingLength", key = "#performanceId")
     Long getWaitingLengthOfPerformance(Long performanceId);
 
+    @CacheEvict(value = "performance_cacheDto", key = "#domain.getId()")
     Performance saveDomain(Performance domain);
 }

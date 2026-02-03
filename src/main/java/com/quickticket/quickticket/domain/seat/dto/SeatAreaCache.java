@@ -3,9 +3,8 @@ package com.quickticket.quickticket.domain.seat.dto;
 import lombok.Builder;
 
 @Builder
-public record SeatClassCache(
+public record SeatAreaCache(
     Long id,
     Long eventId,
-    String name,
-    Long price
+    String name
 ) {}

@@ -11,6 +11,4 @@ import java.util.List;
 public interface SeatRepository
         extends JpaRepository<SeatEntity, SeatId>, SeatRepositoryCustom {
     List<SeatEntity> getByPerformance_PerformanceId(Long performanceId);
-
-    Seat saveDomain(Seat domain);
 }

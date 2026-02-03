@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SeatAreaRepository extends JpaRepository<SeatAreaEntity, SeatAreaId> {
+public interface SeatAreaRepository
+        extends JpaRepository<SeatAreaEntity, SeatAreaId>, SeatAreaRepositoryCustom {
 }

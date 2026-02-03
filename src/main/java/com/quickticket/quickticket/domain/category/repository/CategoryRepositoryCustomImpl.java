@@ -19,7 +19,7 @@ public class CategoryRepositoryCustomImpl implements CategoryRepositoryCustom {
      * @param categoryId 조회할 category PK
      * @return 조회된 category 정보를 담은 CategoryCommonDto (없을 경우엔 null로 반환)
      */
-    public CategoryCommonDto getCategoryById(Long categoryId) {
+    public CategoryCommonDto getCommonDtoById(Long categoryId) {
         var category = QCategoryEntity.categoryEntity;
 
         var query = Optional.ofNullable(queryFactory

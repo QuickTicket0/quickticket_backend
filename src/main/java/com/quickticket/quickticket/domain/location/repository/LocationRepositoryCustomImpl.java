@@ -19,7 +19,7 @@ public class LocationRepositoryCustomImpl implements LocationRepositoryCustom {
      * @param locationId 조회할 location PK
      * @return 조회된 location 정보를 담은 LocationCommonDto (없을 경우엔 null로 반환)
      */
-    public LocationCommonDto getLocationById(Long locationId) {
+    public LocationCommonDto getCommonDtoById(Long locationId) {
             var location = QLocationEntity.locationEntity;
 
             var query =  Optional.ofNullable(queryFactory

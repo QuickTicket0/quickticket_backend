@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EventRepository extends JpaRepository<EventEntity, Long> {
+public interface EventRepository extends JpaRepository<EventEntity, Long>, EventRepositoryCustom {
     Optional<EventEntity> getEntityById(Long id);
 
     @Cacheable(value = "EventRepository_getAgeRatingById", key = "#id")
