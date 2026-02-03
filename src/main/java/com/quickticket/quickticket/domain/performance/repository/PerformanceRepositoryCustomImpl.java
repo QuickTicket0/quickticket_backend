@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.performance.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
+import com.quickticket.quickticket.domain.performance.dto.PerformanceCache;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.performance.entity.QPerformanceEntity;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;

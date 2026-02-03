@@ -1,4 +1,6 @@
-public record SeatClassCache implements Serializable(
+package com.quickticket.quickticket.domain.seat.dto;
+
+public record SeatClassCache(
     Long id,
     Long eventId,
     String name,

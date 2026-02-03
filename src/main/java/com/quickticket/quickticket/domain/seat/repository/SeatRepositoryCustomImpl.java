@@ -2,6 +2,8 @@ package com.quickticket.quickticket.domain.seat.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
+import com.quickticket.quickticket.domain.seat.dto.SeatClassCache;
+import com.quickticket.quickticket.domain.seat.entity.QSeatClassEntity;
 import com.quickticket.quickticket.domain.seat.mapper.SeatMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -30,7 +32,7 @@ public class SeatRepositoryCustomImpl implements SeatRepositoryCustom {
         var query =  Optional.ofNullable(queryFactory
                     .select(seatClass)
                     .from(seatClass)
-                    .where(seatClass.seatClassId.eq(seatClassCacheId))
+                    .where(seatClass.id.seatClassId.eq(seatClassCacheId))
                     .fetchOne()
             )
             .map(e -> new SeatClassCache(

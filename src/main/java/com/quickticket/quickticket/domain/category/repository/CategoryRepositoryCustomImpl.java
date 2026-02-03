@@ -3,6 +3,7 @@ package com.quickticket.quickticket.domain.category.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.category.dto.CategoryCommonDto;
 import com.quickticket.quickticket.domain.category.entity.CategoryEntity;
+import com.quickticket.quickticket.domain.category.entity.QCategoryEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

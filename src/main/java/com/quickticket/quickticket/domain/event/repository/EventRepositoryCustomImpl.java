@@ -1,6 +1,8 @@
 package com.quickticket.quickticket.domain.event.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.quickticket.quickticket.domain.event.dto.EventCache;
+import com.quickticket.quickticket.domain.event.entity.QEventEntity;
 import com.quickticket.quickticket.domain.event.mapper.EventMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

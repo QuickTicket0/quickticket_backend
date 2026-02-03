@@ -3,6 +3,7 @@ package com.quickticket.quickticket.domain.location.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.event.mapper.EventMapper;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
+import com.quickticket.quickticket.domain.location.entity.QLocationEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

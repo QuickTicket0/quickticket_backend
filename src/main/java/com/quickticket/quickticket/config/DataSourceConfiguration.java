@@ -40,9 +40,9 @@ public class DataSourceConfiguration {
             @Qualifier(MASTER_SERVER) DataSource masterDataSource,
             @Qualifier(REPLICA_SERVER) DataSource replicaDataSource
     ) {
-        RoutingDataSource routingDataSource = new RoutingDataSource();
+        var routingDataSource = new RoutingDataSource();
 
-        HashMap<Object, Object> dataSourceMap = new HashMap<>();
+        var dataSourceMap = new HashMap<Object, Object>();
         dataSourceMap.put("master", masterDataSource);
         dataSourceMap.put("replica", replicaDataSource);
 

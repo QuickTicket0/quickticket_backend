@@ -18,17 +18,25 @@ import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepositor
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepository;
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepositoryCustom;
 import com.quickticket.quickticket.domain.user.service.UserService;
+import com.quickticket.quickticket.shared.aspects.DistributedLock;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.job.parameters.InvalidJobParametersException;
 import org.springframework.batch.core.job.parameters.JobParameter;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.job.parameters.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.launch.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.launch.JobOperator;
+import org.springframework.batch.core.launch.JobRestartException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,15 +48,19 @@ public class TicketService {
     private final PerformanceService performanceService;
     private final UserService userService;
     private final PaymentMethodService paymentMethodService;
+
     private final TicketIssueRepository ticketIssueRepository;
     private final WantingSeatsRepository wantingSeatsRepository;
+
     private final SeatResponseMapper seatMapper;
     private final SeatPaymentIssueResponseMapper seatPaymentIssueMapper;
     private final SeatClassResponseMapper seatClassMapper;
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
-    private final JobLauncher jobLauncher;
-    private final Job ticketAllcotionJob;
+
+    private final JobOperator jobOperator;
+    @Qualifier("ticketAllocationJob")
+    private final Job ticketAllocationJob;
 
     @Transactional
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
@@ -151,7 +163,12 @@ public class TicketService {
 
     @Transactional
     @DistributedLock(key = "#dto.performanceId()")
-    public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
+    public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId)
+            throws  JobInstanceAlreadyCompleteException,
+                    InvalidJobParametersException,
+                    JobExecutionAlreadyRunningException,
+                    JobRestartException {
+
         Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
 
         if (!ticket.getUser().getId().equals(userId)) {
@@ -183,26 +200,16 @@ public class TicketService {
         return ticket;
     }
 
-    private void allocateSeatToNextTicket(Seat seat) {
+    private void allocateSeatToNextTicket(Seat seat)
+            throws  JobInstanceAlreadyCompleteException,
+                    InvalidJobParametersException,
+                    JobExecutionAlreadyRunningException,
+                    JobRestartException {
 
-        JobParameter params = new Exception()
-                .addLong("SeatId",seat.getId())
+        var props = new JobParametersBuilder()
+                .addLong("seatId", seat.getId())
                 .toJobParameters();
 
-        jobLauncher.run(ticketAllcotionJob, params);
+        jobOperator.start(ticketAllocationJob, props);
     }
-
-     private void _allocateSeatToTicket(Seat seat, Ticket ticket) {
-         ticket.allocateSeat(seat);
-
-         var seatPayment = SeatPaymentIssue.createAndPay()
-                         .seat(seat)
-                         .user(ticket.getUser())
-                         .ticketIssue(ticket)
-                         .amount(seat.getSeatClass().getPrice())
-                         .build();
-
-         seatPaymentService.saveDomain(seatPayment);
-         ticketIssueRepository.saveDomain(ticket);
-     }
 }
