@@ -12,6 +12,5 @@ public interface PerformanceRepositoryCustom {
     @Cacheable(value = "performance_TicketWaitingLength", key = "#performanceId")
     Long getWaitingLengthOfPerformance(Long performanceId);
 
-    @CacheEvict(value = "performance_cacheDto", key = "#domain.getId()")
     Performance saveDomain(Performance domain);
 }

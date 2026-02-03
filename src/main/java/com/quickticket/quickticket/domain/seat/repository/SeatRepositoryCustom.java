@@ -9,6 +9,5 @@ public interface SeatRepositoryCustom {
     @Cacheable(value = "seat_cacheDto", key = "#seatId #performanceId")
     SeatCache getCacheById(Long seatId, Long performanceId);
 
-    @CacheEvict(value = "seat_cacheDto", key = "#domain.getId() domain.getPerformance().getId()")
     Seat saveDomain(Seat domain);
 }

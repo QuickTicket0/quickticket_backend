@@ -2,8 +2,6 @@ package com.quickticket.quickticket.domain.ticket.service;
 
 import com.quickticket.quickticket.domain.payment.method.dto.PaymentMethodCommonDto;
 import com.quickticket.quickticket.domain.payment.method.service.PaymentMethodService;
-import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssue;
-import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssueStatus;
 import com.quickticket.quickticket.domain.payment.seatPayment.service.SeatPaymentService;
 import com.quickticket.quickticket.domain.performance.service.PerformanceService;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
@@ -16,27 +14,14 @@ import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
 import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepository;
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepository;
-import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepositoryCustom;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import com.quickticket.quickticket.shared.aspects.DistributedLock;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.job.Job;
-import org.springframework.batch.core.job.parameters.InvalidJobParametersException;
-import org.springframework.batch.core.job.parameters.JobParameter;
-import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.launch.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.launch.JobOperator;
-import org.springframework.batch.core.launch.JobRestartException;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Properties;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,10 +42,6 @@ public class TicketService {
     private final SeatClassResponseMapper seatClassMapper;
     private final PerformanceResponseMapper performanceMapper;
     private final EventResponseMapper eventMapper;
-
-    private final JobOperator jobOperator;
-    @Qualifier("ticketAllocationJob")
-    private final Job ticketAllocationJob;
 
     @Transactional
     public Ticket presetTicket(TicketRequest.Preset dto, Long userId) {
@@ -84,7 +65,7 @@ public class TicketService {
     }
 
     @Transactional
-    @DistributedLock(key = "#dto.performanceId()")
+    @DistributedLock(key = "performance#dto.performanceId()")
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
         var waitingNumber = performanceService.getWaitingLengthOfPerformance(dto.performanceId()) + 1;
         var wantingSeats = dto.wantingSeatsId().stream()
@@ -162,13 +143,8 @@ public class TicketService {
     }
 
     @Transactional
-    @DistributedLock(key = "#dto.performanceId()")
-    public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId)
-            throws  JobInstanceAlreadyCompleteException,
-                    InvalidJobParametersException,
-                    JobExecutionAlreadyRunningException,
-                    JobRestartException {
-
+    @DistributedLock(key = "performance#dto.performanceId()")
+    public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
         Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
 
         if (!ticket.getUser().getId().equals(userId)) {
@@ -181,35 +157,41 @@ public class TicketService {
             // throw new DomainException(TicketErrorCode.NOT_ALLOCATED);
         }
 
-        // TODO 좌석 다음 표 배정 로직에 batch 처리 구현
+        ticket.cancel();
+
         if (
             ticket.getStatus() == TicketStatus.SEAT_ALLOCATED_PARTIAL
             || ticket.getStatus() == TicketStatus.SEAT_ALLOCATED_ALL
         ) {
             for (var seat: ticket.getWantingSeats().values()) {
+                // 현재 나한테 배정된 좌석이 있으면
                 if (seat.getCurrentWaitingNumber() == ticket.getWaitingNumber()) {
                     this.allocateSeatToNextTicket(seat);
                 }
             }
         }
 
-        ticket.cancel();
-
-
         ticketIssueRepository.saveDomain(ticket);
         return ticket;
     }
 
-    private void allocateSeatToNextTicket(Seat seat)
-            throws  JobInstanceAlreadyCompleteException,
-                    InvalidJobParametersException,
-                    JobExecutionAlreadyRunningException,
-                    JobRestartException {
+    private void allocateSeatToNextTicket(Seat seat) {
+        var nextTicket = wantingSeatsRepository.getNextTicketWantingTheSeatOrNull(
+                seat.getCurrentWaitingNumber() + 1,
+                seat.getPerformance().getId(),
+                seat.getId()
+        );
 
-        var props = new JobParametersBuilder()
-                .addLong("seatId", seat.getId())
-                .toJobParameters();
+        if (nextTicket == null) {
+            seat.setWaitingNumberTo(seat.getPerformance().getTicketWaitingLength()+1);
 
-        jobOperator.start(ticketAllocationJob, props);
+            seatService.saveDomain(seat);
+            return;
+        };
+
+        nextTicket.allocateSeat(seat);
+
+        ticketIssueRepository.saveDomain(nextTicket);
+        seatService.saveDomain(seat);
     }
 }
