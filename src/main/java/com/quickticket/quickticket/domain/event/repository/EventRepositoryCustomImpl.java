@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class EventRepositoryCustomImpl {
+public class EventRepositoryCustomImpl implements EventRepositoryCustom {
     private final EventMapper eventMapper;
     private final JPAQueryFactory queryFactory;
 

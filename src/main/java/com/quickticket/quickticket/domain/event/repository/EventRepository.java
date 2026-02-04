@@ -13,10 +13,10 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long>, EventRepositoryCustom {
-    Optional<EventEntity> getEntityById(Long id);
+    Optional<EventEntity> getEntityByEventId(Long id);
 
-    @Cacheable(value = "EventRepository_getAgeRatingById", key = "#id")
-    Optional<AgeRating> getAgeRatingById(Long id);
+    @Cacheable(value = "event_ageRating", key = "#id")
+    Optional<AgeRating> getAgeRatingByEventId(Long id);
 
     List<EventEntity> getAllByOrderByViewsDesc(Pageable pageable);
 }

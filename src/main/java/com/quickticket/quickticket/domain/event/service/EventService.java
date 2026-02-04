@@ -29,14 +29,14 @@ public class EventService {
 
     public EventResponse.Details getResponseDetailsById(Long id) {
         return EventResponse.Details.from(
-                repository.getEntityById(id)
+                repository.getEntityByEventId(id)
                     .orElseThrow(() -> new DomainException(EventErrorCode.NOT_FOUND))
         );
     }
 
     public EventResponse.ListItem getResponseListItemById(Long id) {
         return EventResponse.ListItem.from(
-                repository.getEntityById(id)
+                repository.getEntityByEventId(id)
                     .orElseThrow(() -> new DomainException(EventErrorCode.NOT_FOUND))
         );
     }
