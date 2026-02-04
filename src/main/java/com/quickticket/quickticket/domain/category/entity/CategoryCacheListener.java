@@ -6,11 +6,13 @@ import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class CategoryCacheListener {
+    @Lazy
     private final CacheManager cacheManager;
 
     @PostUpdate

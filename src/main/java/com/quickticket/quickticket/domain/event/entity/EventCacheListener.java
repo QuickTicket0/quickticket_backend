@@ -6,11 +6,13 @@ import jakarta.persistence.PostUpdate;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RedissonClient;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class EventCacheListener {
+    @Lazy
     private final CacheManager cacheManager;
 
     @PostUpdate
