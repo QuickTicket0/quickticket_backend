@@ -6,7 +6,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 public interface SeatRepositoryCustom {
-    @Cacheable(value = "seat_cacheDto", key = "#seatId:#performanceId")
+    @Cacheable(value = "cache:seat-cache", key = "#seatId:#performanceId")
     SeatCache getCacheById(Long seatId, Long performanceId);
 
     Seat saveDomain(Seat domain);
