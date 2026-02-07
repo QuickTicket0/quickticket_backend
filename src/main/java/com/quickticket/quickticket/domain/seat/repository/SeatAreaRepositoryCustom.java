@@ -4,6 +4,6 @@ import com.quickticket.quickticket.domain.seat.dto.SeatAreaCache;
 import org.springframework.cache.annotation.Cacheable;
 
 public interface SeatAreaRepositoryCustom {
-    @Cacheable(value = "seatArea_cacheDto", key = "#seatAreaId:#eventId")
+    @Cacheable(value = "cache:seat-area-cache", key = "#seatAreaId:#eventId")
     SeatAreaCache getCacheById(Long seatAreaId, Long eventId);
 }
