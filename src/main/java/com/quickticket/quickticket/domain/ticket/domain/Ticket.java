@@ -8,6 +8,8 @@ import com.quickticket.quickticket.shared.annotations.Default;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.With;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,7 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor(onConstructor_ = {@Default})
 public class Ticket {
-    private Long id;
+    private @With Long id;
     private Performance performance;
     private User user;
     private PaymentMethod paymentMethod;

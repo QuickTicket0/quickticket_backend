@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 
 import java.time.Duration;
 
@@ -60,6 +61,6 @@ public class RedisConfig {
 
     @Bean
     public RedisAtomicLong ticketIssueIdGenerator(RedisConnectionFactory factory) {
-        return new RedisAtomicLong("sequence:ticketIssue", factory);
+        return new RedisAtomicLong("sync:ticket-issue-id-increment", factory);
     }
 }

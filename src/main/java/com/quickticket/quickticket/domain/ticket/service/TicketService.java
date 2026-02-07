@@ -101,7 +101,7 @@ public class TicketService {
         // 비어있는 좌석 있을시 바로 배정
         newTicket.ticketToPerformance(performance);
 
-        newTicket = ticketIssueRepository.saveDomain(newTicket);
+        newTicket = ticketIssueRepository.saveDomainForBulk(newTicket);
         performance = performanceService.saveDomain(performance);
         return newTicket;
     }
