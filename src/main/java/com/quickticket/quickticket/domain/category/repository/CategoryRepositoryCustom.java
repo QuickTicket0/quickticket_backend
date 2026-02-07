@@ -4,6 +4,6 @@ import com.quickticket.quickticket.domain.category.dto.CategoryCommonDto;
 import org.springframework.cache.annotation.Cacheable;
 
 public interface CategoryRepositoryCustom {
-    @Cacheable(value = "category_commonDto", key = "#categoryId")
+    @Cacheable(value = "cache:category-common-dto", key = "#categoryId")
     CategoryCommonDto getCommonDtoById(Long categoryId);
 }
