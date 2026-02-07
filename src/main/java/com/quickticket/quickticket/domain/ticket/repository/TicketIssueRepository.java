@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface TicketIssueRepository
-        extends JpaRepository<TicketIssueEntity, Long>, TicketIssueRepositoryCustom {
+        extends JpaRepository<TicketIssueEntity, Long>, TicketIssueRepositoryCustom, TicketIssueBulkinsertRepository {
     List<TicketIssueEntity> getAllByUser_Id(Long userId);
 }
