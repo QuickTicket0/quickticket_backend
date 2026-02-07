@@ -57,4 +57,9 @@ public class RedisConfig {
                 .cacheDefaults(config)
                 .build();
     }
+
+    @Bean
+    public RedisAtomicLong ticketIssueIdGenerator(RedisConnectionFactory factory) {
+        return new RedisAtomicLong("sequence:ticketIssue", factory);
+    }
 }
