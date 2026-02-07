@@ -6,10 +6,10 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 public interface PerformanceRepositoryCustom {
-    @Cacheable(value = "performance_cacheDto", key = "#performanceId")
+    @Cacheable(value = "cache:performance-cache", key = "#performanceId")
     PerformanceCache getCacheById(Long performanceId);
 
-    @Cacheable(value = "performance_TicketWaitingLength", key = "#performanceId")
+    @Cacheable(value = "stat:performance-ticket-waiting-length", key = "#performanceId")
     Long getWaitingLengthOfPerformance(Long performanceId);
 
     Performance saveDomain(Performance domain);
