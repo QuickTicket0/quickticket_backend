@@ -4,6 +4,6 @@ import com.quickticket.quickticket.domain.event.dto.EventCache;
 import org.springframework.cache.annotation.Cacheable;
 
 public interface EventRepositoryCustom {
-    @Cacheable(value = "event_cacheDto", key = "#eventId")
+    @Cacheable(value = "cache:event-cache", key = "#eventId")
     EventCache getCacheById(Long eventId);
 }
