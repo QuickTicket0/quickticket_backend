@@ -5,6 +5,7 @@ import org.springframework.core.Ordered;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableTransactionManagement(order = Ordered.LOWEST_PRECEDENCE)
-public class AppConfig {
+@EnableTransactionManagement(order = TransactionConfig.TRANSACTION_ORDER)
+public class TransactionConfig {
+    public static final int TRANSACTION_ORDER = Ordered.LOWEST_PRECEDENCE;
 }

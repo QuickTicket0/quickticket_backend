@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 @Slf4j
 @Configuration
-public class DataSourceConfiguration {
+public class DataSourceConfig {
 
     private static final String MASTER_SERVER = "MASTER";
     private static final String REPLICA_SERVER = "REPLICA";

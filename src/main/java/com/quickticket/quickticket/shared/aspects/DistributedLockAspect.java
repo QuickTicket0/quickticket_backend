@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 @Aspect
 @Component
-@Order(1)
+@Order(1) // 1 < TransactionConfig.TRANSACTION_ORDER
 @RequiredArgsConstructor
 public class DistributedLockAspect {
     private final RedissonClient redissonClient;
