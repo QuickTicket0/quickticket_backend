@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class SeatService {
     private final SeatMapper seatMapper;
     private final SeatClassMapper seatClassMapper;
 
-    public Map<Long, SeatClass> getSeatClassesByEventId(Long eventId) {
+    public Map<Long, SeatClass> getSeatClassesMapByEventId(Long eventId) {
         return seatClassRepository.getByEvent_EventId(eventId).stream()
                 .collect(Collectors.toMap(
                         e -> e.getId().getSeatClassId(),
@@ -33,7 +34,13 @@ public class SeatService {
                 ));
     }
 
-    public Map<Long, Seat> getSeatsByPerformanceId(Long performanceId) {
+    public List<SeatClass> getSeatClassesByEventId(Long eventId) {
+        return seatClassRepository.getByEvent_EventId(eventId).stream()
+                .map(seatClassMapper::toDomain)
+                .toList();
+    }
+
+    public Map<Long, Seat> getSeatsMapByPerformanceId(Long performanceId) {
         return seatRepository.getByPerformance_PerformanceId(performanceId).stream()
                 .collect(Collectors.toMap(
                         e -> e.getId().getSeatId(),

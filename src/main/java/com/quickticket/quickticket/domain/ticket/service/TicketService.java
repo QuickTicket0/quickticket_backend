@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class TicketService {
     private final SeatService seatService;
-    private final SeatPaymentService seatPaymentService;
     private final PerformanceService performanceService;
     private final UserService userService;
     private final PaymentMethodService paymentMethodService;
@@ -38,23 +37,12 @@ public class TicketService {
     private final TicketIssueRepository ticketIssueRepository;
     private final WantingSeatsRepository wantingSeatsRepository;
 
-    private final SeatResponseMapper seatMapper;
-    private final SeatPaymentIssueResponseMapper seatPaymentIssueMapper;
-    private final SeatClassResponseMapper seatClassMapper;
-    private final PerformanceResponseMapper performanceMapper;
-    private final EventResponseMapper eventMapper;
-
     public List<TicketResponse.ListItem> getMyTickets(Long userId) {
-        return ticketIssueRepository.getAllByUser_Id(userId).stream()
-                .map(e -> TicketResponse.ListItem.builder()
-                        .id(e.getTicketIssueId())
-                        .createdAt(e.getCreatedAt())
-                        .performanceStartsAt(e.getPerformance().getPerformanceStartsAt())
-                        .eventName(e.getPerformance().getEvent().getName())
-                        .personNumber(e.getPersonNumber())
-                        .build()
-                )
-                .toList();
+        return ticketIssueRepository.getListItemsByUserId(userId);
+    }
+
+    public TicketResponse.Details getResponseDetailsById(Long ticketId) {
+        return ticketIssueRepository.getDetailsById(ticketId);
     }
 
     @Transactional
@@ -79,7 +67,7 @@ public class TicketService {
     }
 
     @Transactional
-    @DistributedLock(key = "performance#dto.performanceId()")
+    @DistributedLock(key = "lock:performance:#dto.performanceId()")
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
         var waitingNumber = performanceService.getWaitingLengthOfPerformance(dto.performanceId()) + 1;
         var wantingSeats = dto.wantingSeatsId().stream()
@@ -106,58 +94,8 @@ public class TicketService {
         return newTicket;
     }
 
-    public TicketResponse.Details getResponseDetailsById(Long ticketId) {
-        var ticketEntity = ticketIssueRepository.getReferenceById(ticketId);
-        var performanceEntity = ticketEntity.getPerformance();
-        var eventEntity = performanceEntity.getEvent();
-
-        Map<Long, Seat> seats = seatService.getSeatsByPerformanceId(performanceEntity.getPerformanceId());
-        Map<Long, SeatClass> seatClasses = seatService.getSeatClassesByEventId(eventEntity.getEventId());
-
-        Map<Long, TicketResponse.SeatInfo> seatInfos = seats.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> seatMapper.toResponse(e.getValue())
-                ));
-
-        var wantingSeatsId = wantingSeatsRepository.getSeatIdsByTicketIssueId(ticketId);
-
-        var ticketedSeatClasses = wantingSeatsId.stream()
-                .map(seatId -> seats.get(seatId).getSeatClass().getId())
-                .distinct()
-                .map(seatClasses::get)
-                .map(seatClassMapper::toResponse)
-                .toList();
-
-        var seatPayments = seatPaymentService.getSeatPaymentsByTicketIssueId(ticketId).stream()
-                .map(seatPaymentIssueMapper::toResponse)
-                .toList();
-
-        return TicketResponse.Details.builder()
-                .id(ticketEntity.getTicketIssueId())
-                .status(ticketEntity.getStatus())
-                .paymentMethod(PaymentMethodCommonDto.from(
-                        ticketEntity.getPaymentMethod()
-                ))
-                .waitingNumber(ticketEntity.getWaitingNumber())
-                .personNumber(ticketEntity.getPersonNumber())
-                .createdAt(ticketEntity.getCreatedAt())
-                .canceledAt(ticketEntity.getCanceledAt())
-                .event(eventMapper.toResponse(
-                        eventEntity
-                ))
-                .performance(performanceMapper.toResponse(
-                        performanceEntity
-                ))
-                .seats(seatInfos)
-                .seatPayments(seatPayments)
-                .seatClasses(ticketedSeatClasses)
-                .wantingSeatsId(wantingSeatsId)
-                .build();
-    }
-
     @Transactional
-    @DistributedLock(key = "performance#dto.performanceId()")
+    @DistributedLock(key = "lock:performance:#dto.performanceId()")
     public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
         Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
 
