@@ -6,6 +6,7 @@ import com.quickticket.quickticket.domain.payment.seatPayment.service.SeatPaymen
 import com.quickticket.quickticket.domain.performance.service.PerformanceService;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.domain.SeatClass;
+import com.quickticket.quickticket.domain.seat.domain.SeatStatus;
 import com.quickticket.quickticket.domain.seat.service.SeatService;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
@@ -67,7 +68,7 @@ public class TicketService {
     }
 
     @Transactional
-    @DistributedLock(key = "lock:performance:#dto.performanceId()")
+    @DistributedLock(key = "lock:ticket-allocation-for-performance:#dto.performanceId()")
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
         var waitingNumber = performanceService.getWaitingLengthOfPerformance(dto.performanceId()) + 1;
         var wantingSeats = dto.wantingSeatsId().stream()
@@ -86,8 +87,15 @@ public class TicketService {
                 .wantingSeats(wantingSeats)
                 .build();
 
-        // 비어있는 좌석 있을시 바로 배정
         newTicket.ticketToPerformance(performance);
+
+        // 비어있는 좌석 있을시 바로 배정
+        for (var seat: wantingSeats.values()) {
+            if (seat.getStatus() == SeatStatus.AVAILABLE) {
+                seat.setWaitingNumberForTicket(newTicket);
+                seatService.saveDomain(seat);
+            }
+        }
 
         newTicket = ticketIssueRepository.saveDomainForBulk(newTicket);
         performance = performanceService.saveDomain(performance);
@@ -95,7 +103,7 @@ public class TicketService {
     }
 
     @Transactional
-    @DistributedLock(key = "lock:performance:#dto.performanceId()")
+    @DistributedLock(key = "lock:ticket-allocation-for-performance:#dto.performanceId()")
     public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
         Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
 
@@ -135,8 +143,7 @@ public class TicketService {
         );
 
         if (nextTicket == null) {
-            seat.setWaitingNumberTo(seat.getPerformance().getTicketWaitingLength()+1);
-
+            seat.setStatusToAvailable();
             seatService.saveDomain(seat);
             return;
         };

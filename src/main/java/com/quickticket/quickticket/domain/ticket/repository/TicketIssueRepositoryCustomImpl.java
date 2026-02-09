@@ -7,16 +7,18 @@ import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.seat.service.SeatService;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
-import com.quickticket.quickticket.domain.ticket.dto.TicketBulkInsertDto;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
+import com.quickticket.quickticket.domain.ticket.entity.TicketBulkInsertQueueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,13 +28,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TicketIssueRepositoryCustomImpl implements TicketIssueRepositoryCustom {
     private final JPAQueryFactory queryFactory;
+    private final RedisAtomicLong ticketIssueIdGenerator;
 
     private final SeatService seatService;
     private final SeatPaymentService seatPaymentService;
     private final TicketIssueMapper ticketIssueMapper;
     private final TicketIssueResponseMapper ticketIssueResponseMapper;
     private final WantingSeatsRepository wantingSeatsRepository;
-    private final RedisTemplate redisTemplate;
+    private final TicketBulkInsertQueueRepository ticketBulkInsertQueueRepository;
 
     @PersistenceContext
     private final EntityManager em;
@@ -48,13 +51,9 @@ public class TicketIssueRepositoryCustomImpl implements TicketIssueRepositoryCus
                 .fetchOne();
     }
 
-    private TicketBulkInsertDto getFromBulkQueueById(Long ticketId) {
-        return (TicketBulkInsertDto) redisTemplate.opsForValue().get("sync:bulk-insert-queue:ticket-issue:" + ticketId);
-    }
-
     @Override
     public Ticket getDomainById(Long ticketId) {
-        var cache = getFromBulkQueueById(ticketId);
+        var cache = ticketBulkInsertQueueRepository.findById(ticketId);
         var ticketEntity = getEntityById(ticketId);
         var wantingSeatEntities = getSeatEntitiesByTicketIssueId(ticketId);
 
@@ -112,7 +111,7 @@ public class TicketIssueRepositoryCustomImpl implements TicketIssueRepositoryCus
 
     @Override
     public TicketResponse.Details getDetailsById(Long ticketId) {
-//        var cache = getFromBulkQueueById(ticketId);
+        var cache = ticketBulkInsertQueueRepository.findById(ticketId);
 
         var ticketEntity = getEntityById(ticketId);
         var performanceEntity = ticketEntity.getPerformance();
@@ -124,5 +123,22 @@ public class TicketIssueRepositoryCustomImpl implements TicketIssueRepositoryCus
         var wantingSeatsId = wantingSeatsRepository.getSeatIdsByTicketIssueId(ticketId);
 
         return ticketIssueResponseMapper.toDetails(ticketEntity, seats, seatClasses, seatPayments, wantingSeatsId);
+    }
+
+    @Override
+    public Ticket saveDomainForBulk(Ticket domain) {
+        if (domain.getId() != null) {
+            return this.saveDomain(domain);
+        }
+
+        domain = domain.withId(ticketIssueIdGenerator.incrementAndGet());
+
+        this.addToQueue(domain);
+        return domain;
+    }
+
+    private void addToQueue(Ticket domain) {
+        var entity = TicketBulkInsertQueueEntity.from(domain);
+        ticketBulkInsertQueueRepository.save(entity);
     }
 }

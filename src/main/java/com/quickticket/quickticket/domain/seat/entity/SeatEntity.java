@@ -54,5 +54,5 @@ public class SeatEntity {
     @Column(nullable = false)
     private SeatStatus status;
 
-    private Long currentWaitingNumber;
+    private Long currentWaitingNumber = -1L;
 }

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TicketIssueEntity {
     @Id
-    @RedisSequenceId(key = "sync:ticket-issue-id-increment")
+    @RedisSequenceId(key = "sync:sequence-id:ticket-issue")
     @NotNull
     @Column(name = "ticket_issue_id", nullable = false)
     private Long ticketIssueId;

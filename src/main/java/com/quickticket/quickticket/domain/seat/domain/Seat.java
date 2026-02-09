@@ -3,6 +3,7 @@ package com.quickticket.quickticket.domain.seat.domain;
 import com.quickticket.quickticket.domain.payment.credit.domain.CreditTransaction;
 import com.quickticket.quickticket.domain.payment.credit.domain.TransactionType;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
+import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.shared.annotations.Default;
 import lombok.*;
 
@@ -29,14 +30,16 @@ public class Seat {
     /// 이 좌석을 선택한 Ticket이 나올때 비로소 그 waitingNumber로 설정됩니다.
     /// 즉 currentWaitingNumber는 1 다음에 2라는 보장이 없으며, 3이나 4로 될 수도 있습니다.
     /// 그건 그 대기순번의 Ticket이 이 좌석을 선택했느냐에 달렸습니다.
-    private Long currentWaitingNumber;
+    private Long currentWaitingNumber = -1L;
 
-    public void setWaitingNumberTo(Long waitingNumber) {
-        this.currentWaitingNumber = waitingNumber;
+    public void setWaitingNumberForTicket(Ticket ticket) {
+        this.currentWaitingNumber = ticket.getWaitingNumber();
+        this.status = SeatStatus.TICKET_ALLOCATED;
+    }
 
-        if (this.currentWaitingNumber > performance.getTicketWaitingLength()) {
-            this.status = SeatStatus.AVAILABLE;
-        }
+    public void setStatusToAvailable() {
+        this.status = SeatStatus.AVAILABLE;
+        this.currentWaitingNumber = -1L;
     }
 
     @Builder(builderMethodName = "create")

@@ -61,11 +61,11 @@ public class Ticket {
         this.waitingNumber = performance.getTicketWaitingLength() + 1;
         this.createdAt = LocalDateTime.now();
 
-        performance.addOneToWaitingLength();
+        performance.setTicketWaitingLength(this.waitingNumber);
     }
 
     public void allocateSeat(Seat seat) {
-        seat.setWaitingNumberTo(this.waitingNumber);
+        seat.setWaitingNumberForTicket(this);
 
         this.updateAllocationStatus();
     }

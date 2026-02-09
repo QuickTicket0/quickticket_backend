@@ -10,7 +10,10 @@ public interface TicketIssueRepositoryCustom {
 
     Ticket saveDomain(Ticket domain);
 
+    Ticket saveDomainForBulk(Ticket domain);
+
     List<TicketResponse.ListItem> getListItemsByUserId(Long userId);
 
     TicketResponse.Details getDetailsById(Long ticketId);
+
 }
