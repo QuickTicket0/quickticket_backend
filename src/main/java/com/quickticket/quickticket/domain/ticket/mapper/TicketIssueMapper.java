@@ -6,6 +6,7 @@ import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.seat.mapper.SeatMapper;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
+import com.quickticket.quickticket.domain.ticket.entity.TicketBulkInsertQueueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
 import com.quickticket.quickticket.domain.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,13 @@ public abstract class TicketIssueMapper {
         
     @Mapping(target = "ticketIssueId", source = "id")
     public abstract TicketIssueEntity toEntity(Ticket domain);
+
+    @Mapping(target = "ticketIssueId", source = "id")
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "performanceId", source = "performance.id")
+    @Mapping(target = "paymentMethodId", source = "paymentMethod.id")
+    @Mapping(target = "wantingSeatsId", expression = "java(domain.getWantingSeats().keySet().stream().toList())")
+    public abstract TicketBulkInsertQueueEntity toBulkQueueEntity(Ticket domain);
         
     public List<SeatEntity> wantingSeatsToEntity(Ticket domain) {
         return domain.getWantingSeats().entrySet().stream()

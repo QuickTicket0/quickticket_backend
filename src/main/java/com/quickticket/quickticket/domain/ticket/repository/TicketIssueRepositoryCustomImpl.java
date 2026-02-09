@@ -138,7 +138,7 @@ public class TicketIssueRepositoryCustomImpl implements TicketIssueRepositoryCus
     }
 
     private void addToQueue(Ticket domain) {
-        var entity = TicketBulkInsertQueueEntity.from(domain);
+        var entity = ticketIssueMapper.toBulkQueueEntity(domain);
         ticketBulkInsertQueueRepository.save(entity);
     }
 }

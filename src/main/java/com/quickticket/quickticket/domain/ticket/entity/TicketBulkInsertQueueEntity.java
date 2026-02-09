@@ -27,19 +27,4 @@ public class TicketBulkInsertQueueEntity {
     private Long waitingNumber;
     private Integer personNumber;
     private List<Long> wantingSeatsId;
-
-    public static TicketBulkInsertQueueEntity from(Ticket ticket) {
-        return TicketBulkInsertQueueEntity.builder()
-                .ticketIssueId(ticket.getId())
-                .userId(ticket.getUser().getId())
-                .performanceId(ticket.getPerformance().getId())
-                .paymentMethodId(ticket.getPaymentMethod().getId())
-                .status(ticket.getStatus())
-                .createdAt(ticket.getCreatedAt())
-                .canceledAt(ticket.getCanceledAt())
-                .waitingNumber(ticket.getWaitingNumber())
-                .personNumber(ticket.getPersonNumber())
-                .wantingSeatsId(ticket.getWantingSeats().keySet().stream().toList())
-                .build();
-    }
 }
