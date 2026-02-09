@@ -4,10 +4,10 @@ import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEnt
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
+import com.quickticket.quickticket.shared.generators.RedisSequenceId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TicketIssueEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @RedisSequenceId(key = "sync:ticket-issue-id-increment")
     @NotNull
     @Column(name = "ticket_issue_id", nullable = false)
     private Long ticketIssueId;

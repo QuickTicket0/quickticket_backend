@@ -61,6 +61,6 @@ public class RedisConfig {
 
     @Bean
     public RedisAtomicLong ticketIssueIdGenerator(RedisConnectionFactory factory) {
-        return new RedisAtomicLong("sync:ticket-issue-id-increment", factory);
+        return new RedisAtomicLong("sync:sequence-id:ticket-issue", factory);
     }
 }
