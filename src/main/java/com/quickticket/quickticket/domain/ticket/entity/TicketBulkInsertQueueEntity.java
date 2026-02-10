@@ -5,6 +5,7 @@ import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +19,9 @@ public class TicketBulkInsertQueueEntity {
     @Id
     private Long ticketIssueId;
 
+    @Indexed
     private Long userId;
+
     private Long performanceId;
     private Long paymentMethodId;
     private TicketStatus status;

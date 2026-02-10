@@ -1,6 +1,8 @@
 package com.quickticket.quickticket.domain.ticket.mapper;
 
+import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
 import com.quickticket.quickticket.domain.payment.method.mapper.PaymentMethodMapper;
+import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
@@ -8,6 +10,7 @@ import com.quickticket.quickticket.domain.seat.mapper.SeatMapper;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.entity.TicketBulkInsertQueueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
+import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import com.quickticket.quickticket.domain.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Builder;
@@ -37,6 +40,16 @@ public abstract class TicketIssueMapper {
     @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
     public abstract Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
 
+    @Mapping(target = "id", source = "entity.ticketIssueId")
+    @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
+    public abstract Ticket toDomain(
+            TicketBulkInsertQueueEntity entity,
+            PerformanceEntity performance,
+            UserEntity user,
+            PaymentMethodEntity paymentMethod,
+            List<SeatEntity> wantingSeatEntities
+    );
+
     @Named("wantingSeatEntitiesToDomainMap")
     public Map<Long, Seat> wantingSeatEntitiesToDomainMap(List<SeatEntity> entities) {
         return entities.stream()
@@ -45,7 +58,7 @@ public abstract class TicketIssueMapper {
                         seatMapper::toDomain
                 ));
     }
-        
+
     @Mapping(target = "ticketIssueId", source = "id")
     public abstract TicketIssueEntity toEntity(Ticket domain);
 

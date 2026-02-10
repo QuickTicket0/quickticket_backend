@@ -13,6 +13,7 @@ import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import com.quickticket.quickticket.domain.ticket.dto.TicketRequest;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
+import com.quickticket.quickticket.domain.ticket.repository.TicketBulkInsertQueueRepository;
 import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepository;
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepository;
 import com.quickticket.quickticket.domain.user.service.UserService;
@@ -30,13 +31,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TicketService {
+    private final TicketIssueRepository ticketIssueRepository;
+    private final TicketBulkInsertQueueRepository ticketBulkInsertQueueRepository;
+    private final WantingSeatsRepository wantingSeatsRepository;
+
     private final SeatService seatService;
     private final PerformanceService performanceService;
     private final UserService userService;
     private final PaymentMethodService paymentMethodService;
-
-    private final TicketIssueRepository ticketIssueRepository;
-    private final WantingSeatsRepository wantingSeatsRepository;
 
     public List<TicketResponse.ListItem> getMyTickets(Long userId) {
         return ticketIssueRepository.getListItemsByUserId(userId);
@@ -97,7 +99,7 @@ public class TicketService {
             }
         }
 
-        newTicket = ticketIssueRepository.saveDomainForBulk(newTicket);
+        newTicket = ticketBulkInsertQueueRepository.saveDomain(newTicket);
         performance = performanceService.saveDomain(performance);
         return newTicket;
     }
