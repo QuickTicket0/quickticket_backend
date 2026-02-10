@@ -17,15 +17,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
+@Repository
 @RequiredArgsConstructor
 public class TicketBulkInsertQueueRepositoryCustomImpl
         extends BaseCustomRepository<TicketBulkInsertQueueEntity, Long>
         implements TicketBulkInsertQueueRepositoryCustom {
 
+    private final EntityManager em;
     private final TicketIssueMapper ticketIssueMapper;
     private final TicketIssueRepository ticketIssueRepository;
     private final RedisAtomicLong ticketIssueIdGenerator;
-    private final EntityManager em;
 
     private final PerformanceRepository performanceRepository;
     private final UserRepository userRepository;

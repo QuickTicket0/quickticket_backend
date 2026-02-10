@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class TicketService {
     private final TicketIssueRepository ticketIssueRepository;
-    private final TicketBulkInsertQueueRepository ticketBulkInsertQueueRepository;
     private final WantingSeatsRepository wantingSeatsRepository;
 
     private final SeatService seatService;
@@ -99,7 +98,7 @@ public class TicketService {
             }
         }
 
-        newTicket = ticketBulkInsertQueueRepository.saveDomain(newTicket);
+        newTicket = ticketIssueRepository.saveDomainToBulkQueue(newTicket);
         performance = performanceService.saveDomain(performance);
         return newTicket;
     }

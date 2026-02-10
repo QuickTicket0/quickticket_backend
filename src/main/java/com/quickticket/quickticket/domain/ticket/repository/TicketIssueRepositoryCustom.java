@@ -8,9 +8,11 @@ import java.util.List;
 public interface TicketIssueRepositoryCustom {
     Ticket getDomainById(Long ticketId);
 
+    boolean existsById(Long ticketId);
+
     Ticket saveDomain(Ticket domain);
 
-    Ticket saveDomainForBulk(Ticket domain);
+    Ticket saveDomainToBulkQueue(Ticket domain);
 
     List<TicketResponse.ListItem> getListItemsByUserId(Long userId);
 
