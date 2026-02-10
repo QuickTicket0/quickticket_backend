@@ -4,9 +4,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.dto.SeatCache;
 import com.quickticket.quickticket.domain.seat.dto.SeatClassCache;
-import com.quickticket.quickticket.domain.seat.entity.QSeatClassEntity;
-import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
+import com.quickticket.quickticket.domain.seat.entity.*;
 import com.quickticket.quickticket.domain.seat.mapper.SeatMapper;
+import com.quickticket.quickticket.shared.utils.BaseCustomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,11 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SeatRepositoryCustomImpl implements SeatRepositoryCustom {
+public class SeatRepositoryCustomImpl
+        extends BaseCustomRepository<SeatEntity, SeatId>
+        implements SeatRepositoryCustom {
+
     private final SeatMapper seatMapper;
-    private final JPAQueryFactory queryFactory;
 
     @PersistenceContext
     private final EntityManager em;
@@ -29,15 +31,7 @@ public class SeatRepositoryCustomImpl implements SeatRepositoryCustom {
      * @return 조회된 seat 정보를 담은 SeatClassCache (없을 경우엔 null로 반환)
      */
     public SeatCache getCacheById(Long seatId, Long performanceId) {
-        var seat = QSeatEntity.seatEntity;
-
-        var query = Optional.ofNullable(queryFactory
-                .selectFrom(seat)
-                .where(
-                        seat.id.seatId.eq(seatId),
-                        seat.id.performanceId.eq(performanceId)
-                )
-                .fetchOne()).orElseThrow();
+        var query = getEntityById(new SeatId(seatId, performanceId)).orElseThrow();
 
         return SeatCache.builder()
                 .id(seatId)

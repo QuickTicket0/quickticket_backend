@@ -1,28 +1,19 @@
 package com.quickticket.quickticket.domain.seat.repository;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.seat.dto.SeatAreaCache;
-import com.quickticket.quickticket.domain.seat.entity.QSeatAreaEntity;
+import com.quickticket.quickticket.domain.seat.entity.*;
+import com.quickticket.quickticket.shared.utils.BaseCustomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 @RequiredArgsConstructor
-public class SeatAreaRepositoryCustomImpl implements SeatAreaRepositoryCustom {
-    private final JPAQueryFactory queryFactory;
+public class SeatAreaRepositoryCustomImpl
+        extends BaseCustomRepository<SeatAreaEntity, SeatAreaId>
+        implements SeatAreaRepositoryCustom {
 
     public SeatAreaCache getCacheById(Long seatAreaId, Long eventId) {
-        var seatArea = QSeatAreaEntity.seatAreaEntity;
-
-        var query = Optional.ofNullable(queryFactory
-                .selectFrom(seatArea)
-                .where(
-                        seatArea.id.seatAreaId.eq(seatAreaId),
-                        seatArea.id.eventId.eq(eventId)
-                )
-                .fetchOne()).orElseThrow();
+        var query = getEntityById(new SeatAreaId(seatAreaId, eventId)).orElseThrow();
 
         return SeatAreaCache.builder()
                 .id(query.getId().getSeatAreaId())
