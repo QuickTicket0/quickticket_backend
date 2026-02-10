@@ -7,6 +7,7 @@ import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.seat.service.SeatService;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
+import com.quickticket.quickticket.domain.ticket.domain.TicketPersistenceStatus;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
@@ -63,7 +64,10 @@ public class TicketIssueRepositoryCustomImpl
         var ticketEntity = getEntityById(ticketId).orElseThrow();
         var wantingSeatEntities = getSeatEntitiesByTicketIssueId(ticketId);
 
-        return ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+        var ticket = ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+        ticket.setPersistenceStatus(TicketPersistenceStatus.PERSISTED);
+
+        return ticket;
     }
 
     private List<SeatEntity> getSeatEntitiesByTicketIssueId(Long ticketId) {
@@ -82,7 +86,7 @@ public class TicketIssueRepositoryCustomImpl
 
     @Override
     public Ticket saveDomain(Ticket domain) {
-        if (ticketBulkInsertQueueRepository.existsById(domain.getId())) {
+        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PENDING_BULK_INSERT) {
             return ticketBulkInsertQueueRepository.saveDomain(domain);
         }
 
@@ -95,14 +99,17 @@ public class TicketIssueRepositoryCustomImpl
             em.merge(ticketEntity);
         }
 
-        return ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+        var ticket = ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+        ticket.setPersistenceStatus(domain.getPersistenceStatus());
+
+        return ticket;
     }
 
     @Override
     public Ticket saveDomainToBulkQueue(Ticket domain) {
-//        if (domain.getId() != null) {
-//            return this.saveDomain(domain);
-//        }
+        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PERSISTED) {
+            return this.saveDomain(domain);
+        }
 
         return ticketBulkInsertQueueRepository.saveDomain(domain);
     }

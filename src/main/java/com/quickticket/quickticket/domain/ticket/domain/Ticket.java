@@ -5,10 +5,7 @@ import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.user.domain.User;
 import com.quickticket.quickticket.shared.annotations.Default;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.With;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,6 +39,9 @@ public class Ticket {
     /// 인원이 2명이라면 그 범위 내에서 가장 빨리 선착순이 난 좌석 2개를 차례대로 배정받습니다.
     /// 키: Seat의 id
     private Map<Long, Seat> wantingSeats;
+
+    @Setter
+    private TicketPersistenceStatus persistenceStatus = TicketPersistenceStatus.NEW;
 
     public boolean isCanceled() {
         return this.status == TicketStatus.CANCELED

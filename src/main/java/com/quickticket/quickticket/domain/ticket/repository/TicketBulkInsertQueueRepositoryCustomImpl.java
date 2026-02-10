@@ -8,6 +8,7 @@ import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatId;
 import com.quickticket.quickticket.domain.seat.repository.SeatRepository;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
+import com.quickticket.quickticket.domain.ticket.domain.TicketPersistenceStatus;
 import com.quickticket.quickticket.domain.ticket.entity.TicketBulkInsertQueueEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.TicketIssueMapper;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
@@ -27,13 +28,15 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
         implements TicketBulkInsertQueueRepositoryCustom {
 
     private final EntityManager em;
+    private final RedisAtomicLong ticketIssueIdGenerator;
     private final TicketIssueMapper ticketIssueMapper;
     private final TicketIssueRepository ticketIssueRepository;
-    private final RedisAtomicLong ticketIssueIdGenerator;
 
     @Override
     public Ticket getDomainById(Long ticketId) {
-        var entity = getEntityById(ticketId).orElseThrow();
+        var entity = getEntityById(ticketId).orElse(null);
+        if (entity == null) return null;
+
         var performance = em.find(PerformanceEntity.class, entity.getPerformanceId());
         var user = em.find(UserEntity.class, entity.getUserId());
         var paymentMethod = em.find(PaymentMethodEntity.class, entity.getPaymentMethodId());
@@ -45,12 +48,15 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
             );
         }
 
-        return ticketIssueMapper.toDomain(entity, performance, user, paymentMethod, wantingSeats);
+        var ticket = ticketIssueMapper.toDomain(entity, performance, user, paymentMethod, wantingSeats);
+        ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
+
+        return ticket;
     };
 
     @Override
     public Ticket saveDomain(Ticket domain) {
-        if (ticketIssueRepository.existsById(domain.getId())) {
+        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PERSISTED) {
             return ticketIssueRepository.saveDomain(domain);
         }
 
