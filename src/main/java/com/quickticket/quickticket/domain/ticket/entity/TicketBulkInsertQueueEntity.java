@@ -1,7 +1,8 @@
 package com.quickticket.quickticket.domain.ticket.entity;
 
-import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
+import com.quickticket.quickticket.shared.generators.RedisSequenceId;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -17,14 +18,21 @@ import java.util.List;
 @RedisHash("sync:bulk-insert-queue:ticket-issue")
 public class TicketBulkInsertQueueEntity {
     @Id
+    @RedisSequenceId(key = "sync:sequence-id:ticket-issue")
+    @NotNull
     private Long ticketIssueId;
 
     @Indexed
+    @NotNull
     private Long userId;
 
+    @NotNull
     private Long performanceId;
-    private Long paymentMethodId;
+
+    @NotNull
     private TicketStatus status;
+
+    private Long paymentMethodId;
     private LocalDateTime createdAt;
     private LocalDateTime canceledAt;
     private Long waitingNumber;

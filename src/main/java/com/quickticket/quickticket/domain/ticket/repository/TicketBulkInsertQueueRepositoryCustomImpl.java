@@ -1,22 +1,17 @@
 package com.quickticket.quickticket.domain.ticket.repository;
 
 import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
-import com.quickticket.quickticket.domain.payment.method.repository.PaymentMethodRepository;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
-import com.quickticket.quickticket.domain.performance.repository.PerformanceRepository;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatId;
-import com.quickticket.quickticket.domain.seat.repository.SeatRepository;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.domain.TicketPersistenceStatus;
 import com.quickticket.quickticket.domain.ticket.entity.TicketBulkInsertQueueEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.TicketIssueMapper;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
-import com.quickticket.quickticket.domain.user.repository.UserRepository;
 import com.quickticket.quickticket.shared.utils.BaseCustomRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -28,13 +23,41 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
         implements TicketBulkInsertQueueRepositoryCustom {
 
     private final EntityManager em;
-    private final RedisAtomicLong ticketIssueIdGenerator;
     private final TicketIssueMapper ticketIssueMapper;
     private final TicketIssueRepository ticketIssueRepository;
 
     @Override
     public Ticket getDomainById(Long ticketId) {
         var entity = getEntityById(ticketId).orElse(null);
+        if (entity == null) return null;
+
+        var ticket = this.entityToDomain(entity);
+        ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
+
+        return ticket;
+    }
+
+    @Override
+    public Ticket saveDomain(Ticket domain) {
+        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PERSISTED) {
+            return ticketIssueRepository.saveDomain(domain);
+        }
+
+        var ticketEntity = ticketIssueMapper.toBulkQueueEntity(domain);
+
+        switch (domain.getPersistenceStatus()) {
+            case NEW -> em.persist(ticketEntity);
+            case PENDING_BULK_INSERT -> ticketEntity = em.merge(ticketEntity);
+            default -> throw new AssertionError("TicketPersistenceStatus가 올바르게 처리되지 않음.");
+        }
+
+        var ticket = this.entityToDomain(ticketEntity);
+        ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
+
+        return ticket;
+    }
+
+    private Ticket entityToDomain(TicketBulkInsertQueueEntity entity) {
         if (entity == null) return null;
 
         var performance = em.find(PerformanceEntity.class, entity.getPerformanceId());
@@ -48,24 +71,6 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
             );
         }
 
-        var ticket = ticketIssueMapper.toDomain(entity, performance, user, paymentMethod, wantingSeats);
-        ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
-
-        return ticket;
-    };
-
-    @Override
-    public Ticket saveDomain(Ticket domain) {
-        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PERSISTED) {
-            return ticketIssueRepository.saveDomain(domain);
-        }
-
-        domain = domain.withId(ticketIssueIdGenerator.incrementAndGet());
-
-        var entity = ticketIssueMapper.toBulkQueueEntity(domain);
-        ticketBulkInsertQueueRepository.save(entity);
-        em.persist();
-
-        return domain;
+        return ticketIssueMapper.toDomain(entity, performance, user, paymentMethod, wantingSeats);
     }
 }

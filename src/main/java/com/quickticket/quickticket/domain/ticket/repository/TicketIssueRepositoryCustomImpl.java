@@ -93,14 +93,14 @@ public class TicketIssueRepositoryCustomImpl
         var ticketEntity = ticketIssueMapper.toEntity(domain);
         var wantingSeatEntities = ticketIssueMapper.wantingSeatsToEntity(domain);
 
-        if (ticketEntity.getTicketIssueId() == null) {
-            em.persist(ticketEntity);
-        } else {
-            em.merge(ticketEntity);
+        switch (domain.getPersistenceStatus()) {
+            case NEW -> em.persist(ticketEntity);
+            case PERSISTED -> ticketEntity = em.merge(ticketEntity);
+            default -> throw new AssertionError("TicketPersistenceStatus가 올바르게 처리되지 않음.");
         }
 
         var ticket = ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
-        ticket.setPersistenceStatus(domain.getPersistenceStatus());
+        ticket.setPersistenceStatus(TicketPersistenceStatus.PERSISTED);
 
         return ticket;
     }

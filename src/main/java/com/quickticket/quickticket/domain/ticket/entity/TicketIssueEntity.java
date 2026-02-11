@@ -33,14 +33,13 @@ public class TicketIssueEntity {
     @JoinColumn(name = "performance_id", nullable = false)
     private PerformanceEntity performance;
 
-    @ManyToOne
-    @NotNull
-    @JoinColumn(name = "payment_method_id", nullable = false)
-    private PaymentMethodEntity paymentMethod;
-
     @NotNull
     @Column(name = "ticket_status", nullable = false)
     private TicketStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id")
+    private PaymentMethodEntity paymentMethod;
 
     private LocalDateTime createdAt;
 
@@ -48,8 +47,5 @@ public class TicketIssueEntity {
 
     private Long waitingNumber;
 
-    @NotNull
-    @Column(nullable = false)
     private Integer personNumber;
-
 }
