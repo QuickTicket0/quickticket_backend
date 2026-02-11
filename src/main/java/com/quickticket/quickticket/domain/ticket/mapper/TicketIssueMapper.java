@@ -41,6 +41,7 @@ public abstract class TicketIssueMapper {
     public abstract Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
 
     @Mapping(target = "id", source = "entity.ticketIssueId")
+    @Mapping(target = "createdAt", source = "entity.createdAt")
     @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
     public abstract Ticket toDomain(
             TicketBulkInsertQueueEntity entity,

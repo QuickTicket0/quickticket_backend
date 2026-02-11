@@ -44,7 +44,8 @@ public class TicketService {
     }
 
     public TicketResponse.Details getResponseDetailsById(Long ticketId) {
-        return ticketIssueRepository.getDetailsById(ticketId);
+        return ticketIssueRepository.getDetailsById(ticketId)
+                .orElseThrow(()->new DomainException(TicketErrorCode.NOT_FOUND));
     }
 
     @Transactional
@@ -106,7 +107,8 @@ public class TicketService {
     @Transactional
     @DistributedLock(key = "lock:ticket-allocation-for-performance:#dto.performanceId()")
     public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
-        Ticket ticket = ticketIssueRepository.getDomainById(dto.id());
+        var ticket = ticketIssueRepository.getDomainById(dto.id())
+                .orElseThrow(()->new DomainException(TicketErrorCode.NOT_FOUND));
 
         if (!ticket.getUser().getId().equals(userId)) {
             throw new DomainException(TicketErrorCode.USER_NOT_EQUAL);
@@ -115,7 +117,7 @@ public class TicketService {
             throw new DomainException(TicketErrorCode.CANCELED_ALREADY);
         }
         if (ticket.getStatus() == TicketStatus.PRESET) {
-            // throw new DomainException(TicketErrorCode.NOT_ALLOCATED);
+             throw new DomainException(TicketErrorCode.NOT_FOUND);
         }
 
         ticket.cancel();

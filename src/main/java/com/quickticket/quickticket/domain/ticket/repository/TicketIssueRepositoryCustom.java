@@ -4,9 +4,10 @@ import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TicketIssueRepositoryCustom {
-    Ticket getDomainById(Long ticketId);
+    Optional<Ticket> getDomainById(Long ticketId);
 
     boolean existsById(Long ticketId);
 
@@ -16,6 +17,6 @@ public interface TicketIssueRepositoryCustom {
 
     List<TicketResponse.ListItem> getListItemsByUserId(Long userId);
 
-    TicketResponse.Details getDetailsById(Long ticketId);
+    Optional<TicketResponse.Details> getDetailsById(Long ticketId);
 
 }

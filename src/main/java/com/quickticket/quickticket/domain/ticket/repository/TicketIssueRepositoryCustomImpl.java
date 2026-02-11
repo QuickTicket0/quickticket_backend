@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.ticket.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.payment.seatPayment.service.SeatPaymentService;
+import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -42,46 +44,20 @@ public class TicketIssueRepositoryCustomImpl
     private final SeatPaymentService seatPaymentService;
 
     @Override
-    public boolean existsById(Long ticketId) {
-        var ticket = QTicketIssueEntity.ticketIssueEntity;
-
-        var query = queryFactory
-                .selectOne()
-                .from(ticket)
-                .where(ticket.ticketIssueId.eq(ticketId))
-                .fetchFirst();
-
-        return query != null;
-    }
-
-    @Override
-    public Ticket getDomainById(Long ticketId) {
+    public Optional<Ticket> getDomainById(Long ticketId) {
         var cache = ticketBulkInsertQueueRepository.getDomainById(ticketId);
-        if (cache != null) {
+        if (cache.isPresent()) {
             return cache;
         }
 
-        var ticketEntity = getEntityById(ticketId).orElseThrow();
-        var wantingSeatEntities = getSeatEntitiesByTicketIssueId(ticketId);
+        return getEntityById(ticketId).map(ticketEntity -> {
+            var wantingSeatEntities = this.getSeatEntitiesByTicketIssueId(ticketId);
 
-        var ticket = ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
-        ticket.setPersistenceStatus(TicketPersistenceStatus.PERSISTED);
+            var ticket = ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+            ticket.setPersistenceStatus(TicketPersistenceStatus.PERSISTED);
 
-        return ticket;
-    }
-
-    private List<SeatEntity> getSeatEntitiesByTicketIssueId(Long ticketId) {
-        var wantingSeat = QWantingSeatsEntity.wantingSeatsEntity;
-        var seat = QSeatEntity.seatEntity;
-
-        return queryFactory
-                .select(seat)
-                .from(wantingSeat)
-                .where(
-                        wantingSeat.ticketIssue.ticketIssueId.eq(ticketId),
-                        wantingSeat.seat.id.seatId.eq(seat.id.seatId)
-                )
-                .fetch();
+            return ticket;
+        });
     }
 
     @Override
@@ -138,37 +114,65 @@ public class TicketIssueRepositoryCustomImpl
 
         listItems.addAll(
             ticketsAtBatchQueue.stream()
-                .map(e -> TicketResponse.ListItem.builder()
-                    .id(e.getTicketIssueId())
-                    .createdAt(e.getCreatedAt())
-                    .performanceStartsAt(e.getPerformance().getPerformanceStartsAt())
-                    .eventName(e.getPerformance().getEvent().getName())
-                    .personNumber(e.getPersonNumber())
-                    .build())
+                .map(e -> {
+                    var performance = em.find(PerformanceEntity.class, e.getPerformanceId());
+
+                    return TicketResponse.ListItem.builder()
+                        .id(e.getTicketIssueId())
+                        .createdAt(e.getCreatedAt())
+                        .performanceStartsAt(performance.getPerformanceStartsAt())
+                        .eventName(performance.getEvent().getName())
+                        .personNumber(e.getPersonNumber())
+                        .build();
+                })
+                .toList()
         );
+
+        return listItems;
     }
 
     @Override
-    public TicketResponse.Details getDetailsById(Long ticketId) {
-        TicketIssueEntity ticketEntity;
+    public Optional<TicketResponse.Details> getDetailsById(Long ticketId) {
+        return this.getDomainById(ticketId).map(ticket -> {
+            var performance = ticket.getPerformance();
 
-        var cache = ticketBulkInsertQueueRepository.findById(ticketId);
-        if (cache.isPresent()) {
-            var tmpWantingSeats = getSeatEntitiesByTicketIssueId(ticketId);
-            var tmpDomain = ticketIssueMapper.toDomain(cache.get(), tmpWantingSeats);
-            ticketEntity = ticketIssueMapper.toEntity(tmpDomain);
-        } else {
-            ticketEntity = getEntityById(ticketId).orElseThrow();
+            Map<Long, Seat> seats = seatService.getSeatsMapByPerformanceId(performance.getId());
+            var seatClasses = seatService.getSeatClassesByEventId(performance.getEvent().getId());
+            var seatPayments = seatPaymentService.getSeatPaymentsByTicketIssueId(ticketId);
+            var wantingSeatsId = wantingSeatsRepository.getSeatIdsByTicketIssueId(ticketId);
+
+            return ticketIssueResponseMapper.toDetails(ticket, seats, seatClasses, seatPayments, wantingSeatsId);
+        });
+    }
+
+    @Override
+    public boolean existsById(Long ticketId) {
+        var ticket = QTicketIssueEntity.ticketIssueEntity;
+
+        if (ticketBulkInsertQueueRepository.existsById(ticketId)) {
+            return true;
         }
 
-        var performanceEntity = ticketEntity.getPerformance();
-        var eventEntity = performanceEntity.getEvent();
+        var query = queryFactory
+                .selectOne()
+                .from(ticket)
+                .where(ticket.ticketIssueId.eq(ticketId))
+                .fetchFirst();
 
-        Map<Long, Seat> seats = seatService.getSeatsMapByPerformanceId(performanceEntity.getPerformanceId());
-        var seatClasses = seatService.getSeatClassesByEventId(eventEntity.getEventId());
-        var seatPayments = seatPaymentService.getSeatPaymentsByTicketIssueId(ticketId);
-        var wantingSeatsId = wantingSeatsRepository.getSeatIdsByTicketIssueId(ticketId);
+        return query != null;
+    }
 
-        return ticketIssueResponseMapper.toDetails(ticketEntity, seats, seatClasses, seatPayments, wantingSeatsId);
+    private List<SeatEntity> getSeatEntitiesByTicketIssueId(Long ticketId) {
+        var wantingSeat = QWantingSeatsEntity.wantingSeatsEntity;
+        var seat = QSeatEntity.seatEntity;
+
+        return queryFactory
+                .select(seat)
+                .from(wantingSeat)
+                .where(
+                        wantingSeat.ticketIssue.ticketIssueId.eq(ticketId),
+                        wantingSeat.seat.id.seatId.eq(seat.id.seatId)
+                )
+                .fetch();
     }
 }

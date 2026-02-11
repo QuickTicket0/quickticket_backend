@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,14 +28,13 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
     private final TicketIssueRepository ticketIssueRepository;
 
     @Override
-    public Ticket getDomainById(Long ticketId) {
-        var entity = getEntityById(ticketId).orElse(null);
-        if (entity == null) return null;
+    public Optional<Ticket> getDomainById(Long ticketId) {
+        return getEntityById(ticketId).map(entity -> {
+            var ticket = this.entityToDomain(entity);
+            ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
 
-        var ticket = this.entityToDomain(entity);
-        ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
-
-        return ticket;
+            return ticket;
+        });
     }
 
     @Override

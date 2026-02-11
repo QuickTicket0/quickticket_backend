@@ -6,9 +6,8 @@ import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPayment
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
 import com.quickticket.quickticket.domain.seat.domain.SeatClass;
+import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
-import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
-import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,10 +18,9 @@ import java.util.Map;
     componentModel = "spring"
 )
 public interface TicketIssueResponseMapper {
-    @Mapping(target = "id", source = "ticketEntity.ticketIssueId")
-    @Mapping(target = "event", source = "ticketEntity.performance.event")
+    @Mapping(target = "event", source = "ticket.performance.event")
     TicketResponse.Details toDetails(
-            TicketIssueEntity ticketEntity,
+            Ticket ticket,
             Map<Long, Seat> seats,
             List<SeatClass> seatClasses,
             List<SeatPaymentIssue> seatPayments,
