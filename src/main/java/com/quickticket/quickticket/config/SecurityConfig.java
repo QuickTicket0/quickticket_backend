@@ -19,7 +19,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
         http
-            .csrf(csrf->csrf.disable())
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
                         .requestMatchers(
@@ -41,17 +40,17 @@ public class SecurityConfig {
                                 "/myTicket/**",
                                 "/ticketSuccess/**",
                                 "/cancelTicketSuccess/**"
-                        ).hasRole(AccountType.USER.getName())
+                        ).hasRole(AccountType.USER.getRole())
                         .requestMatchers(
                                 "/admin/**",
                                 "/editEvent",
                                 "/newEvent"
-                        ).hasRole(AccountType.ADMIN.getName())
+                        ).hasRole(AccountType.ADMIN.getRole())
                         .anyRequest().authenticated()
             )
             .formLogin((formLogin) ->
                     formLogin
-                            .loginPage("/login")
+                            .loginProcessingUrl("/api/account/login")
                             .usernameParameter("username")
                             .passwordParameter("password")
                             .defaultSuccessUrl("/", true)
