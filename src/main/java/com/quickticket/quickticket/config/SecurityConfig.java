@@ -19,6 +19,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
         http
+            .csrf(csrf->csrf.disable())
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
                         .requestMatchers(
@@ -27,6 +28,9 @@ public class SecurityConfig {
                                 "/signup",
                                 "/findMyPassword",
                                 "/findMyId"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/api/**"
                         ).permitAll()
                         .requestMatchers(
                                 "/css/**",

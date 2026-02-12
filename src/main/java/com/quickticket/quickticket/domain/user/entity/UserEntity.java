@@ -19,7 +19,6 @@ public class UserEntity {
     // 엔티티 객체 최초 생성시 id값이 정해지지 않은 상태여서 null을 표현할 필요성이 있기 때문입니다.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long id;
 
@@ -57,7 +56,6 @@ public class UserEntity {
     @Column(nullable = false)
     private AccountType type;
 
-    @NotNull
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

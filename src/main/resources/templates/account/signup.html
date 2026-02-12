@@ -12,7 +12,7 @@
     <div class="find-container">
         <h2 class="page-title">회원가입</h2>
 
-        <form th:action="@{/signup}" method="post">
+        <form action="/api/account/signup" method="post">
 
             <div class="gray-form-box">
                 <!-- 아이디  -->
@@ -32,8 +32,8 @@
                 </div>
                 <!-- 이름 -->
                 <div class="form-field">
-                    <label for="name" class="form-label">이름</label>
-                    <input type="text" id="name" name="name" class="simple-input" placeholder="이름을 입력하세요">
+                    <label for="realName" class="form-label">이름</label>
+                    <input type="text" id="realName" name="realName" class="simple-input" placeholder="이름을 입력하세요">
                 </div>
                 <!-- 생년월일 -->
                 <div class="form-field">

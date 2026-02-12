@@ -1,11 +1,9 @@
 package com.quickticket.quickticket.domain.account.controller;
 
 import com.quickticket.quickticket.domain.account.dto.AccountRequest;
-import com.quickticket.quickticket.domain.user.domain.User;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +29,7 @@ public class AccountController {
     }
 
     @PostMapping("/api/account/signup")
-    public void signup(
+    public String signup(
             @ModelAttribute AccountRequest.Signup requestDto
     ) {
         var newUser = userService.signupNewUser(requestDto);
@@ -44,6 +42,7 @@ public class AccountController {
 
         // 수동으로 로그인 상태 설정
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        return "redirect:/";
     }
 
     @GetMapping("/findMyId")

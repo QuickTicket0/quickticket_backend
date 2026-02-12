@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.user.service;
 
+import com.quickticket.quickticket.domain.account.domain.AccountType;
 import com.quickticket.quickticket.domain.account.dto.AccountRequest;
 import com.quickticket.quickticket.domain.user.domain.User;
 import com.quickticket.quickticket.domain.user.dto.UserResponse;
@@ -59,6 +60,7 @@ public class UserService implements UserDetailsService {
         }
 
         var newUser = User.builder()
+                .type(AccountType.USER)
                 .username(signupDto.username())
                 .realName(signupDto.realName())
                 .password(passwordEncoder.encode(signupDto.password()))
