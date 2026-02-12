@@ -1,4 +1,11 @@
 spring:
+  application:
+    name: quickticket
+  datasource:
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    replica:
+      driver-class-name: com.mysql.cj.jdbc.Driver
   cache:
     type: redis
   jakson:

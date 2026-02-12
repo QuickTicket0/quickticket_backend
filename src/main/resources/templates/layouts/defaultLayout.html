@@ -12,10 +12,10 @@
     <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 <body>
-    <header th:replace="fragments/header::headerFragment"></header>
+    <header th:replace="~{fragments/header::headerFragment}"></header>
 
     <main layout:fragment="content"></main>
 
-    <footer th:replace="fragments/footer::footerFragment"></footer>
+    <footer th:replace="~{fragments/footer::footerFragment}"></footer>
 </body>
 </html>

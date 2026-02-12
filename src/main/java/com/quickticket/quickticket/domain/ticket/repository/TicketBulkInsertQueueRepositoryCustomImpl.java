@@ -25,7 +25,6 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
 
     private final EntityManager em;
     private final TicketIssueMapper ticketIssueMapper;
-    private final TicketIssueRepository ticketIssueRepository;
 
     @Override
     public Optional<Ticket> getDomainById(Long ticketId) {
@@ -40,7 +39,7 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
     @Override
     public Ticket saveDomain(Ticket domain) {
         if (domain.getPersistenceStatus() == TicketPersistenceStatus.PERSISTED) {
-            return ticketIssueRepository.saveDomain(domain);
+            throw new AssertionError("이미 영속화된 엔티티를 BulkInsertQueue에 저장할 수 없습니다.");
         }
 
         var ticketEntity = ticketIssueMapper.toBulkQueueEntity(domain);

@@ -27,6 +27,10 @@ public class SecurityConfig {
                                 "/findMyId"
                         ).permitAll()
                         .requestMatchers(
+                                "/css/**",
+                                "/images/**"
+                        ).permitAll()
+                        .requestMatchers(
                                 "/myPage/**",
                                 "/myTicket/**",
                                 "/ticketSuccess/**",
