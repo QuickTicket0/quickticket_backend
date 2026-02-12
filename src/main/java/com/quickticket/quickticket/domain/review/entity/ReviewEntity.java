@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long reviewId;
 
@@ -35,7 +34,6 @@ public class ReviewEntity {
     @Column(nullable = false)
     private Short userRating;
 
-    @NotNull
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

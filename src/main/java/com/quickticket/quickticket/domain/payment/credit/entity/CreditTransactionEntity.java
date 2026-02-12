@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 public class CreditTransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long creditTransactionId;
 

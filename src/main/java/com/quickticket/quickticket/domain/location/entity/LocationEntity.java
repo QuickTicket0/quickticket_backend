@@ -12,7 +12,6 @@ import lombok.*;
 public class LocationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long locationId;
 

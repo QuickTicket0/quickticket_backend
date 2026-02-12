@@ -19,7 +19,6 @@ import java.util.List;
 public class TicketBulkInsertQueueEntity {
     @Id
     @RedisSequenceId(key = "sync:sequence-id:ticket-issue")
-    @NotNull
     private Long ticketIssueId;
 
     @Indexed

@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public class TicketIssueEntity {
     @Id
     @RedisSequenceId(key = "sync:sequence-id:ticket-issue")
-    @NotNull
     @Column(name = "ticket_issue_id", nullable = false)
     private Long ticketIssueId;
 

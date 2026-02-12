@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public class SeatPaymentIssueEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "payment_id", nullable = false)
     private Long paymentId;
 
@@ -51,7 +50,6 @@ public class SeatPaymentIssueEntity {
     @Column(nullable = false)
     private Long amount;
 
-    @NotNull
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

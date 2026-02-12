@@ -16,7 +16,6 @@ import java.time.LocalDate;
 public class PaymentMethodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long paymentMethodId;
 

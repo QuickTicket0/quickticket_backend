@@ -13,7 +13,6 @@ import lombok.*;
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long categoryId;
 

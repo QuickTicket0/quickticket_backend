@@ -19,7 +19,6 @@ import java.util.List;
 public class PerformanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long performanceId;
 

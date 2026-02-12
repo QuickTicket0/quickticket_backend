@@ -18,7 +18,6 @@ import java.sql.Blob;
 public class EventEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(nullable = false)
     private Long eventId;
 
