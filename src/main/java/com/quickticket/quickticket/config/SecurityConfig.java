@@ -1,10 +1,12 @@
 package com.quickticket.quickticket.config;
 
 import com.quickticket.quickticket.domain.account.domain.AccountType;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -70,13 +72,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/error");
+    }
+
     private final AuthenticationEntryPoint unauthorizedEntryPoint =
             (request, response, authException) -> {
-
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증되지 않은 사용자입니다.");
             };
 
     private final AccessDeniedHandler accessDeniedHandler =
             (request, response, accessDeniedException) -> {
-
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "이 페이지에 접근 권한이 없습니다.");
             };
 }
