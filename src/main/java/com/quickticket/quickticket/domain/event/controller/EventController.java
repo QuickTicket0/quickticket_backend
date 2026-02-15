@@ -4,16 +4,18 @@ import com.quickticket.quickticket.domain.event.dto.EventResponse;
 import com.quickticket.quickticket.domain.event.service.EventService;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.service.PerformanceService;
+import com.quickticket.quickticket.shared.infra.aws.s3.S3Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -22,35 +24,17 @@ import java.util.List;
 public class EventController {
 
     private final EventService service;
+
     private final PerformanceService performanceService;
+    private final S3Service s3Service;
+
+    @GetMapping("/api/images/event/{eventId}")
+    public ResponseEntity<Resource> getPosterImage(@PathVariable Long eventId) {
+        return s3Service.getObjectResponseEntity("/images/event/" + eventId);
+    }
 
     @GetMapping("/event/{eventId}")
     public String event(Model model, @PathVariable Long eventId) {
-
-        /*
-
-        =========================
-        LocationCommonDto locationInfo = LocationCommonDto.builder()
-                .id(1L)
-                .name("수원실내체육관")
-                .sido("경기")
-                .siGunGu("수원시")
-                .build();
-
-        TicketResponse.Details.TicketEventInfo eventInfo =
-                TicketResponse.Details.TicketEventInfo.builder()
-                        .name("2025-2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원")
-                        .dateRange("2026.01.24 ~ 2026.01.25")
-                        .cast("이창섭")
-                        .ageRating("만 7세 이상 관람가")
-                        .location(LocationCommonDto.builder()
-                                .id(1L)
-                                .name("수원실내체육관")
-                                .build())
-                        .build();
-        */
-
-
         EventResponse.Details eventDetails =
                 service.getResponseDetailsById(eventId);
 
