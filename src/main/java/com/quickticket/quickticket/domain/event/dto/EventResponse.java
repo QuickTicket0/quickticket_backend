@@ -4,6 +4,7 @@ import com.quickticket.quickticket.domain.category.dto.CategoryCommonDto;
 import com.quickticket.quickticket.domain.event.domain.AgeRating;
 import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
+import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import lombok.Builder;
 
 import java.sql.Blob;
@@ -26,17 +27,37 @@ public class EventResponse {
 
         String cast,   // 출연자
 
+        String locationName,   // 공연장 이름
+
+        LocalDateTime performanceStartsAt, //공연시작일자
+
         Blob thumbnailImage
     ) {
-        public static ListItem from(EventEntity entity) {
+        public static ListItem from(EventEntity event, PerformanceEntity performance) {
+            // 상세 주소
+            String location = "장소 미정";
+            if (event.getLocation() != null) {
+                String sido = event.getLocation().getSido() != null ? event.getLocation().getSido() : "";
+                String sigungu = event.getLocation().getSigungu() != null ? event.getLocation().getSigungu() : "";
+                String doro = event.getLocation().getDoro() != null ? event.getLocation().getDoro() : "";
+                String locationName = event.getLocation().getLocationName() != null ? event.getLocation().getLocationName() : "";
+
+                location = sido + " " + sigungu + " " + doro + " " + locationName;
+            }
+
+            // 출연진 정보
+            String castInfo = (performance.getPerformersName() != null) ? String.join(", ", performance.getPerformersName()) : "-";
+
             return ListItem.builder()
-                    .name(entity.getName())
-                    .description(entity.getDescription())
-                    .category1Name(entity.getCategory1().getName())
-                    .category2Name(entity.getCategory2().getName())
-                    .ageRating(entity.getAgeRating())
-//                    .cast(entity.per)
-                    .thumbnailImage(entity.getThumbnailImage())
+                    .name(event.getName() + " - " + performance.getPerformanceNth() + "회차")
+                    .description(event.getDescription())
+                    .category1Name(event.getCategory1().getName())
+                    .category2Name(event.getCategory2() != null ? event.getCategory2().getName() : "없음")
+                    .ageRating(event.getAgeRating())
+                    .locationName(location.trim())   // 상세 주소
+                    .cast(castInfo)                  // 회차별 출연진
+                    .performanceStartsAt(performance.getPerformanceStartsAt()) //공연시작일자
+                    .thumbnailImage(event.getThumbnailImage())
                     .build();
         }
     }
@@ -92,4 +113,18 @@ public class EventResponse {
                     .build();
         }
     }
+
+    /**
+     * 관리자 페이지 검색 필터 조건을 담는 DTO
+     * @param startDate
+     * @param endDate
+     * @param category
+     * @param keyword
+     */
+    public record SearchCondition(
+            String startDate, // 검색 시작일
+            String endDate,   // 검색 종료일
+            String category,  // 카테고리
+            String keyword    // 검색어
+    ) {}
 }

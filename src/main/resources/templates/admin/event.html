@@ -6,6 +6,10 @@
     <title>QuickTicket - 콘서트 관리</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 </head>
 <body>
 
@@ -16,20 +20,25 @@
                 <div class="filter-group">
                     <span class="filter-label">공연기간</span>
                     <div style="position: relative;">
-                        <input type="text" class="form-input date-wrapper" value="2026.01.01 ~ 2026.01.31">
-                        <i class="fa-regular fa-calendar" style="position: absolute; right: 10px; top: 12px; color: #999;"></i>
+                        <input type="text" id="datePicker" class="form-input date-wrapper"
+                               th:value="${condition?.startDate != null ? condition.startDate + ' ~ ' + condition.endDate : ''}"
+                               placeholder="날짜 선택">
+                        <i class="fa-regular fa-calendar" id="calendarIcon" style="position: absolute; right: 10px; top: 12px; color: #999; cursor: pointer;"></i>
                     </div>
                 </div>
 
                 <div class="filter-group">
                     <span class="filter-label">카테고리</span>
-                    <select class="form-select custom-select">
+                    <select class="form-select custom-select" name="category">
                         <option value="">전체</option>
-                        <option value="KPOP">KPOP</option>
-                        <option value="CLASSIC">CLASSIC</option>
+                        <option value="콘서트" th:selected="${condition?.category == '콘서트'}">콘서트</option>
+                        <option value="뮤지컬" th:selected="${condition?.category == '뮤지컬'}">뮤지컬</option>
+                        <option value="연극" th:selected="${condition?.category == '연극'}">연극</option>
+                        <option value="스포츠" th:selected="${condition?.category == '스포츠'}">스포츠</option>
                     </select>
                 </div>
 
+                <!--
                 <div class="filter-group">
                     <span class="filter-label">상태</span>
                     <select class="form-select custom-select">
@@ -38,9 +47,11 @@
                         <option value="SOLD_OUT">매진</option>
                     </select>
                 </div>
+                -->
 
                 <div class="filter-group">
-                    <input type="text" class="form-input keyword-input" placeholder="Value">
+                    <span class="filter-label">검색어</span>
+                    <input type="text" class="form-input keyword-input" placeholder="">
                 </div>
 
                 <button type="button" class="btn-search">검색</button>
@@ -54,30 +65,32 @@
                 <table class="common-table">
                     <thead>
                         <tr>
-                            <th class="col-check" style="text-align: center">
-                                <input type="checkbox">
-                            </th>
+<!--                            <th class="col-check" style="text-align: center">-->
+<!--                                <input type="checkbox">-->
+<!--                            </th>-->
                             <th class="col-no">NO</th>
                             <th class="col-thumb">썸네일</th>
                             <th>카테고리</th>
                             <th>공연명</th>
                             <th>출연자</th>
                             <th>공연장소</th>
-                            <th>상태</th>
+<!--                            <th>상태</th>-->
+                            <th>연령</th>
+                            <th>공연날짜</th>
                             <th class="col-action"></th>
                         </tr>
                     </thead>
                     <tbody id="eventListContainer">
                         <tr th:each="event, stat : ${eventList}" th:id="'event-row-' + ${stat.count}">
-                            <td style="text-align: center;">
-                                <input type="checkbox">
-                            </td>
-                            <td th:text="${stat.count}">1</td>
+<!--                            <td style="text-align: center;">-->
+<!--                                <input type="checkbox">-->
+<!--                            </td>-->
+                            <td th:text="${(page.number * page.size) + stat.count}">NO</td>
                             <td>
                                 <div class="thumb-box">
-                                    <img th:if="${event?.thumbnailImage != null}"
-                                         th:src="@{/display(fileName=${event?.name})}"
-                                         style="width: 100%; height: 100%; object-fit: cover;">
+<!--                                    <img th:if="${event?.thumbnailImage != null}"-->
+<!--                                         th:src="@{/display(fileName=${event?.name})}"-->
+<!--                                         style="width: 100%; height: 100%; object-fit: cover;">-->
                                 </div>
                             </td>
                             <td>
@@ -90,11 +103,14 @@
                                 </a>
                             </td>
                             <td>[[${event?.cast ?: '-'}]]</td>
-                            <td>[[${event?.description ?: '장소 미정'}]]</td>
+                            <td>[[${event?.locationName ?: '장소 미정'}]]</td>
                             <td>
                                 <span class="status-tag">
                                     [[${event?.ageRating?.description ?: '미지정'}]]
                                 </span>
+                            </td>
+                            <td th:text="${#temporals.format(event.performanceStartsAt, 'yyyy.MM.dd')}">
+                                2026.02.15
                             </td>
                             <td style="text-align: center; cursor: pointer; color: #999;">
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -103,71 +119,80 @@
                     </tbody>
                 </table>
             </div>
-            <div class="pagination">
-                <a href="#" class="page-btn"><i class="fa-solid fa-angles-left"></i></a>
-                <a href="#" class="page-btn"><i class="fa-solid fa-angle-left"></i></a>
-                <a href="#" class="page-btn active">1</a>
-                <a href="#" class="page-btn">2</a>
-                <a href="#" class="page-btn">3</a>
-                <a href="#" class="page-btn"><i class="fa-solid fa-angle-right"></i></a>
-                <a href="#" class="page-btn"><i class="fa-solid fa-angles-right"></i></a>
+            <div class="pagination" th:if="${page.totalPages > 0}">
+                <a th:href="@{/admin/event(page=0, startDate=${condition.startDate}, endDate=${condition.endDate}, category=${condition.category}, keyword=${condition.keyword})}"
+                   class="page-btn"><i class="fa-solid fa-angles-left"></i></a>
+
+                <a th:if="${page.hasPrevious()}"
+                   th:href="@{/admin/event(page=${page.number - 1}, startDate=${condition.startDate}, endDate=${condition.endDate}, category=${condition.category}, keyword=${condition.keyword})}"
+                   class="page-btn"><i class="fa-solid fa-angle-left"></i></a>
+
+                <th:block th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                    <a th:href="@{/admin/event(page=${i}, startDate=${condition.startDate}, endDate=${condition.endDate}, category=${condition.category}, keyword=${condition.keyword})}"
+                       th:text="${i + 1}"
+                       class="page-btn"
+                       th:classappend="${i == page.number} ? 'active' : ''">1</a>
+                </th:block>
+
+                <a th:if="${page.hasNext()}"
+                   th:href="@{/admin/event(page=${page.number + 1}, startDate=${condition.startDate}, endDate=${condition.endDate}, category=${condition.category}, keyword=${condition.keyword})}"
+                   class="page-btn"><i class="fa-solid fa-angle-right"></i></a>
+
+                <a th:href="@{/admin/event(page=${page.totalPages - 1}, startDate=${condition.startDate}, endDate=${condition.endDate}, category=${condition.category}, keyword=${condition.keyword})}"
+                   class="page-btn"><i class="fa-solid fa-angles-right"></i></a>
             </div>
 
         </div>
     </div>
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
-            const eventListContainer = document.getElementById('eventListContainer');
+            const dateInput = document.getElementById('datePicker');
 
-            // 데이터가 없으면
-            if (eventListContainer.children.length === 0) {
-                // 임시데이터
-                const tempEvents = [
-                    {
-                        no: 1,
-                        category: "CONCERT > KPOP",
-                        name: "2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원",
-                        cast: "이창섭",
-                        location: "수원 실내체육관",
-                        age: "전체 관람가"
-                    },
-                    {
-                        no: 2,
-                        category: "CONCERT > TROT",
-                        name: "2026 임영웅 아임 히어로 콘서트",
-                        cast: "임영웅",
-                        location: "서울 월드컵경기장",
-                        age: "전체 관람가"
-                    },
-                    {
-                        no: 3,
-                        category: "CLASSIC > OPERA",
-                        name: "라 트라비아타",
-                        cast: "조수미 외",
-                        location: "예술의 전당",
-                        age: "만 7세 이상"
-                    }
-                ];
-
-                tempEvents.forEach(event => {
-                    const row = `
-                    <tr id="event-row-${event.no}">
-                        <td style="text-align: center;"><input type="checkbox"></td>
-                        <td>${event.no}</td>
-                        <td><div class="thumb-box"></div></td>
-                        <td>${event.category}</td>
-                        <td><a href="/editEvent/${event.no}" class="link-title">${event.name}</a></td>
-                        <td>${event.cast}</td>
-                        <td>${event.location}</td>
-                        <td><span class="status-tag">${event.age}</span></td>
-                        <td style="text-align: center; cursor: pointer; color: #999;">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </td>
-                    </tr>
-                `;
-                    eventListContainer.innerHTML += row;
-                });
+            // 오늘과 7일 뒤 날짜 계산 함수
+            function getFormattedDate(date) {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}.${m}.${d}`;
             }
+
+            const today = new Date();
+            const sevenDaysLater = new Date();
+            sevenDaysLater.setDate(today.getDate() + 7);
+
+            const defaultRange = `${getFormattedDate(today)} ~ ${getFormattedDate(sevenDaysLater)}`;
+
+            // 첫 진입 시 기본 범위를 넣어줌
+            if (!dateInput.value) {
+                dateInput.value = defaultRange;
+            }
+
+            // Flatpickr 초기화
+            const picker = flatpickr("#datePicker", {
+                mode: "range",
+                dateFormat: "Y.m.d",
+                locale: "ko",
+                conjunction: " ~ ",
+                defaultDate: dateInput.value.split(" ~ ")
+            });
+
+            // 아이콘 클릭 시 달력 열기
+            document.getElementById('calendarIcon').addEventListener('click', () => {
+                picker.open();
+            });
+
+            // 검색 버튼 클릭 이벤트
+            document.querySelector('.btn-search').addEventListener('click', function() {
+                const dateRange = document.getElementById('datePicker').value;
+                const dates = dateRange.split(" ~ ");
+                const startDate = dates[0] || "";
+                const endDate = dates[1] || dates[0] || ""; // 종료일이 없으면 시작일과 같게 설정
+                const category = document.querySelector('.custom-select').value;
+                const keyword = document.querySelector('.keyword-input').value;
+
+
+                location.href = `/admin/event?page=0&startDate=${startDate}&endDate=${endDate}&category=${category}&keyword=${encodeURIComponent(keyword)}`;
+            });
         });
     </script>
 </main>

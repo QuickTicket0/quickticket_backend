@@ -60,7 +60,7 @@ input, select, textarea { font-family: inherit; outline: none; }
     padding: 0 25px;
     font-weight: 600;
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: auto;
     flex-shrink: 0;
     transition: background-color 0.2s;
 }
