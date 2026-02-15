@@ -35,6 +35,23 @@ public class Performance {
     /// 대기 순번이 올라가도 웨이팅 길이를 바꾸지 않습니다. 취소표가 나든 배정받든 전체 예매의 수만 나타냅니다.
     private Long ticketWaitingLength;
 
+    public PerformanceStatus getStatus() {
+        if (LocalDateTime.now().isBefore(this.ticketingStartsAt)) {
+            return PerformanceStatus.PENDING;
+        }
+        if (LocalDateTime.now().isAfter(this.ticketingEndsAt)) {
+            return PerformanceStatus.TICKETING_ENDED;
+        }
+
+        // 현재 예매중인 상태
+
+        if (this.ticketWaitingLength >= this.targetSeatNumber) {
+            return PerformanceStatus.TICKETING_ENDED_EARLY;
+        } else {
+            return PerformanceStatus.TICKETING;
+        }
+    }
+
     public void setTicketWaitingLength(Long waitingLength) {
         this.ticketWaitingLength = waitingLength;
     }
