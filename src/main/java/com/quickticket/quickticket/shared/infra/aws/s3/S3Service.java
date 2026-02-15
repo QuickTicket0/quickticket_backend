@@ -18,7 +18,7 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 @RequiredArgsConstructor
 public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
-    private final String bucketName;
+    private String bucketName;
 
     private final S3Client s3Client;
 

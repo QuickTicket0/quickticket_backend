@@ -34,7 +34,6 @@ public interface TicketIssueResponseMapper {
                 .location(LocationCommonDto.from(entity.getLocation()))
                 .name(entity.getName())
 //                .range()
-                .thumbnailImage(entity.getThumbnailImage())
                 .build();
     };
 

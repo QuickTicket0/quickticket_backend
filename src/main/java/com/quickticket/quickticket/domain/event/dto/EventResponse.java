@@ -29,9 +29,7 @@ public class EventResponse {
 
         String locationName,   // 공연장 이름
 
-        LocalDateTime performanceStartsAt, //공연시작일자
-
-        Blob thumbnailImage
+        LocalDateTime performanceStartsAt //공연시작일자
     ) {
         public static ListItem from(EventEntity event, PerformanceEntity performance) {
             // 상세 주소
@@ -57,7 +55,6 @@ public class EventResponse {
                     .locationName(location.trim())   // 상세 주소
                     .cast(castInfo)                  // 회차별 출연진
                     .performanceStartsAt(performance.getPerformanceStartsAt()) //공연시작일자
-                    .thumbnailImage(event.getThumbnailImage())
                     .build();
         }
     }
@@ -85,8 +82,6 @@ public class EventResponse {
 
         AgeRating ageRating,
 
-        Blob thumbnailImage,
-
         String agentName,
 
         String hostName,
@@ -105,7 +100,6 @@ public class EventResponse {
                     .category1(CategoryCommonDto.from(event.getCategory1()))
                     .category2(CategoryCommonDto.from(event.getCategory2()))
                     .ageRating(event.getAgeRating())
-                    .thumbnailImage(event.getThumbnailImage())
                     .agentName(event.getAgentName())
                     .hostName(event.getHostName())
                     .contactData(event.getContactData())

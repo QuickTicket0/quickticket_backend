@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.sql.Blob;
-
 @Entity
 @Table(name = "EVENT")
 @Getter
@@ -50,10 +48,6 @@ public class EventEntity {
     @NotNull
     @Column(nullable = false)
     private Long userRatingSum;
-
-    @NotNull
-    @Column(nullable = false)
-    private Blob thumbnailImage;
 
     @Column(length = 30)
     private String agentName;

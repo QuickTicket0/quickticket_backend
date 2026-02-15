@@ -1,20 +1,13 @@
 package com.quickticket.quickticket.domain.ticket.dto;
 
 import com.quickticket.quickticket.domain.event.domain.AgeRating;
-import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import com.quickticket.quickticket.domain.payment.method.dto.PaymentMethodCommonDto;
-import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssue;
 import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssueStatus;
-import com.quickticket.quickticket.domain.payment.seatPayment.entity.SeatPaymentIssueEntity;
-import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.seat.domain.SeatStatus;
-import com.quickticket.quickticket.domain.seat.entity.SeatClassEntity;
-import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import lombok.Builder;
 
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -30,7 +23,6 @@ public class TicketResponse {
             /// 출연진
             String casting,
             AgeRating ageRating,
-            Blob thumbnailImage,
             LocationCommonDto location
     ) {}
 
