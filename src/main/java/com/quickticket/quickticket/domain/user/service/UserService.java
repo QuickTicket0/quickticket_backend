@@ -7,11 +7,16 @@ import com.quickticket.quickticket.domain.user.dto.UserResponse;
 import com.quickticket.quickticket.domain.user.mapper.UserMapper;
 import com.quickticket.quickticket.domain.user.repository.UserRepository;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +27,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityContextRepository securityContextRepository;
 
     public UserResponse.Details getResponseDetailsById(Long id) throws DomainException {
         var entity = repository.getUserById(id)
@@ -52,7 +58,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User signupNewUser(AccountRequest.Signup signupDto) {
+    public User signUp(AccountRequest.Signup signupDto) {
         var usernameExists = repository.getByUsername(signupDto.username()).isPresent();
 
         if (usernameExists) {
@@ -70,6 +76,35 @@ public class UserService implements UserDetailsService {
                 .build();
 
         newUser = mapper.toDomain(repository.save(mapper.toEntity(newUser)));
+        return newUser;
+    }
+
+    @Transactional
+    public void loginSession(
+            User user,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        var authentication = new UsernamePasswordAuthenticationToken(
+                user,
+                null,
+                user.getAuthorities()
+        );
+
+        var context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
+    }
+
+    @Transactional
+    public User signUpAndLoginSession(
+            AccountRequest.Signup signupDto,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        var newUser = this.signUp(signupDto);
+        this.loginSession(newUser, request, response);
 
         return newUser;
     }

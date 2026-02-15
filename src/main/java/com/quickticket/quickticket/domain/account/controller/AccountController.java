@@ -2,9 +2,12 @@ package com.quickticket.quickticket.domain.account.controller;
 
 import com.quickticket.quickticket.domain.account.dto.AccountRequest;
 import com.quickticket.quickticket.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,18 +33,11 @@ public class AccountController {
 
     @PostMapping("/api/account/signup")
     public String signup(
-            @ModelAttribute AccountRequest.Signup requestDto
+            @ModelAttribute AccountRequest.Signup requestDto,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
-        var newUser = userService.signupNewUser(requestDto);
-
-        var authentication = new UsernamePasswordAuthenticationToken(
-                newUser,
-                null,
-                newUser.getAuthorities()
-        );
-
-        // 수동으로 로그인 상태 설정
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        userService.signUpAndLoginSession(requestDto, request, response);
         return "redirect:/";
     }
 
