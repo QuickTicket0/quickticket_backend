@@ -3,6 +3,7 @@ package com.quickticket.quickticket.domain.performance.service;
 import com.quickticket.quickticket.domain.event.dto.EventResponse;
 import com.quickticket.quickticket.domain.event.repository.EventRepository;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
+import com.quickticket.quickticket.domain.performance.dto.PerformanceRequest;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;
 import com.quickticket.quickticket.domain.performance.repository.PerformanceRepository;
@@ -61,5 +62,23 @@ public class PerformanceService {
         Page<PerformanceEntity> performancePage = performanceRepository.searchPerformances(condition, pageable);
 
         return performancePage.map(p -> EventResponse.ListItem.from(p.getEvent(), p));
+    }
+
+    /**
+     * 특정 콘서트(Event)에 대한 회차(날짜, 시간 등) 정보를 등록
+     * 전달받은 eventId로 해당 이벤트를 찾아 회차 정보와 맞으면 저장
+     * @param eventId        회차를 등록할 대상 콘서트 ID
+     * @param performanceDto 등록할 회차 정보(날짜, 시간, 회차 번호 등)가 담긴 데이터 객체
+     * @throws DomainException 공연 정보를 찾을 수 없을 경우 NOT_FOUND 에러 발생
+     */
+    @Transactional
+    public void registPerformance(Long eventId, PerformanceRequest.Create performanceDto) {
+        var eventEntity = eventRepository.findById(eventId)
+                .orElseThrow(() -> new DomainException(PerformanceErrorCode.NOT_FOUND));
+
+        PerformanceEntity performanceEntity = performanceMapper.toEntity(performanceDto, eventEntity);
+
+        // 저장
+        performanceRepository.save(performanceEntity);
     }
 }

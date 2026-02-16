@@ -15,6 +15,8 @@ public class EventResponse {
     /// 어드민 대시보드중 Event가 리스트에 나열될때 필요한 간략한 정보들
     @Builder
     public record ListItem(
+        Long eventId,
+
         String name,
         
         String description,
@@ -47,6 +49,7 @@ public class EventResponse {
             String castInfo = (performance.getPerformersName() != null) ? String.join(", ", performance.getPerformersName()) : "-";
 
             return ListItem.builder()
+                    .eventId(event.getEventId())
                     .name(event.getName() + " - " + performance.getPerformanceNth() + "회차")
                     .description(event.getDescription())
                     .category1Name(event.getCategory1().getName())

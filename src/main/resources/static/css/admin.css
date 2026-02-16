@@ -39,6 +39,36 @@
     background-color: #eee;
     border-radius: 4px;
 }
+.form-input, .form-select, .form-textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: #333;
+}
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #999 !important;
+    opacity: 0.6 !important;
+}
+input[type="datetime-local"],
+input[type="time"] {
+    color: rgba(153, 153, 153, 0.6) !important;
+}
+input[type="datetime-local"]:focus,
+input[type="datetime-local"]:valid,
+input[type="time"]:focus,
+input[type="time"]:valid {
+    color: #333 !important;
+}
+.form-select:invalid,
+.form-select option[value=""],
+.form-select option:first-child {
+    color: rgba(153, 153, 153, 0.6) !important;
+}
+input::-webkit-calendar-picker-indicator {
+    opacity: 0.4;
+    cursor: pointer;
+}
 
 /* ============================================================
    등록 페이지(newEvent.html) 디자인
@@ -256,3 +286,38 @@
     font-size: 12px;
 }
 
+.address-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 입력창 사이 간격 */
+}
+
+.zip-code-row {
+    display: flex;
+    gap: 8px;
+}
+
+.zip-code-row .form-input {
+    flex: 1;
+}
+
+.btn-search-addr {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 0 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-search-addr:hover {
+    background-color: #555;
+}
+
+/* 상세 주소창 강조 */
+#locationName {
+    border-color: #e0e0e0;
+}
