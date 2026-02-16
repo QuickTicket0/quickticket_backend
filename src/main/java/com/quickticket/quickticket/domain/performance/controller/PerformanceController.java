@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PerformanceController {
     private final S3Service s3Service;
 
-    @GetMapping("/api/files/seatMap/{performanceId}")
-    public ResponseEntity<Resource> getSeatMap(@PathVariable Long performanceId) {
-        return s3Service.getObjectResponseEntity("/files/seatMap/" + performanceId);
+    @GetMapping("/api/files/seatMap/{filename}")
+    public ResponseEntity<Resource> getSeatMap(@PathVariable String filename) {
+        return s3Service.getObjectResponseEntity("files/seatMap/" + filename);
     }
 }

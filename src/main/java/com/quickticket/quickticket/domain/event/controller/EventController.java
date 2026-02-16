@@ -28,9 +28,9 @@ public class EventController {
     private final PerformanceService performanceService;
     private final S3Service s3Service;
 
-    @GetMapping("/api/images/event/{eventId}")
-    public ResponseEntity<Resource> getPosterImage(@PathVariable Long eventId) {
-        return s3Service.getObjectResponseEntity("/images/event/" + eventId);
+    @GetMapping("/api/images/event/{filename}")
+    public ResponseEntity<Resource> getPosterImage(@PathVariable String filename) {
+        return s3Service.getObjectResponseEntity("images/event/" + filename);
     }
 
     @GetMapping("/event/{eventId}")

@@ -39,7 +39,7 @@
                 </section>
 
                 <section class="detail-layout seat-section">
-<!--                    <object id="seatMap" type="image/svg+xml" th:data="@{/api/files/seatMap/{performanceId}(performanceId=${performance.id})}"></object>-->
+                    <object id="seatMap" type="image/svg+xml" th:data="@{/api/files/seatMap/{performanceId}.svg(performanceId=${performance.id})}"></object>
 
                     <div class="seat-info-area" style="width: 100%;">
                         <h3 class="sub-title">좌석 선택 / 결제</h3>
@@ -117,6 +117,21 @@
         </div>
 
         <div th:replace="~{reviewPopup :: reviewModal}"></div>
+
+        <script th:src="@{/scripts/seatMap.js}"></script>
+        <script>
+            const seatMapEl = document.getElementById("seatMap");
+            const paidSeatsId = ticket.seatPayments.map(data -> data.paidSeatId);
+
+            seatMapEl.addEventListener("load", () => {
+                processSeatMap(
+                    seatMapEl.contentDocument,
+                    ticket.seats,
+                    ticket.wantingSeatsId,
+                    paidSeatsId
+                );
+            });
+        </script>
 
         <script>
             // 리뷰 모달 및 별점

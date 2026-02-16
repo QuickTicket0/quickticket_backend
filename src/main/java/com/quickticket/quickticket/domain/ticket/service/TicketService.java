@@ -1,11 +1,8 @@
 package com.quickticket.quickticket.domain.ticket.service;
 
-import com.quickticket.quickticket.domain.payment.method.dto.PaymentMethodCommonDto;
 import com.quickticket.quickticket.domain.payment.method.service.PaymentMethodService;
-import com.quickticket.quickticket.domain.payment.seatPayment.service.SeatPaymentService;
 import com.quickticket.quickticket.domain.performance.service.PerformanceService;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
-import com.quickticket.quickticket.domain.seat.domain.SeatClass;
 import com.quickticket.quickticket.domain.seat.domain.SeatStatus;
 import com.quickticket.quickticket.domain.seat.service.SeatService;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
@@ -13,7 +10,6 @@ import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import com.quickticket.quickticket.domain.ticket.dto.TicketRequest;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
-import com.quickticket.quickticket.domain.ticket.repository.TicketBulkInsertQueueRepository;
 import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepository;
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepository;
 import com.quickticket.quickticket.domain.user.service.UserService;
@@ -24,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
