@@ -31,10 +31,11 @@
                     <span class="filter-label">카테고리</span>
                     <select class="form-select custom-select" name="category">
                         <option value="">전체</option>
-                        <option value="콘서트" th:selected="${condition?.category == '콘서트'}">콘서트</option>
-                        <option value="뮤지컬" th:selected="${condition?.category == '뮤지컬'}">뮤지컬</option>
-                        <option value="연극" th:selected="${condition?.category == '연극'}">연극</option>
-                        <option value="스포츠" th:selected="${condition?.category == '스포츠'}">스포츠</option>
+                        <option value="1" th:selected="${condition?.category == '콘서트'}">콘서트</option>
+                        <option value="2" th:selected="${condition?.category == '뮤지컬'}">뮤지컬</option>
+                        <option value="3" th:selected="${condition?.category == '연극'}">연극</option>
+                        <option value="4" th:selected="${condition?.category == '해외뮤지션'}">해외뮤지션</option>
+                        <option value="5" th:selected="${condition?.category == 'KIDS'}">KIDS</option>
                     </select>
                 </div>
 
@@ -70,9 +71,9 @@
 <!--                            </th>-->
                             <th class="col-no">NO</th>
                             <th class="col-thumb">썸네일</th>
-                            <th>카테고리</th>
+                            <th style="width: 85px;">카테고리</th>
                             <th>공연명</th>
-                            <th>출연자</th>
+                            <th style="width: 80px;">출연자</th>
                             <th>공연장소</th>
 <!--                            <th>상태</th>-->
                             <th>연령</th>
@@ -88,14 +89,20 @@
                             <td th:text="${(page.number * page.size) + stat.count}">NO</td>
                             <td>
                                 <div class="thumb-box">
-<!--                                    <img th:if="${event?.thumbnailImage != null}"-->
-<!--                                         th:src="@{/display(fileName=${event?.name})}"-->
-<!--                                         style="width: 100%; height: 100%; object-fit: cover;">-->
+                                    <img th:if="${event.eventId != null}"
+                                         th:src="@{/api/images/event/{id}(id=${event.eventId})}"
+                                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"
+                                         onerror="this.style.display='none';">
+
+                                    <div th:unless="${event.eventId != null}"
+                                         style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                                        <i class="fa-regular fa-image" style="color: #ccc;"></i>
+                                    </div>
                                 </div>
                             </td>
                             <td>
                                 [[${event?.category1Name ?: ''}]]
-                                [[${event?.category2Name != null ? ' > ' + event.category2Name : ''}]]
+<!--                                [[${event?.category2Name != null ? ' > ' + event.category2Name : ''}]]-->
                             </td>
                             <td>
                                 <a th:href="@{/editEvent/{id}(id=${event?.name ?: ''})}" class="link-title">

@@ -2,6 +2,7 @@ package com.quickticket.quickticket.domain.performance.mapper;
 
 import com.quickticket.quickticket.domain.event.mapper.EventMapper;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
+import com.quickticket.quickticket.domain.performance.dto.PerformanceRequest;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
@@ -22,4 +23,9 @@ public interface PerformanceMapper {
     @Mapping(target = "performanceId", source = "id")
     @Mapping(target = "performanceNth", source = "nth")
     PerformanceEntity toEntity(Performance entity);
+
+    @Mapping(target = "performanceId", ignore = true)
+    @Mapping(target = "performanceNth", source = "dto.nth")
+    @Mapping(target = "event", source = "eventEntity")
+    PerformanceEntity toEntity(PerformanceRequest.Create dto, com.quickticket.quickticket.domain.event.entity.EventEntity eventEntity);
 }

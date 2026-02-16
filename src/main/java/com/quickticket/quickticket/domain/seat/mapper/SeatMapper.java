@@ -1,7 +1,11 @@
 package com.quickticket.quickticket.domain.seat.mapper;
 
+import com.quickticket.quickticket.domain.event.dto.EventRequest;
+import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;
 import com.quickticket.quickticket.domain.seat.domain.Seat;
+import com.quickticket.quickticket.domain.seat.entity.SeatClassEntity;
+import com.quickticket.quickticket.domain.seat.entity.SeatClassId;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatId;
 import org.mapstruct.Builder;

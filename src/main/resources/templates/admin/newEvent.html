@@ -14,110 +14,141 @@
         <div class="main-container new-event-page">
             <h2 class="page-title">신규 콘서트 등록</h2>
 
-            <form th:action="@{/admin/newEvent}" method="post" enctype="multipart/form-data">
-                <!-- 기본정보 영역 시작-->
+            <form id="eventForm" onsubmit="submitForm(event)" enctype="multipart/form-data">
                 <h3 class="sub-title">기본정보</h3>
                 <section class="form-section">
                     <div class="input-grid">
                         <div class="input-item">
                             <label>공연명</label>
-                            <input type="text" name="title" class="form-input" placeholder="공연명을 입력하세요">
+                            <input type="text" name="name" class="form-input" placeholder="공연명을 입력하세요">
                         </div>
                         <div class="input-item">
                             <label>카테고리</label>
-                            <select name="category" class="form-select custom-select">
-                                <option value="KPOP">KPOP</option>
-                                <option value="CLASSIC">CLASSIC</option>
-                                <option value="TROT">트로트</option>
+                            <select class="form-select custom-select" name="category1Id">
+                                <option value="A">전체</option>
+                                <option value="1">콘서트</option>
+                                <option value="2">뮤지컬</option>
+                                <option value="3">연극</option>
+                                <option value="4">해외뮤지션</option>
+                                <option value="5">KIDS</option>
                             </select>
                         </div>
                         <div class="input-item">
                             <label>회차</label>
-                            <select name="turn" class="form-select custom-select">
+                            <select name="nth" class="form-select custom-select">
                                 <option value="1">1회차</option>
+                                <option value="2">2회차</option>
+                                <option value="3">3회차</option>
+                                <option value="4">4회차</option>
+                                <option value="5">5회차</option>
                             </select>
                         </div>
                         <div class="input-item">
                             <label>공연일시</label>
                             <div class="date-wrapper">
-                                <input type="text" name="eventDate" class="form-input" placeholder="YYYY-MM-DD HH:mm">
-                                <i class="fa-regular fa-calendar"></i>
+                                <input type="datetime-local" name="performanceStartsAt" class="form-input">
                             </div>
                         </div>
-                        <div class="input-item">
+                        <div class="input-item address-section">
                             <label>공연장소</label>
-                            <input type="text" name="location" class="form-input">
+                            <div class="address-input-container">
+                                <div class="zip-code-row">
+                                    <input type="text" id="zipNumber" name="zipNumber" class="form-input" placeholder="우편번호" readonly>
+                                    <button type="button" class="btn-search-addr" onclick="execKakaoPostcode()">주소 검색</button>
+                                </div>
+                                <input type="text" id="doroName" name="doroName" class="form-input" placeholder="도로명 주소" readonly>
+                                <input type="text" id="locationName" name="locationName" class="form-input" placeholder="상세 장소명 (예: 제1전시실, 본관 대강당)">
+                            </div>
+
+                            <input type="hidden" id="sido" name="sido">
+                            <input type="hidden" id="siGunGu" name="siGunGu">
+                            <input type="hidden" id="eupMyun" name="eupMyun">
+                            <input type="hidden" id="doroCode" name="doroCode">
                         </div>
                         <div class="input-item">
                             <label>기획사 정보</label>
-                            <input type="text" name="agency" class="form-input">
+                            <input type="text" name="agentName" class="form-input">
+                        </div>
+                        <div class="input-item">
+                            <label>관람 등급</label>
+                            <select name="ageRating" class="form-select custom-select">
+                                <option value="ALL">전체 관람가</option>
+                                <option value="SEVEN">7세 이상</option>
+                                <option value="FIFTEEN">15세 이상</option>
+                                <option value="ADULT">청소년 관람불가</option>
+                            </select>
+                        </div>
+                        <div class="input-item">
+                            <label>티켓 예매 시작</label>
+                            <input type="datetime-local" name="ticketingStartsAt" class="form-input">
+                        </div>
+                        <div class="input-item">
+                            <label>티켓 예매 종료</label>
+                            <input type="datetime-local" name="ticketingEndsAt" class="form-input">
+                        </div>
+                        <div class="input-item">
+                            <label>러닝 타임(분)</label>
+                            <input type="number" name="runningTime" class="form-input" placeholder="예: 120">
+                        </div>
+                        <div class="input-item">
+                            <label>총 목표 좌석 수</label>
+                            <input type="number" name="targetSeatNumber" class="form-input" placeholder="예: 500">
                         </div>
                     </div>
                 </section>
-                <!-- 기본정보 영역 끝-->
-                <!-- 판매 및 출연진 정보 영역 시작-->
+
                 <h3 class="sub-title">판매 및 출연진 정보</h3>
                 <section class="form-section">
                     <div class="info-grid">
                         <div class="info-column">
                             <label>출연진 정보</label>
-                            <div class="dynamic-input-group">
-                                <input type="text" name="cast" class="form-input" placeholder="출연진 이름을 입력하세요">
-                                <button type="button" class="btn-icon-delete" title="삭제">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
+                            <div id="cast-container">
+                                <div class="dynamic-input-group">
+                                    <input type="text" name="performersName" class="form-input" placeholder="출연진 이름을 입력하세요">
+                                    <button type="button" class="btn-icon-delete" onclick="removeCast(this)">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <button type="button" class="btn-add-item">출연진 추가</button>
+                            <button type="button" class="btn-add-item" onclick="addCast()">출연진 추가</button>
                         </div>
                         <div class="info-column">
                             <label>좌석 등급 및 가격</label>
-                            <div class="dynamic-input-group row-inputs">
-                                <input type="text" placeholder="등급" class="form-input small">
-                                <input type="text" placeholder="가격" class="form-input small">
-                                <input type="text" placeholder="수량" class="form-input small">
-                                <button type="button" class="btn-icon-delete"><i class="fa-regular fa-trash-can"></i></button>
+                            <div id="seat-container">
+                                <div class="dynamic-input-group row-inputs seat-group">
+                                    <input type="text" class="seat-name form-input small" placeholder="등급">
+                                    <input type="number" class="seat-price form-input small" placeholder="가격">
+                                    <input type="number" class="seat-quantity form-input small" placeholder="수량">
+                                    <button type="button" class="btn-icon-delete" onclick="removeSeat(this)">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <button type="button" class="btn-add-item">등급 추가</button>
+                            <button type="button" class="btn-add-item" onclick="addSeat()">등급 추가</button>
                         </div>
                     </div>
                 </section>
-                <!-- 판매 및 출연진 정보 영역 끝-->
-                <!-- 상세정보 영역 시작 -->
+
                 <h3 class="sub-title">상세정보</h3>
                 <section class="form-section">
                     <div class="info-grid">
                         <div class="info-column">
-                            <label>상세정보 내용(이미지, 텍스트)</label>
-                            <textarea name="content" class="form-textarea"></textarea>
-
+                            <label>썸네일</label>
                             <div class="image-upload-area">
-                                <p class="upload-label">첨부 이미지 목록</p>
-                                <div class="image-preview-list">
-                                    <div class="preview-item">
-                                        <div class="preview-box"></div>
-                                        <span class="file-name">설명1.jpg</span>
-                                    </div>
-                                    <div class="preview-item">
-                                        <div class="preview-box"></div>
-                                        <span class="file-name">설명2.png</span>
-                                    </div>
-                                    <div class="preview-item">
-                                        <div class="preview-box"></div>
-                                        <span class="file-name">설명3.png</span>
-                                    </div>
-                                    <button type="button" class="btn-image-add">+</button>
+                                <input type="file" name="thumbnailImageFile" id="thumbnailInput"
+                                       accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                                <div class="image-preview-list" id="thumbnailPreviewList">
+                                    <button type="button" class="btn-image-add" onclick="document.getElementById('thumbnailInput').click()">+</button>
                                 </div>
                             </div>
                         </div>
-
                         <div class="info-column">
                             <label>상품정보 내용</label>
-                            <textarea name="info" class="form-textarea"></textarea>
+                            <textarea name="description" class="form-textarea"></textarea>
                         </div>
                     </div>
                 </section>
-                <!-- 상세정보 영역 끝 -->
-                <!-- 버튼 영역 -->
+
                 <div class="form-footer-buttons">
                     <button type="submit" class="btn-submit">등록</button>
                     <a th:href="@{/admin/event}" class="btn-list">목록</a>
@@ -125,6 +156,212 @@
             </form>
         </div>
     </div>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:inline="javascript">
+        // 출연진 추가 함수
+        function addCast() {
+            const container = document.getElementById('cast-container');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'dynamic-input-group';
+            newGroup.innerHTML = `
+                <input type="text" name="performersName" class="form-input" placeholder="출연진 이름을 입력하세요">
+                <button type="button" class="btn-icon-delete" onclick="removeCast(this)">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            `;
+            container.appendChild(newGroup);
+        }
+
+        // 출연진 삭제 함수
+        function removeCast(button) {
+            const container = document.getElementById('cast-container');
+
+            if (container.childElementCount > 1) {
+                button.closest('.dynamic-input-group').remove();
+            } else {
+                alert("최소 한 명의 출연진은 입력해야 합니다.");
+            }
+        }
+
+        // 좌석 등급 추가 함수
+        function addSeat() {
+            const container = document.getElementById('seat-container');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'dynamic-input-group row-inputs seat-group';
+            newGroup.innerHTML = `
+                <input type="text" class="seat-name form-input small" placeholder="등급">
+                <input type="number" class="seat-price form-input small" placeholder="가격">
+                <input type="number" class="seat-quantity form-input small" placeholder="수량">
+                <button type="button" class="btn-icon-delete" onclick="removeSeat(this)">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            `;
+            container.appendChild(newGroup);
+        }
+
+        // 좌석 등급 삭제 함수
+        function removeSeat(button) {
+            const container = document.getElementById('seat-container');
+
+            if (container.childElementCount > 1) {
+                button.closest('.dynamic-input-group').remove();
+            }
+        }
+
+        // 폼 전송
+        async function submitForm(event) {
+            event.preventDefault();
+            const submitBtn = document.querySelector('.btn-submit');
+
+            // 중복 클릭 방지
+            if(submitBtn.disabled) return;
+            submitBtn.disabled = true;
+
+            event.preventDefault();
+            const form = document.getElementById('eventForm');
+            const formData = new FormData();
+
+            // 좌석 정보
+            const seatGrades = Array.from(document.querySelectorAll('.seat-group')).map(group => ({
+                name: group.querySelector('.seat-name').value,
+                price: parseInt(group.querySelector('.seat-price').value),
+                quantity: parseInt(group.querySelector('.seat-quantity').value)
+            }));
+
+            // event 파트
+            const eventData = {
+                name: form.name.value,
+                description: form.description.value,
+                category1Id: parseInt(form.category1Id.value),
+                ageRating: form.ageRating.value,
+                agentName: form.agentName.value,
+
+                //locationId 대신 location 객체 정보
+                location: {
+                    locationName: document.getElementById('locationName').value,
+                    zipNumber: document.getElementById('zipNumber').value,
+                    sido: document.getElementById('sido').value,
+                    siGunGu: document.getElementById('siGunGu').value,
+                    eupMyun: document.getElementById('eupMyun').value,
+                    doroName: document.getElementById('doroName').value,
+                    doroCode: document.getElementById('doroCode').value
+                },
+                seatGrades: seatGrades
+            };
+            formData.append("event", new Blob([JSON.stringify(eventData)], { type: "application/json" }));
+
+            // performance
+            const minutes = parseInt(form.runningTime.value) || 0;
+            const h = String(Math.floor(minutes / 60)).padStart(2, '0');
+            const m = String(minutes % 60).padStart(2, '0');
+            const runningTime = `${h}:${m}:00`;
+            const performersName = Array.from(document.getElementsByName('performersName'))
+                .map(input => input.value)
+                .filter(val => val.trim() !== "");
+
+            const performanceData = {
+                nth: parseInt(form.nth.value),
+                targetSeatNumber: parseInt(form.targetSeatNumber.value),
+                performersName: performersName,
+                ticketingStartsAt: form.ticketingStartsAt.value,
+                ticketingEndsAt: form.ticketingEndsAt.value,
+                performanceStartsAt: form.performanceStartsAt.value,
+                runningTime: runningTime
+            };
+            formData.append("performance", new Blob([JSON.stringify(performanceData)], { type: "application/json" }));
+
+            // 파일 추가
+            const fileInput = document.getElementById('thumbnailInput');
+            if (fileInput.files[0]) {
+                formData.append("thumbnailImageFile", fileInput.files[0]);
+            }
+
+            try {
+                const response = await fetch('/admin/newEvent', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        // Thymeleaf에서 CSRF 토큰을 안전하게 가져오기 위해 세미콜론 주의
+                        'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/ ''
+                    }
+                });
+
+                if (response.ok) {
+                    window.location.href = "/admin/event";
+                } else {
+                    const errorText = await response.text();
+                    console.error("서버 에러:", errorText);
+                    alert("등록 실패: " + response.status);
+                }
+            } catch (error) {
+                console.error("Network Error:", error);
+                alert("네트워크 오류가 발생했습니다.");
+            }
+        }
+
+        // 주소 찾는 함수
+        function execKakaoPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    document.getElementById('zipNumber').value = data.zonecode;
+                    document.getElementById('doroName').value = data.roadAddress;
+                    document.getElementById('sido').value = data.sido;
+                    document.getElementById('siGunGu').value = data.sigungu;
+                    document.getElementById('eupMyun').value = data.bname; // 읍면동
+                    document.getElementById('doroCode').value = data.roadnameCode;
+
+                    document.getElementById('locationName').focus();
+                }
+            }).open();
+        }
+
+        // 썸네일 이미지 업로드
+        function handleImageUpload(input) {
+            const previewList = document.getElementById('thumbnailPreviewList');
+            const file = input.files[0];
+
+            if (file) {
+                const existingPreview = previewList.querySelector('.preview-item');
+                if (existingPreview) {
+                    existingPreview.remove();
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+
+
+                    previewItem.innerHTML = `
+                        <div class="preview-box">
+                            <img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <button type="button" class="btn-del-img" onclick="removeImage(this)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    `;
+
+                    const addButton = previewList.querySelector('.btn-image-add');
+                    previewList.insertBefore(previewItem, addButton);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 썸네일 이미지 삭제
+        function removeImage(button) {
+            const previewItem = button.closest('.preview-item');
+
+            if (previewItem) {
+                previewItem.remove();
+            }
+
+            const fileInput = document.getElementById('thumbnailInput');
+            if (fileInput) {
+                fileInput.value = "";
+            }
+        }
+    </script>
 </main>
 
 </body>

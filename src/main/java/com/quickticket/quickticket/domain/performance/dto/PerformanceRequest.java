@@ -13,7 +13,7 @@ public class PerformanceRequest {
     /// 어드민이 Event 생성시 이의 각 회차를 생성할때
     @Builder
     public record Create(
-        @NotNull
+        //@NotNull
         @Min(0)
         Long eventId,
 

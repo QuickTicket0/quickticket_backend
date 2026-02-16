@@ -1,6 +1,7 @@
 package com.quickticket.quickticket.domain.event.dto;
 
 import com.quickticket.quickticket.domain.event.domain.AgeRating;
+import com.quickticket.quickticket.domain.location.dto.LocationCommonDto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 import java.sql.Blob;
+import java.util.List;
 
 public class EventRequest {
     /// admin이 새 Event를 생성할때
@@ -42,8 +44,11 @@ public class EventRequest {
         String contactData,
 
         @NotNull
-        @Min(0)
-        Long locationId
+        LocationCommonDto location,
+
+        List<String> casts,
+
+        List<SeatGrade> seatGrades
     ) {}
 
     /// admin이 스스로 생성했던 Event의 일부 정보만 수정할때.
@@ -89,5 +94,12 @@ public class EventRequest {
         @NotNull
         @Min(0)
         Long id
+    ) {}
+
+    // 좌석 등록을 위한 레코드
+    public record SeatGrade(
+        String name,
+        Long price,
+        Integer quantity
     ) {}
 }

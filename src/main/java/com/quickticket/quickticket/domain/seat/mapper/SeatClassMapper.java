@@ -1,6 +1,7 @@
 package com.quickticket.quickticket.domain.seat.mapper;
 
 import com.quickticket.quickticket.domain.event.domain.Event;
+import com.quickticket.quickticket.domain.event.dto.EventRequest;
 import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import com.quickticket.quickticket.domain.event.mapper.EventMapper;
 import com.quickticket.quickticket.domain.seat.domain.SeatArea;
@@ -27,6 +28,19 @@ public interface SeatClassMapper {
 
     @Mapping(target = "id", expression = "java(seatClassIdToEntity(domain))")
     SeatClassEntity toEntity(SeatClass domain);
+
+    /**
+     * 좌석 등급 DTO, EventEntity, SeatClassId를 합쳐서 SeatClassEntity를 생성
+     * @param dto         화면에서 넘어온 좌석 정보
+     * @param eventEntity 현재 좌석이 속한 콘서트(Event) 엔티티
+     * @param id          seatClassId, eventId 정보를 담고 있는 객체
+     * @return            SeatClassEntity 객체
+     */
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "event", source = "eventEntity")
+    @Mapping(target = "name", source = "dto.name")
+    @Mapping(target = "price", source = "dto.price")
+    SeatClassEntity toEntity(EventRequest.SeatGrade dto, EventEntity eventEntity, SeatClassId id);
 
     default SeatClassId seatClassIdToEntity(SeatClass domain) {
         return new SeatClassId(domain.getId(), domain.getEvent().getId());
