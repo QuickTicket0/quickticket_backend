@@ -18,7 +18,6 @@ import java.util.List;
 @RedisHash("sync:bulk-insert-queue:ticket-issue")
 public class TicketBulkInsertQueueEntity {
     @Id
-    @RedisSequenceId(key = "sync:sequence-id:ticket-issue")
     private Long ticketIssueId;
 
     @Indexed

@@ -12,6 +12,7 @@ import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import com.quickticket.quickticket.shared.utils.BaseCustomRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
 
     private final EntityManager em;
     private final TicketIssueMapper ticketIssueMapper;
+    private final RedisAtomicLong ticketIssueIdGenerator;
 
     @Override
     public Optional<Ticket> getDomainById(Long ticketId) {
@@ -42,6 +44,9 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
             throw new AssertionError("이미 영속화된 엔티티를 BulkInsertQueue에 저장할 수 없습니다.");
         }
 
+        if (domain.getPersistenceStatus() == TicketPersistenceStatus.NEW) {
+            domain = domain.withId(ticketIssueIdGenerator.incrementAndGet());
+        }
         var ticketEntity = ticketIssueMapper.toBulkQueueEntity(domain);
 
         switch (domain.getPersistenceStatus()) {
@@ -50,10 +55,9 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
             default -> throw new AssertionError("TicketPersistenceStatus가 올바르게 처리되지 않음.");
         }
 
-        var ticket = this.entityToDomain(ticketEntity);
-        ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
+        domain.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
 
-        return ticket;
+        return domain;
     }
 
     private Ticket entityToDomain(TicketBulkInsertQueueEntity entity) {
