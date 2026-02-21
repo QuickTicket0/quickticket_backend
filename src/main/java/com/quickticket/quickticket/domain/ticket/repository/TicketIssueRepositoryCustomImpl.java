@@ -14,6 +14,7 @@ import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
 import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
+import com.quickticket.quickticket.shared.aspects.DistributedReadLock;
 import com.quickticket.quickticket.shared.utils.BaseCustomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -60,10 +61,60 @@ public class TicketIssueRepositoryCustomImpl
         });
     }
 
+    /**
+     * 도메인객체를 벌크인서트 큐에서 확인한 후 되도록 DB에 영속화한다.
+     */
     @Override
     public Ticket saveDomain(Ticket domain) {
-        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PENDING_BULK_INSERT) {
+        return switch (domain.getPersistenceStatus()) {
+            case NEW, PERSISTED -> this._saveDomainToDB(domain);
+            case PENDING_BULK_INSERT -> this._saveDomainToBulkOrDB(domain);
+            default -> throw new AssertionError();
+        };
+    }
+
+    /**
+     * 도메인객체를 가능한 경우 벌크인서트 큐에 저장하고, 불가능할 시 DB에 저장한다.
+     */
+    @Override
+    public Ticket saveDomainToBulkQueue(Ticket domain) {
+        return switch (domain.getPersistenceStatus()) {
+            case NEW -> ticketBulkInsertQueueRepository.saveDomain(domain);
+            case PENDING_BULK_INSERT -> this._saveDomainToBulkOrDB(domain);
+            case PERSISTED -> this._saveDomainToDB(domain);
+            default -> throw new AssertionError("TicketPersistenceStatus가 올바르게 처리되지 않음.");
+        };
+    }
+
+    private Ticket _saveDomainToBulkOrDB(Ticket domain) {
+        Ticket saveToQueueResult = this._trySaveDomainToBulkOrNull(domain);
+
+        if (saveToQueueResult != null) {
+            return saveToQueueResult;
+        } else {
+            return this._saveDomainToDB(domain);
+        }
+    }
+
+    /**
+     * @return 큐에 저장이 성공했을시 Ticket, 아닐시 null
+     *
+     * @implNote
+     * 조건 검사와 엔티티 업데이트가 모두 하나의 분산 읽기 락의 범위 안에서 수행한다.
+     * 그래야 데이터 정합성 문제를 방지할수 있다.
+     */
+    @DistributedReadLock(key = "lock:bulk-insert-queue:ticket-issue")
+    private Ticket _trySaveDomainToBulkOrNull(Ticket domain) {
+        if (ticketBulkInsertQueueRepository.existsById(domain.getId())) {
             return ticketBulkInsertQueueRepository.saveDomain(domain);
+        } else {
+            return null;
+        }
+    }
+
+    private Ticket _saveDomainToDB(Ticket domain) {
+        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PENDING_BULK_INSERT) {
+            throw new AssertionError("반드시 DB에 저장할수 있는 상태의 엔티티여야 함.");
         }
 
         var ticketEntity = ticketIssueMapper.toEntity(domain);
@@ -79,15 +130,6 @@ public class TicketIssueRepositoryCustomImpl
         ticket.setPersistenceStatus(TicketPersistenceStatus.PERSISTED);
 
         return ticket;
-    }
-
-    @Override
-    public Ticket saveDomainToBulkQueue(Ticket domain) {
-        if (domain.getPersistenceStatus() == TicketPersistenceStatus.PERSISTED) {
-            return this.saveDomain(domain);
-        }
-
-        return ticketBulkInsertQueueRepository.saveDomain(domain);
     }
 
     @Override
