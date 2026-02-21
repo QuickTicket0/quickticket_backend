@@ -14,7 +14,7 @@ public record LocationCommonDto(
     Long id,
     
     @NotBlank
-    String name,
+    String locationName,
 
     String zipNumber,
 
@@ -37,7 +37,7 @@ public record LocationCommonDto(
                 .doroName(location.getDoro())
                 .eupMyun(location.getEupmyun())
                 .id(location.getLocationId())
-                .name(location.getLocationName())
+                .locationName(location.getLocationName())
                 .phone(location.getPhone())
                 .sido(location.getSido())
                 .siGunGu(location.getSigungu())

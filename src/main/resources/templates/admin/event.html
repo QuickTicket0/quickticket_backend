@@ -69,16 +69,14 @@
 <!--                            <th class="col-check" style="text-align: center">-->
 <!--                                <input type="checkbox">-->
 <!--                            </th>-->
-                            <th class="col-no">NO</th>
-                            <th class="col-thumb">썸네일</th>
-                            <th style="width: 85px;">카테고리</th>
-                            <th>공연명</th>
-                            <th style="width: 80px;">출연자</th>
-                            <th>공연장소</th>
-<!--                            <th>상태</th>-->
-                            <th>연령</th>
-                            <th>공연날짜</th>
-                            <th class="col-action"></th>
+                            <th style="width: 3%;">NO</th>
+                            <th style="width: 7%;">썸네일</th>
+                            <th style="width: 10%;">카테고리</th>
+                            <th style="width: 25%;">공연명</th>
+                            <th style="width: 20%;">출연자</th>
+                            <th style="width: 15%;">공연장소</th>
+                            <th style="width: 10%;">연령</th>
+                            <th style="width: 10%;">공연날짜</th>
                         </tr>
                     </thead>
                     <tbody id="eventListContainer">
@@ -105,7 +103,7 @@
 <!--                                [[${event?.category2Name != null ? ' > ' + event.category2Name : ''}]]-->
                             </td>
                             <td>
-                                <a th:href="@{/editEvent/{id}(id=${event?.name ?: ''})}" class="link-title">
+                                <a th:href="@{/editEvent/{eventId}(eventId=${event.eventId})}" class="link-title">
                                     [[${event?.name ?: '-'}]]
                                 </a>
                             </td>
@@ -119,9 +117,9 @@
                             <td th:text="${#temporals.format(event.performanceStartsAt, 'yyyy.MM.dd')}">
                                 2026.02.15
                             </td>
-                            <td style="text-align: center; cursor: pointer; color: #999;">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </td>
+<!--                            <td style="text-align: center; cursor: pointer; color: #999;">-->
+<!--                                <i class="fa-solid fa-ellipsis-vertical"></i>-->
+<!--                            </td>-->
                         </tr>
                     </tbody>
                 </table>

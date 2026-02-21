@@ -7,6 +7,7 @@ import lombok.*;
 @Entity
 @Table(name = "LOCATION")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LocationEntity {

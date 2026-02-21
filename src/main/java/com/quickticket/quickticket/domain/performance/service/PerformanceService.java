@@ -4,6 +4,7 @@ import com.quickticket.quickticket.domain.event.dto.EventResponse;
 import com.quickticket.quickticket.domain.event.repository.EventRepository;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.dto.PerformanceRequest;
+import com.quickticket.quickticket.domain.performance.dto.PerformanceResponse;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;
 import com.quickticket.quickticket.domain.performance.repository.PerformanceRepository;
@@ -81,4 +82,45 @@ public class PerformanceService {
         // 저장
         performanceRepository.save(performanceEntity);
     }
+
+    /**
+     * [수정용 조회] 특정 이벤트의 모든 회차 정보를 DTO 리스트로 반환
+     */
+    public List<PerformanceResponse.ListItem> getPerformancesByEventId(Long eventId) {
+        // 이벤트 존재 확인
+        eventRepository.findById(eventId)
+                .orElseThrow(() -> new DomainException(PerformanceErrorCode.NOT_FOUND));
+
+        // 엔티티 조회 및 DTO 변환
+        return performanceRepository.findAllByEvent_EventId(eventId)
+                .stream()
+                .map(entity -> PerformanceResponse.ListItem.builder()
+                        .id(entity.getPerformanceId())
+                        .nth(entity.getPerformanceNth())
+                        .targetSeatNumber(entity.getTargetSeatNumber())
+                        .performersName(entity.getPerformersName())
+                        .ticketingStartsAt(entity.getTicketingStartsAt())
+                        .ticketingEndsAt(entity.getTicketingEndsAt())
+                        .performanceStartsAt(entity.getPerformanceStartsAt())
+                        .runningTime(entity.getRunningTime())
+                        // 필요 시 .event(PerformanceResponse.ListItem.EventInfo.from(...)) 추가
+                        .build())
+                .toList();
+    }
+
+    /**
+     * 특정 콘서트 회차의 상세 정보를 업데이트합니다.
+     * @param performanceDto 수정할 콘서트 회차 정보와 아이디
+     * @throws DomainException 해당 ID에 해당하는 공연 회차 엔티티가 존재하지 않을 경우 발생
+     */
+    @Transactional
+    public void updatePerformance(PerformanceRequest.Edit performanceDto) {
+        // 수정할 기존 회차 엔티티 조회
+        PerformanceEntity performanceEntity = performanceRepository.findById(performanceDto.id())
+                .orElseThrow(() -> new DomainException(PerformanceErrorCode.NOT_FOUND));
+
+        // 업데이트
+        performanceMapper.updateEntityFromDto(performanceDto, performanceEntity);
+    }
+
 }

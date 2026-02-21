@@ -14,126 +14,165 @@
         <div class="main-container new-event-page">
             <h2 class="page-title">콘서트 정보 수정</h2>
 
-            <form th:action="@{/admin/editEvent}" method="post" enctype="multipart/form-data">
-                <!-- 기본정보 영역 시작-->
+            <form id="eventForm" onsubmit="submitForm(event)" enctype="multipart/form-data">
+                <input type="hidden" id="eventId" th:value="${event.id}">
+                <input type="hidden" id="performanceId" th:value="${performance.id}">
+                <input type="hidden" id="locationId" th:value="${event.location?.id}">
+
                 <h3 class="sub-title">기본정보</h3>
                 <section class="form-section">
                     <div class="input-grid">
                         <div class="input-item">
                             <label>공연명</label>
-                            <input type="text" name="title" class="form-input" value="2025 임영웅 아임 히어로 콘서트">
+                            <input type="text" name="name" class="form-input" th:value="${event.name}" placeholder="공연명을 입력하세요">
                         </div>
                         <div class="input-item">
                             <label>카테고리</label>
-                            <select name="category" class="form-select custom-select">
-                                <option value="KPOP">KPOP</option>
-                                <option value="CLASSIC">CLASSIC</option>
-                                <option value="TROT" selected>트로트</option>
+                            <select class="form-select custom-select" name="category1Id">
+                                <option value="1" th:selected="${event.category1?.id == 1}">콘서트</option>
+                                <option value="2" th:selected="${event.category1?.id == 2}">뮤지컬</option>
+                                <option value="3" th:selected="${event.category1?.id == 3}">연극</option>
+                                <option value="4" th:selected="${event.category1?.id == 4}">해외뮤지션</option>
+                                <option value="5" th:selected="${event.category1?.id == 5}">KIDS</option>
                             </select>
                         </div>
                         <div class="input-item">
                             <label>회차</label>
-                            <select name="turn" class="form-select custom-select">
-                                <option value="1" selected>1회차</option>
+                            <select name="nth" class="form-select custom-select">
+                                <option th:each="i : ${#numbers.sequence(1, 5)}"
+                                        th:value="${i}"
+                                        th:text="${i + '회차'}"
+                                        th:selected="${performance != null && performance.nth == i}"></option>
                             </select>
+                        </div>
+
+                        <div class="input-item address-section">
+                            <label>공연장소</label>
+                            <div class="address-input-container">
+                                <div class="zip-code-row">
+                                    <input type="text" id="zipNumber" name="zipNumber" class="form-input" th:value="${event.location?.zipNumber}" readonly>
+                                    <button type="button" class="btn-search-addr" onclick="execKakaoPostcode()">주소 검색</button>
+                                </div>
+                                <input type="text" id="doroName" name="doroName" class="form-input" th:value="${event.location?.doroName}" readonly>
+                                <input type="text" id="locationName" name="locationName" class="form-input" th:value="${event.location?.locationName}" placeholder="상세 장소명 (예: 제1전시실, 본관 대강당)">
+                            </div>
+
+                            <input type="hidden" id="sido" name="sido" th:value="${event.location?.sido}">
+                            <input type="hidden" id="siGunGu" name="siGunGu" th:value="${event.location?.siGunGu}">
+                            <input type="hidden" id="eupMyun" name="eupMyun" th:value="${event.location?.eupMyun}">
+                            <input type="hidden" id="doroCode" name="doroCode" th:value="${event.location?.doroCode}">
                         </div>
                         <div class="input-item">
                             <label>공연일시</label>
                             <div class="date-wrapper">
-                                <input type="text" name="eventDate" class="form-input" value="2025-05-05">
-                                <i class="fa-regular fa-calendar"></i>
+                                <input type="datetime-local" name="performanceStartsAt" class="form-input"
+                                       th:value="${#temporals.format(performance.performanceStartsAt, 'yyyy-MM-dd''T''HH:mm')}">
                             </div>
                         </div>
                         <div class="input-item">
-                            <label>공연장소</label>
-                            <input type="text" name="location" class="form-input" value="서울월드컵경기장">
+                            <label>기획사 정보</label>
+                            <input type="text" name="agentName" class="form-input" th:value="${event.agentName}">
+                        </div>
+
+                        <div class="input-item">
+                            <label>관람 등급</label>
+                            <select name="ageRating" class="form-select custom-select">
+                                <option value="ALL" th:selected="${event.ageRating?.name() == 'ALL'}">전체 관람가</option>
+                                <option value="SEVEN" th:selected="${event.ageRating?.name() == 'SEVEN'}">7세 이상</option>
+                                <option value="FIFTEEN" th:selected="${event.ageRating?.name() == 'FIFTEEN'}">15세 이상</option>
+                                <option value="ADULT" th:selected="${event.ageRating?.name() == 'ADULT'}">청소년 관람불가</option>
+                            </select>
                         </div>
                         <div class="input-item">
-                            <label>기획사 정보</label>
-                            <input type="text" name="agency" class="form-input" value="물고기뮤직">
+                            <label>티켓 예매 시작</label>
+                            <input type="datetime-local" name="ticketingStartsAt" class="form-input"
+                                   th:value="${#temporals.format(performance.ticketingStartsAt, 'yyyy-MM-dd''T''HH:mm')}">
+                        </div>
+                        <div class="input-item">
+                            <label>티켓 예매 종료</label>
+                            <input type="datetime-local" name="ticketingEndsAt" class="form-input"
+                                   th:value="${#temporals.format(performance.ticketingEndsAt, 'yyyy-MM-dd''T''HH:mm')}">
+                        </div>
+
+                        <div class="input-item">
+                            <label>러닝 타임(분)</label>
+                            <input type="number" name="runningTime" class="form-input"
+                                   th:value="${performance.runningTime.hour * 60 + performance.runningTime.minute}" placeholder="예: 120">
+                        </div>
+                        <div class="input-item">
+                            <label>총 목표 좌석 수</label>
+                            <input type="number" name="targetSeatNumber" class="form-input" th:value="${performance.targetSeatNumber}" placeholder="예: 500">
                         </div>
                     </div>
                 </section>
-                <!-- 기본정보 영역 끝-->
-                <!-- 판매 및 출연진 정보 영역 시작-->
+
                 <h3 class="sub-title">판매 및 출연진 정보</h3>
                 <section class="form-section">
                     <div class="info-grid">
                         <div class="info-column">
                             <label>출연진 정보</label>
-                            <div class="dynamic-input-group">
-                                <input type="text" name="cast" class="form-input" value="임영웅">
-                                <button type="button" class="btn-icon-delete" title="삭제">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
+                            <div id="cast-container">
+                                <div class="dynamic-input-group" th:each="performer : ${performance.performersName}">
+                                    <input type="text" name="performersName" class="form-input" th:value="${performer}" placeholder="출연진 이름을 입력하세요">
+                                    <button type="button" class="btn-icon-delete" onclick="removeCast(this)">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
+                                <div class="dynamic-input-group" th:if="${#lists.isEmpty(performance.performersName)}">
+                                    <input type="text" name="performersName" class="form-input" placeholder="출연진 이름을 입력하세요">
+                                    <button type="button" class="btn-icon-delete" onclick="removeCast(this)">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="dynamic-input-group" style="margin-top: 5px;">
-                                <input type="text" name="cast" class="form-input" value="MC 딩동">
-                                <button type="button" class="btn-icon-delete" title="삭제">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
-                            </div>
-                            <button type="button" class="btn-add-item">출연진 추가</button>
+                            <button type="button" class="btn-add-item" onclick="addCast()">출연진 추가</button>
                         </div>
-
                         <div class="info-column">
                             <label>좌석 등급 및 가격</label>
-                            <div class="dynamic-input-group row-inputs">
-                                <input type="text" value="VIP석" class="form-input small">
-                                <input type="text" value="165000" class="form-input small">
-                                <input type="text" value="500" class="form-input small">
-                                <button type="button" class="btn-icon-delete"><i class="fa-regular fa-trash-can"></i></button>
+                            <div id="seat-container">
+                                <div class="dynamic-input-group row-inputs seat-group" th:each="seat : ${seats}">
+                                    <input type="hidden" class="seat-id" th:value="${seat?.id}">
+                                    <input type="text" class="seat-name form-input small" th:value="${seat?.name}" placeholder="등급">
+                                    <input type="number" class="seat-price form-input small" th:value="${seat?.price}" placeholder="가격">
+                                    <button type="button" class="btn-icon-delete" onclick="removeSeat(this)">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
+                                <div class="dynamic-input-group row-inputs seat-group" th:if="${#lists.isEmpty(seats)}">
+                                    <input type="hidden" class="seat-id" value="">
+                                    <input type="text" class="seat-name form-input small" placeholder="등급">
+                                    <input type="number" class="seat-price form-input small" placeholder="가격">
+                                    <button type="button" class="btn-icon-delete" onclick="removeSeat(this)">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="dynamic-input-group row-inputs" style="margin-top: 5px;">
-                                <input type="text" value="R석" class="form-input small">
-                                <input type="text" value="143000" class="form-input small">
-                                <input type="text" value="1000" class="form-input small">
-                                <button type="button" class="btn-icon-delete"><i class="fa-regular fa-trash-can"></i></button>
-                            </div>
-                            <button type="button" class="btn-add-item">등급 추가</button>
+                            <button type="button" class="btn-add-item" onclick="addSeat()">등급 추가</button>
                         </div>
                     </div>
                 </section>
-                <!-- 판매 및 출연진 정보 영역 끝-->
-                <!-- 상세정보 영역 시작 -->
+
                 <h3 class="sub-title">상세정보</h3>
                 <section class="form-section">
                     <div class="info-grid">
                         <div class="info-column">
-                            <label>상세정보 내용(이미지, 텍스트)</label>
-                            <textarea name="content" class="form-textarea"></textarea>
-
+                            <label>썸네일</label>
                             <div class="image-upload-area">
-                                <p class="upload-label">첨부 이미지 목록</p>
-                                <div class="image-preview-list">
-                                    <div class="preview-item">
-                                        <div class="preview-box"></div> <span class="file-name">설명1.jpg</span>
-
-                                        <button type="button" class="btn-del-img">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </button>
-                                    </div>
-                                    <div class="preview-item">
-                                        <div class="preview-box"></div> <span class="file-name">설명1.jpg</span>
-
-                                        <button type="button" class="btn-del-img">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </button>
-                                    </div>
-                                    <button type="button" class="btn-image-add">+</button>
+                                <input type="file" name="thumbnailImageFile" id="thumbnailInput"
+                                       accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                                <div class="image-preview-list" id="thumbnailPreviewList"
+                                     th:data-existing-image="|/api/images/event/${event.id}|">
+                                    <button type="button" class="btn-image-add" onclick="document.getElementById('thumbnailInput').click()">+</button>
                                 </div>
                             </div>
                         </div>
-
                         <div class="info-column">
                             <label>상품정보 내용</label>
-                            <textarea name="info" class="form-textarea">[예매 취소 조건]- 관람일 9일 전 ~ 7일 전 : 티켓 금액의 10%
-                            </textarea>
+                            <textarea name="description" class="form-textarea" th:text="${event.description}"></textarea>
                         </div>
                     </div>
                 </section>
-                <!-- 상세정보 영역 끝 -->
-                <!-- 버튼 영역 -->
+
                 <div class="form-footer-buttons">
                     <button type="submit" class="btn-submit">수정</button>
                     <a th:href="@{/admin/event}" class="btn-list">목록</a>
@@ -141,7 +180,205 @@
             </form>
         </div>
     </div>
-</main>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:inline="javascript">
 
+        // 페이지 로드 시 기존 썸네일 표시 로직
+        document.addEventListener('DOMContentLoaded', function() {
+            const previewList = document.getElementById('thumbnailPreviewList');
+            const existingImageUrl = previewList.getAttribute('data-existing-image');
+
+            // API 경로가 존재한다면 미리보기 생성 시도
+            if (existingImageUrl) {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+            <div class="preview-box">
+                <img src="${existingImageUrl}"
+                     style="width:100%; height:100%; object-fit:cover;"
+                     onerror="this.parentElement.parentElement.remove();">
+            </div>
+            <button type="button" class="btn-del-img" onclick="removeImage(this)">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        `;
+
+                const addButton = previewList.querySelector('.btn-image-add');
+                previewList.insertBefore(previewItem, addButton);
+            }
+        });
+
+        // 출연진 추가 함수
+        function addCast() {
+            const container = document.getElementById('cast-container');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'dynamic-input-group';
+            newGroup.innerHTML = `
+                <input type="text" name="performersName" class="form-input" placeholder="출연진 이름을 입력하세요">
+                <button type="button" class="btn-icon-delete" onclick="removeCast(this)">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            `;
+            container.appendChild(newGroup);
+        }
+
+        // 출연진 삭제 함수
+        function removeCast(button) {
+            const container = document.getElementById('cast-container');
+            if (container.childElementCount > 1) {
+                button.closest('.dynamic-input-group').remove();
+            } else {
+                alert("최소 한 명의 출연진은 입력해야 합니다.");
+            }
+        }
+
+        // 좌석 등급 추가 함수 (DB 구조에 맞춰 수량 제외)
+        function addSeat() {
+            const container = document.getElementById('seat-container');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'dynamic-input-group row-inputs seat-group';
+            newGroup.innerHTML = `
+                <input type="hidden" class="seat-id" value="">
+                <input type="text" class="seat-name form-input small" placeholder="등급">
+                <input type="number" class="seat-price form-input small" placeholder="가격">
+                <button type="button" class="btn-icon-delete" onclick="removeSeat(this)">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            `;
+            container.appendChild(newGroup);
+        }
+
+        // 좌석 등급 삭제 함수
+        function removeSeat(button) {
+            const container = document.getElementById('seat-container');
+            if (container.childElementCount > 1) {
+                button.closest('.dynamic-input-group').remove();
+            }
+        }
+
+        // 폼 전송
+        async function submitForm(event) {
+            event.preventDefault();
+            const submitBtn = document.querySelector('.btn-submit');
+
+            if(submitBtn.disabled) return;
+            submitBtn.disabled = true;
+
+            const form = document.getElementById('eventForm');
+            const formData = new FormData();
+
+            // 좌석 정보
+            const seatGrades = Array.from(document.querySelectorAll('.seat-group')).map(group => ({
+                id: group.querySelector('.seat-id')?.value ? parseInt(group.querySelector('.seat-id').value) : null,
+                name: group.querySelector('.seat-name').value,
+                price: parseInt(group.querySelector('.seat-price').value),
+                eventId: document.getElementById('eventId').value
+            }));
+
+            // event 파트
+            const eventData = {
+                id: document.getElementById('eventId').value,
+                name: form.name.value,
+                description: form.description.value,
+                category1Id: parseInt(form.category1Id.value),
+                ageRating: form.ageRating.value,
+                agentName: form.agentName.value,
+                location: {
+                    locationId : document.getElementById('locationId').value,
+                    locationName: document.getElementById('locationName').value,
+                    zipNumber: document.getElementById('zipNumber').value,
+                    sido: document.getElementById('sido').value,
+                    siGunGu: document.getElementById('siGunGu').value,
+                    eupMyun: document.getElementById('eupMyun').value,
+                    doroName: document.getElementById('doroName').value,
+                    doroCode: document.getElementById('doroCode').value
+                },
+                seatGrades: seatGrades
+            };
+            formData.append("event", new Blob([JSON.stringify(eventData)], { type: "application/json" }));
+
+            // performance 파트 (id 필드명 통일)
+            const minutes = parseInt(form.runningTime.value) || 0;
+            const h = String(Math.floor(minutes / 60)).padStart(2, '0');
+            const m = String(minutes % 60).padStart(2, '0');
+            const runningTime = `${h}:${m}:00`;
+
+            const performanceData = {
+                id : document.getElementById('performanceId').value,
+                nth: parseInt(form.nth.value),
+                targetSeatNumber: parseInt(form.targetSeatNumber.value),
+                performersName: Array.from(document.getElementsByName('performersName')).map(input => input.value).filter(val => val.trim() !== ""),
+                ticketingStartsAt: form.ticketingStartsAt.value,
+                ticketingEndsAt: form.ticketingEndsAt.value,
+                performanceStartsAt: form.performanceStartsAt.value,
+                runningTime: runningTime
+            };
+            formData.append("performance", new Blob([JSON.stringify(performanceData)], { type: "application/json" }));
+
+            if (document.getElementById('thumbnailInput').files[0]) {
+                formData.append("thumbnailImageFile", document.getElementById('thumbnailInput').files[0]);
+            }
+
+            try {
+                // 수정 시에는 해당 수정용 API 엔드포인트 경로로 변경하는 것이 좋습니다
+                const response = await fetch('/admin/editEvent/update', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/ ''
+                    }
+                });
+
+                if (response.ok) {
+                    alert("수정되었습니다.");
+                    window.location.href = "/admin/event";
+                } else {
+                    const errorText = await response.text();
+                    alert("수정 실패: " + response.status);
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                alert("네트워크 오류가 발생했습니다.");
+                submitBtn.disabled = false;
+            }
+        }
+
+        function execKakaoPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    document.getElementById('zipNumber').value = data.zonecode;
+                    document.getElementById('doroName').value = data.roadAddress;
+                    document.getElementById('sido').value = data.sido;
+                    document.getElementById('siGunGu').value = data.sigungu;
+                    document.getElementById('eupMyun').value = data.bname;
+                    document.getElementById('doroCode').value = data.roadnameCode;
+                    document.getElementById('locationName').focus();
+                }
+            }).open();
+        }
+
+        function handleImageUpload(input) {
+            const previewList = document.getElementById('thumbnailPreviewList');
+            const file = input.files[0];
+            if (file) {
+                const existingPreview = previewList.querySelector('.preview-item');
+                if (existingPreview) existingPreview.remove();
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `<div class="preview-box"><img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;"></div><button type="button" class="btn-del-img" onclick="removeImage(this)"><i class="fa-solid fa-xmark"></i></button>`;
+                    previewList.insertBefore(previewItem, previewList.querySelector('.btn-image-add'));
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeImage(button) {
+            button.closest('.preview-item').remove();
+            document.getElementById('thumbnailInput').value = "";
+        }
+    </script>
+</main>
 </body>
 </html>
