@@ -102,4 +102,35 @@ public class EventService {
 
         return savedEvent.getEventId();
     }
+
+    /**
+     * 기존 콘서트 정보, 장소 정보를 수정
+     * @param eventDto 수정할 데이터가 담긴 DTO
+     * @param file     새로 업로드한 이미지
+     */
+    @Transactional
+    public void updateEvent(EventRequest.Edit eventDto, MultipartFile file) {
+        // 기존 이벤트 엔티티 조회
+        EventEntity eventEntity = eventRepository.getEntityByEventId(eventDto.id())
+                .orElseThrow(() -> new DomainException(EventErrorCode.NOT_FOUND));
+
+        // 카테고리 업데이트
+        CategoryEntity category1 = categoryRepository.findById(eventDto.category1Id())
+                .orElseThrow(() -> new DomainException(EventErrorCode.NOT_FOUND));
+
+        // 업데이트
+        eventMapper.updateEntityFromDto(eventDto, eventEntity);
+        eventEntity.setCategory1(category1);
+
+        // 장소 업데이트
+        LocationEntity locationEntity = eventEntity.getLocation();
+        if (locationEntity != null && eventDto.location() != null) {
+            locationMapper.updateEntityFromDto(eventDto.location(), locationEntity);
+        }
+
+        // S3 이미지 업데이트
+        if (file != null && !file.isEmpty()) {
+            s3Service.uploadId(file, "images/event", eventEntity.getEventId().toString());
+        }
+    }
 }

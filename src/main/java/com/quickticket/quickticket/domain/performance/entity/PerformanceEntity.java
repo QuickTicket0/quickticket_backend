@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "PERFORMANCE")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceEntity {

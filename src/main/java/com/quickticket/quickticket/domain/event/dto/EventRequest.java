@@ -85,7 +85,11 @@ public class EventRequest {
         String contactData,
 
         @Min(0)
-        Long locationId
+        Long locationId,
+
+        LocationCommonDto location,
+
+        List<SeatGrade> seatGrades
     ) {}
 
     /// admin이 본인이 생성했던 Event를 삭제할때
@@ -96,8 +100,10 @@ public class EventRequest {
         Long id
     ) {}
 
-    // 좌석 등록을 위한 레코드
+    // 좌석 등록+수정을 위한 레코드
     public record SeatGrade(
+        Long id,
+        Long eventId,
         String name,
         Long price,
         Integer quantity

@@ -95,6 +95,9 @@ input::-webkit-calendar-picker-indicator {
     color: #555;
     margin-bottom: 10px;
 }
+.address-section {
+    grid-row: span 2; /* 공연장소 칸을 세로로 2칸 차지하게 함 */
+}
 .new-event-page .form-input,
 .new-event-page .form-select {
     width: 100%;

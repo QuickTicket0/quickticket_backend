@@ -43,12 +43,7 @@
                                 <option value="5">5회차</option>
                             </select>
                         </div>
-                        <div class="input-item">
-                            <label>공연일시</label>
-                            <div class="date-wrapper">
-                                <input type="datetime-local" name="performanceStartsAt" class="form-input">
-                            </div>
-                        </div>
+
                         <div class="input-item address-section">
                             <label>공연장소</label>
                             <div class="address-input-container">
@@ -66,9 +61,16 @@
                             <input type="hidden" id="doroCode" name="doroCode">
                         </div>
                         <div class="input-item">
+                            <label>공연일시</label>
+                            <div class="date-wrapper">
+                                <input type="datetime-local" name="performanceStartsAt" class="form-input">
+                            </div>
+                        </div>
+                        <div class="input-item">
                             <label>기획사 정보</label>
                             <input type="text" name="agentName" class="form-input">
                         </div>
+
                         <div class="input-item">
                             <label>관람 등급</label>
                             <select name="ageRating" class="form-select custom-select">
@@ -86,6 +88,7 @@
                             <label>티켓 예매 종료</label>
                             <input type="datetime-local" name="ticketingEndsAt" class="form-input">
                         </div>
+
                         <div class="input-item">
                             <label>러닝 타임(분)</label>
                             <input type="number" name="runningTime" class="form-input" placeholder="예: 120">
