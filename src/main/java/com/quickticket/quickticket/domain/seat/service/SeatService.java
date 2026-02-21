@@ -91,4 +91,71 @@ public class SeatService {
 
         seatClassRepository.saveAll(entities);
     }
+
+    public List<EventRequest.SeatGrade> getSeatGradesByEventId(Long eventId) {
+        if (!eventRepository.existsById(eventId)) {
+            throw new RuntimeException("Event not found");
+        }
+
+        return seatClassRepository.getByEvent_EventId(eventId).stream()
+                .map(seatClassMapper::toSeatGradeDto) // 매퍼 사용
+                .toList();
+    }
+
+    /**
+     * 특정 이벤트의 좌석 등급 정보를 업데이트합니다.
+     *
+     * @param eventId  업데이트할 대상 콘서트의 아이디
+     * @param seatDtos 화면에서 넘어온 수정된 좌석 등급 정보 리스트
+     * @throws RuntimeException 이벤트 엔티티를 찾을 수 없는 경우 발생
+     */
+    @Transactional
+    public void updateSeatClasses(Long eventId, List<EventRequest.SeatGrade> seatDtos) {
+        EventEntity eventEntity = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        List<SeatClassEntity> existingEntities = seatClassRepository.getByEvent_EventId(eventId);
+        Map<Long, SeatClassEntity> existingMap = existingEntities.stream()
+                .collect(Collectors.toMap(e -> e.getId().getSeatClassId(), e -> e));
+
+        List<SeatClassEntity> toSave = new ArrayList<>();
+        List<Long> currentDtoIds = new ArrayList<>();
+
+        // 업데이트
+        for (EventRequest.SeatGrade dto : seatDtos) {
+            if (dto.id() != null && existingMap.containsKey(dto.id())) {
+                // [Update]
+                SeatClassEntity existing = existingMap.get(dto.id());
+                seatClassMapper.updateEntityFromDto(dto, existing);
+                toSave.add(existing);
+                currentDtoIds.add(dto.id());
+            } else {
+                Long newId = findNextId(existingEntities, toSave);
+                SeatClassId complexId = new SeatClassId(newId, eventId);
+                toSave.add(seatClassMapper.toEntity(dto, eventEntity, complexId));
+            }
+        }
+
+        // 리스트에 없는 것들을 삭제함
+        List<SeatClassEntity> toDelete = existingEntities.stream()
+                .filter(e -> !currentDtoIds.contains(e.getId().getSeatClassId()))
+                .collect(Collectors.toList());
+
+        if (!toDelete.isEmpty()) {
+            seatClassRepository.deleteAll(toDelete);
+            // 삭제를 먼저 DB에 반영해서 ID 충돌이 되지 않도록함
+            seatClassRepository.flush();
+        }
+
+        // 저장
+        seatClassRepository.saveAll(toSave);
+    }
+
+    // 다음 가용 ID를 찾는 메서드
+    private Long findNextId(List<SeatClassEntity> existing, List<SeatClassEntity> toSave) {
+        long maxId = 0;
+        for (SeatClassEntity e : existing) maxId = Math.max(maxId, e.getId().getSeatClassId());
+        for (SeatClassEntity e : toSave) maxId = Math.max(maxId, e.getId().getSeatClassId());
+        return maxId + 1;
+    }
 }

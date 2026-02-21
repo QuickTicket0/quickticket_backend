@@ -10,6 +10,7 @@ import com.quickticket.quickticket.domain.location.mapper.LocationMapper;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
     componentModel = "spring",
@@ -32,7 +33,14 @@ public interface EventMapper {
     @Mapping(target = "agentName", source = "dto.agentName")
     @Mapping(target = "views", constant = "0L")
     @Mapping(target = "userRatingSum", constant = "0L")
-    EventEntity toEntity(EventRequest.Create dto,
-                         LocationEntity locationEntity,
-                         CategoryEntity categoryEntity);
+    EventEntity toEntity(EventRequest.Create dto, LocationEntity locationEntity, CategoryEntity categoryEntity);
+
+    /**
+     * 콘서트 정보들을 업데이트 합니다.
+     * * @MappingTarget을 사용하여 DB에서 조회해온 기존 EventEntity 객체에 DTO(EventRequest.Edit)의 새로운 내용을 덮어씁니다.
+     */
+    @Mapping(target = "eventId", ignore = true)
+    @Mapping(target = "location", ignore = true)
+    @Mapping(target = "category1", ignore = true)
+    void updateEntityFromDto(EventRequest.Edit dto, @MappingTarget EventEntity entity);
 }

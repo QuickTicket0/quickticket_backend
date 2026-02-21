@@ -100,13 +100,13 @@ public class EventResponse {
                     .id(event.getEventId())
                     .name(event.getName())
                     .description(event.getDescription())
-                    .category1(CategoryCommonDto.from(event.getCategory1()))
-                    .category2(CategoryCommonDto.from(event.getCategory2()))
+                    .category1(event.getCategory1() != null ? CategoryCommonDto.from(event.getCategory1()) : null)
+                    .category2(event.getCategory2() != null ? CategoryCommonDto.from(event.getCategory2()) : null)
                     .ageRating(event.getAgeRating())
                     .agentName(event.getAgentName())
                     .hostName(event.getHostName())
                     .contactData(event.getContactData())
-                    .location(LocationCommonDto.from(event.getLocation()))
+                    .location(event.getLocation() != null ? LocationCommonDto.from(event.getLocation()) : null)
                     .build();
         }
     }

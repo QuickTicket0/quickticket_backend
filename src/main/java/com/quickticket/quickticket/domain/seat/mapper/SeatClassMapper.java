@@ -10,10 +10,7 @@ import com.quickticket.quickticket.domain.seat.entity.SeatAreaEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatAreaId;
 import com.quickticket.quickticket.domain.seat.entity.SeatClassEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatClassId;
-import org.mapstruct.Builder;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 @Mapper(
     componentModel = "spring",
@@ -45,4 +42,20 @@ public interface SeatClassMapper {
     default SeatClassId seatClassIdToEntity(SeatClass domain) {
         return new SeatClassId(domain.getId(), domain.getEvent().getId());
     }
+
+    /**
+     * Entity -> DTO 변환 (수정 페이지 조회)
+     */
+    @Mapping(target = "id", source = "id.seatClassId")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "price", source = "price")
+    EventRequest.SeatGrade toSeatGradeDto(SeatClassEntity entity);
+
+    /**
+     * DTO의 내용을 기존 엔티티 객체에 덮어씁니다.
+     * ID(복합키)와 연관관계(Event)는 바뀌지 않도록 ignore 처리합니다.
+     */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "event", ignore = true)
+    void updateEntityFromDto(EventRequest.SeatGrade dto, @MappingTarget SeatClassEntity entity);
 }

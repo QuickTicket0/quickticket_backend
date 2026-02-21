@@ -10,6 +10,7 @@ import lombok.*;
 @Entity
 @Table(name = "EVENT")
 @Getter
+@Setter
 @EntityListeners(EventCacheListener.class)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

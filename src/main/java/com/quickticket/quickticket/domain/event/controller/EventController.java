@@ -5,6 +5,7 @@ import com.quickticket.quickticket.domain.event.dto.EventResponse;
 import com.quickticket.quickticket.domain.event.service.EventService;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.dto.PerformanceRequest;
+import com.quickticket.quickticket.domain.performance.dto.PerformanceResponse;
 import com.quickticket.quickticket.domain.performance.service.PerformanceService;
 import com.quickticket.quickticket.domain.seat.service.SeatService;
 import com.quickticket.quickticket.shared.infra.aws.s3.S3Service;
@@ -166,14 +167,59 @@ public class EventController {
      * @return 관리자 콘서트 수정 페이지 경로
      */
     @GetMapping("/editEvent/{eventId}")
-    public String editEvent(Model model, @PathVariable Long eventId) {
+    public String editEventPage(@PathVariable Long eventId, Model model) {
+        // 콘서트 정보
+        EventResponse.Details eventDetails = eventService.getResponseDetailsById(eventId);
 
-        // 이벤트 수정 페이지용 상세 데이터
-        EventResponse.Details eventDetails =
-                eventService.getResponseDetailsById(eventId);
+        // 공연 회차 정보
+        List<PerformanceResponse.ListItem> performances = performanceService.getPerformancesByEventId(eventId);
+        PerformanceResponse.ListItem performanceDetails = performances.isEmpty() ? null : performances.get(0);
+
+        // 좌석 정보
+        List<EventRequest.SeatGrade> seatDetails = seatService.getSeatGradesByEventId(eventId);
 
         model.addAttribute("event", eventDetails);
+        model.addAttribute("performance", performanceDetails);
+        model.addAttribute("seats", seatDetails);
 
         return "admin/editEvent";
     }
+
+    /**
+     * 기존 콘서트 정보를 수정
+     * event 정보, performance 일정, seat_class 정보를 각각의 서비스에서 처리하도록함
+     * 새로운 썸네일 이미지가 있으면 S3에서 교체가 되도록함
+     * @param eventDto       수정된 event 정보가 담긴 DTO
+     * @param performanceDto 수정된 performance 정보가 담긴 DTO
+     * @param file           새로 업로드된 썸네일 이미지
+     * @return               성공 시 이벤트 목록 페이지로 리다이렉트, 실패 시 에러 파라미터를 포함한 수정 페이지
+     */
+    @PostMapping(value = "/admin/editEvent/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public String updateEvent(
+            @RequestPart("event") EventRequest.Edit eventDto,
+            @RequestPart("performance") PerformanceRequest.Edit performanceDto,
+            @RequestPart(value = "thumbnailImageFile", required = false) MultipartFile file) {
+
+        try {
+            // event 수정
+            eventService.updateEvent(eventDto, file);
+
+            // performance 수정
+            performanceService.updatePerformance(performanceDto);
+
+            // seatClass 수정
+            if (eventDto.seatGrades() != null) {
+                seatService.updateSeatClasses(eventDto.id(), eventDto.seatGrades());
+            }
+
+            // 성공 시 목록 페이지로
+            return "redirect:/admin/event";
+
+        } catch (Exception e) {
+            log.error("수정 오류 발생: ", e);
+
+            return "redirect:/admin/editEvent/" + eventDto.id() + "?error";
+        }
+    }
+
 }
