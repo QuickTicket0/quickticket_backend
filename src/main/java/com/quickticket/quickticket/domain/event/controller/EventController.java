@@ -222,4 +222,20 @@ public class EventController {
         }
     }
 
+    /**
+     * 체크된 공연 항목들을 일괄 삭제합니다.
+     */
+    @PostMapping("/api/admin/events/delete")
+    @ResponseBody
+    public ResponseEntity<Void> deleteEvents(@RequestBody List<Long> eventIds) {
+        // 아이디 체크
+        if (eventIds == null || eventIds.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // 삭제
+        eventService.deleteEvents(eventIds);
+
+        return ResponseEntity.ok().build();
+    }
 }

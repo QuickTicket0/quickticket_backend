@@ -10,6 +10,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 
@@ -21,7 +24,8 @@
                     <span class="filter-label">공연기간</span>
                     <div style="position: relative;">
                         <input type="text" id="datePicker" class="form-input date-wrapper"
-                               th:value="${condition?.startDate != null ? condition.startDate + ' ~ ' + condition.endDate : ''}"
+                               style="background-color: #ffffff;"
+                               th:value="${(condition?.startDate != null and condition?.startDate != '') ? condition.startDate + ' ~ ' + condition.endDate : '전체'}"
                                placeholder="날짜 선택">
                         <i class="fa-regular fa-calendar" id="calendarIcon" style="position: absolute; right: 10px; top: 12px; color: #999; cursor: pointer;"></i>
                     </div>
@@ -31,11 +35,11 @@
                     <span class="filter-label">카테고리</span>
                     <select class="form-select custom-select" name="category">
                         <option value="">전체</option>
-                        <option value="1" th:selected="${condition?.category == '콘서트'}">콘서트</option>
-                        <option value="2" th:selected="${condition?.category == '뮤지컬'}">뮤지컬</option>
-                        <option value="3" th:selected="${condition?.category == '연극'}">연극</option>
-                        <option value="4" th:selected="${condition?.category == '해외뮤지션'}">해외뮤지션</option>
-                        <option value="5" th:selected="${condition?.category == 'KIDS'}">KIDS</option>
+                        <option value="1" th:selected="${condition?.category == '1'}">콘서트</option>
+                        <option value="2" th:selected="${condition?.category == '2'}">뮤지컬</option>
+                        <option value="3" th:selected="${condition?.category == '3'}">연극</option>
+                        <option value="4" th:selected="${condition?.category == '4'}">해외뮤지션</option>
+                        <option value="5" th:selected="${condition?.category == '5'}">KIDS</option>
                     </select>
                 </div>
 
@@ -52,23 +56,27 @@
 
                 <div class="filter-group">
                     <span class="filter-label">검색어</span>
-                    <input type="text" class="form-input keyword-input" placeholder="">
+                    <input type="text" class="form-input keyword-input" th:value="${condition?.keyword}"
+                           placeholder="검색어를 입력하세요">
                 </div>
 
                 <button type="button" class="btn-search">검색</button>
             </form>
             <div class="list-header">
                 <div class="sub-title">콘서트 목록</div>
-                <a th:href="@{/newEvent}" class="btn-register">신규 콘서트 등록</a>
+                <div class="btn-group">
+                    <a th:href="@{/newEvent}" class="btn-register">등록</a>
+                    <a href="javascript:void(0);" class="btn-delete" id="btnDelete">삭제</a>
+                </div>
             </div>
 
             <div class="table-container">
                 <table class="common-table">
                     <thead>
                         <tr>
-<!--                            <th class="col-check" style="text-align: center">-->
-<!--                                <input type="checkbox">-->
-<!--                            </th>-->
+                            <th class="col-check" style="text-align: center">
+                                <input type="checkbox" id="checkAll">
+                            </th>
                             <th style="width: 3%;">NO</th>
                             <th style="width: 7%;">썸네일</th>
                             <th style="width: 10%;">카테고리</th>
@@ -81,9 +89,9 @@
                     </thead>
                     <tbody id="eventListContainer">
                         <tr th:each="event, stat : ${eventList}" th:id="'event-row-' + ${stat.count}">
-<!--                            <td style="text-align: center;">-->
-<!--                                <input type="checkbox">-->
-<!--                            </td>-->
+                            <td style="text-align: center;">
+                                <input type="checkbox" class="child-check" th:value="${event.eventId}">
+                            </td>
                             <td th:text="${(page.number * page.size) + stat.count}">NO</td>
                             <td>
                                 <div class="thumb-box">
@@ -152,33 +160,16 @@
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             const dateInput = document.getElementById('datePicker');
+            const dateValue = dateInput.value;
 
-            // 오늘과 7일 뒤 날짜 계산 함수
-            function getFormattedDate(date) {
-                const y = date.getFullYear();
-                const m = String(date.getMonth() + 1).padStart(2, '0');
-                const d = String(date.getDate()).padStart(2, '0');
-                return `${y}.${m}.${d}`;
-            }
-
-            const today = new Date();
-            const sevenDaysLater = new Date();
-            sevenDaysLater.setDate(today.getDate() + 7);
-
-            const defaultRange = `${getFormattedDate(today)} ~ ${getFormattedDate(sevenDaysLater)}`;
-
-            // 첫 진입 시 기본 범위를 넣어줌
-            if (!dateInput.value) {
-                dateInput.value = defaultRange;
-            }
-
-            // Flatpickr 초기화
+            // Flatpickr 초기설정
             const picker = flatpickr("#datePicker", {
                 mode: "range",
                 dateFormat: "Y.m.d",
                 locale: "ko",
                 conjunction: " ~ ",
-                defaultDate: dateInput.value.split(" ~ ")
+                // defaultDate를 설정하지 않거나, 이미 값이 있을 때(검색 후)만 유지하도록 변경
+                defaultDate: (dateValue && dateValue !== '전체') ? dateValue.split(" ~ ") : null
             });
 
             // 아이콘 클릭 시 달력 열기
@@ -186,17 +177,82 @@
                 picker.open();
             });
 
-            // 검색 버튼 클릭 이벤트
+            // 검색 버튼 클릭 시
             document.querySelector('.btn-search').addEventListener('click', function() {
-                const dateRange = document.getElementById('datePicker').value;
-                const dates = dateRange.split(" ~ ");
-                const startDate = dates[0] || "";
-                const endDate = dates[1] || dates[0] || ""; // 종료일이 없으면 시작일과 같게 설정
+                const dateRange = dateInput.value;
+                let startDate = "";
+                let endDate = "";
+
+                // "전체"가 아니거나 빈 값이 아닐 때만 날짜 파싱해줌
+                if (dateRange && dateRange !== '전체') {
+                    const dates = dateRange.split(" ~ ");
+                    startDate = dates[0] || "";
+                    endDate = dates[1] || dates[0] || "";
+                }
+
                 const category = document.querySelector('.custom-select').value;
                 const keyword = document.querySelector('.keyword-input').value;
 
-
                 location.href = `/admin/event?page=0&startDate=${startDate}&endDate=${endDate}&category=${category}&keyword=${encodeURIComponent(keyword)}`;
+            });
+
+
+            const checkAll = document.getElementById('checkAll');
+            const childChecks = document.querySelectorAll('.child-check');
+            const btnDelete = document.getElementById('btnDelete');
+
+            // 전체 선택/해제
+            checkAll.addEventListener('change', function() {
+                childChecks.forEach(check => {
+                    check.checked = this.checked;
+                });
+            });
+
+            // 개별 체크박스 클릭 시 전체 체크박스에도 체크가 되도록함
+            childChecks.forEach(check => {
+                check.addEventListener('change', function() {
+                    const allChecked = document.querySelectorAll('.child-check:checked').length === childChecks.length;
+                    checkAll.checked = allChecked;
+                });
+            });
+
+            // 삭제 버튼 클릭 시 이벤트 내부
+            btnDelete.addEventListener('click', function() {
+                const checkedItems = document.querySelectorAll('.child-check:checked');
+                const arrDelete = Array.from(checkedItems).map(item => item.value);
+
+                if (arrDelete.length === 0) {
+                    alert('삭제할 항목을 선택해주세요.');
+                    return;
+                }
+
+                if (confirm(`선택한 ${arrDelete.length}개의 항목을 삭제하시겠습니까?`)) {
+
+                    //  메타 태그에서 CSRF 토큰과 헤더 이름을 가져옴
+                    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+                    fetch('/api/admin/events/delete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            [header]: token
+                        },
+                        body: JSON.stringify(arrDelete)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert('삭제되었습니다.');
+                                location.reload();
+                            } else {
+                                alert('삭제에 실패했습니다. (상태코드: ' + response.status + ')');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('오류가 발생했습니다.');
+                        });
+                }
             });
         });
     </script>

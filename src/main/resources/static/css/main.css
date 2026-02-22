@@ -56,8 +56,8 @@
 /* 그리드 레이아웃 */
 .concert-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 한 줄에 들어갈 카드 개수 조절 */
+    gap: 20px;
 }
 /* 썸네일 카드 디자인 */
 .concert-card {
@@ -73,22 +73,23 @@
 }
 /* 썸네일 영역 */
 .thumb-wrapper {
-    width: 100%;
     position: relative;
-    padding-top: 140%;
-    background-color: #fff;
-    margin-bottom: 15px;
-    border-radius: 12px;
+    width: 100%;
+    aspect-ratio: 3 / 4;
     overflow: hidden;
-    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #f0f0f0;
 }
+
+/* 이미지 설정 */
 .concert-img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
 }
 .img-placeholder {
     position: absolute;

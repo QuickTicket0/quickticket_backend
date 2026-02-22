@@ -10,119 +10,77 @@
 <body>
 
 <main layout:fragment="content">
-    <!-- 상단 배너 영역 -->
-    <section class="hero-section">
-        <div class="hero-bg-placeholder">
-            <h1 class="hero-title">The Decade</h1>
-            <p class="hero-subtitle">대구 | 엑스코 동관 5-6홀<br>2026.02.07 SAT - 2026.02.08 SUN</p>
+    <section class="hero-section" th:if="${not #lists.isEmpty(hotEvents)}">
+        <div class="hero-bg-placeholder"
+             th:style="'background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(/api/images/event/' + ${hotEvents[0].id} + '); background-size: cover; background-position: center;'">
+
+            <h1 class="hero-title" th:text="${hotEvents[0].name}">공연명</h1>
+
+            <p class="hero-subtitle">
+                <span th:text="${hotEvents[0].location?.name}">장소 정보</span><br>
+                지금 가장 핫한 공연을 만나보세요!
+            </p>
+
+            <a th:href="@{/event/{id}(id=${hotEvents[0].id})}" class="btn-primary"
+               style="display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #fff; color: #000; text-decoration: none; font-weight: bold; border-radius: 4px;">
+                지금 예매하기
+            </a>
         </div>
     </section>
 
     <div class="main-container">
+        <!--WHAT'S HOT - 조회수가 높은거 5개를 보여줌-->
         <section class="main-section">
             <div class="section-header">
                 <h2 class="main-title">WHAT'S HOT</h2>
             </div>
 
             <div class="concert-grid">
-                <a th:href="@{/event}" class="concert-card">
+                <a th:each="event : ${hotEvents}"
+                   th:href="@{/event/{id}(id=${event?.id})}" class="concert-card">
                     <div class="thumb-wrapper">
-                        <img th:src="@{/images/concertImage1.png}" alt="concert1" class="concert-img">
+                        <img th:src="@{/api/images/event/{id}(id=${event?.id})}"
+                             th:alt="${event?.name}"
+                             class="concert-img"
+                             onerror="this.src='/images/default-poster.png';">
                     </div>
                     <div class="card-info">
-                        <div class="card-title">LOUD BRIDGE FESTIVAL</div>
-                        <div class="card-sub">SEOUL 2026</div>
-                    </div>
-                </a>
-
-                <a th:href="@{/event}" class="concert-card">
-                    <div class="thumb-wrapper">
-                        <img th:src="@{/images/concertImage2.png}" alt="concert2" class="concert-img">
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">소란 겨울 콘서트</div>
-                        <div class="card-sub">'DEAMeR'</div>
-                    </div>
-                </a>
-
-                <a th:href="@{/event}" class="concert-card">
-                    <div class="thumb-wrapper">
-                        <img th:src="@{/images/concertImage3.png}" alt="concert3" class="concert-img">
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">wacci Hall Tour</div>
-                        <div class="card-sub">2025-2026 in Seoul</div>
-                    </div>
-                </a>
-
-                <a th:href="@{/event}" class="concert-card">
-                    <div class="thumb-wrapper">
-                        <img th:src="@{/images/concertImage4.png}" alt="concert4" class="concert-img">
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">2026 빈 소년 합창단</div>
-                        <div class="card-sub">신년음악회</div>
+                        <div class="card-title" th:text="${event?.name}">공연명</div>
+                        <div class="card-sub" th:text="${event?.location?.name}">장소 정보</div>
                     </div>
                 </a>
             </div>
         </section>
 
+        <!--HOT DEAL - 마감 임박한 공연 5개를 보여줌-->
         <section class="main-section">
             <div class="section-header">
                 <h2 class="main-title">HOT DEAL</h2>
             </div>
 
             <div class="concert-grid">
-                <a th:href="@{/event}" class="concert-card">
-                    <div class="thumb-wrapper">
-                        <div class="img-placeholder">
-                            <img th:src="@{/images/concertImage5.png}" alt="concert5" class="concert-img">
+                <th:block th:if="${closingSoon != null and !#lists.isEmpty(closingSoon)}">
+                    <a th:each="event : ${closingSoon}"
+                       th:href="@{/event/{id}(id=${event?.id})}" class="concert-card">
+                        <div class="thumb-wrapper">
+                            <img th:src="@{/api/images/event/{id}(id=${event?.id})}"
+                                 th:alt="${event?.name}"
+                                 class="concert-img"
+                                 onerror="this.src='/images/default-poster.png';">
                         </div>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">이창섭 단독 콘서트</div>
-                        <div class="card-title">20% 할인</div>
-                    </div>
-                </a>
+                        <div class="card-info">
+                            <div class="card-title" th:text="${event?.name}">공연명</div>
+                            <div class="card-sub" style="color: #ff4d4d; font-weight: bold;">마감 임박!</div>
+                        </div>
+                    </a>
+                </th:block>
 
-                <a th:href="@{/event}" class="concert-card">
-                    <div class="thumb-wrapper">
-                        <div class="img-placeholder">
-                            <img th:src="@{/images/concertImage6.png}" alt="concert6" class="concert-img">
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">betcover!! 내한공연</div>
-                        <div class="card-title">10% 할인</div>
-                    </div>
-                </a>
-
-                <a th:href="@{/event}" class="concert-card">
-                    <div class="thumb-wrapper">
-                        <div class="img-placeholder">
-                            <img th:src="@{/images/concertImage7.png}" alt="concert7" class="concert-img">
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">LUCKLIFE 2026</div>
-                        <div class="card-title">10% 할인</div>
-                    </div>
-                </a>
-
-                <a th:href="@{/event}" class="concert-card">
-                    <div class="thumb-wrapper">
-                        <div class="img-placeholder">
-                            <img th:src="@{/images/concertImage8.png}" alt="concert8" class="concert-img">
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">오월오일 단독 콘서트</div>
-                        <div class="card-title">30% 할인</div>
-                    </div>
-                </a>
+                <div th:if="${closingSoon == null or #lists.isEmpty(closingSoon)}"
+                     style="grid-column: 1 / -1; text-align: center; padding: 50px 0; color: #999;">
+                    아직 마감 임박한 공연이 없습니다.
+                </div>
             </div>
         </section>
-
     </div>
 </main>
 
