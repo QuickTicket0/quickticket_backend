@@ -14,9 +14,14 @@ public class HomepageController {
     
     @GetMapping("/")
     public String homepage(Model model) {
-        var hotEvents = eventService.getHotEventsTopN(10);
+        var hotEvents = eventService.getHotEventsTopN(5);
+        var closingSoonEvents = eventService.getClosingSoonEvents(5);
+
         
         if (true) {
+            model.addAttribute("hotEvents", hotEvents);
+            model.addAttribute("closingSoon", closingSoonEvents);
+
             return "index";
         } else {
             return "admin/index";

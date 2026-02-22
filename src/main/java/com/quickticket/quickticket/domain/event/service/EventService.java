@@ -46,6 +46,28 @@ public class EventService {
                 .toList();
     }
 
+    /**
+     * 공연 상세 정보를 조회하고 조회수(Views)를 1 증가시킵니다.
+     * @param eventId 조회할 공연의 식별 ID
+     * @return 조회수 업데이트가 반영된 공연 도메인 객체
+     */
+    @Transactional
+    public Event getEventDetail(Long eventId) {
+        EventEntity event = eventRepository.findById(eventId).orElseThrow();
+        event.setViews(event.getViews() + 1); // 조회수 1 증가
+        return eventMapper.toDomain(event);
+    }
+
+    public List<Event> getClosingSoonEvents(int limit) {
+        // 리스트 조회
+        List<EventEntity> entities = eventRepository.findClosingSoonEvents(limit);
+
+        // 엔티티를 도메인(DTO)으로 변환하여 반환
+        return entities.stream()
+                .map(eventMapper::toDomain) // 이전에 썼던 매퍼 활용
+                .toList();
+    }
+
     public EventResponse.Details getResponseDetailsById(Long id) {
         return EventResponse.Details.from(
                 eventRepository.getEntityByEventId(id)
