@@ -56,7 +56,7 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
         switch (domain.getPersistenceStatus()) {
             case NEW -> {
                 em.persist(ticketEntity);
-                redisTemplate.opsForZSet().add("sync:bulk-insert-queue:ticket-issue", ticketEntity.getTicketIssueId(), 1);
+                redisTemplate.opsForZSet().add("sync:bulk-insert-queue:ticket-issue", ticketEntity.getTicketIssueId(), System.currentTimeMillis());
             }
             case PENDING_BULK_INSERT -> {
                 ticketEntity = em.merge(ticketEntity);
