@@ -12,10 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -94,6 +91,23 @@ public class S3Service {
 
         } catch (IOException e) {
             throw new RuntimeException("S3 업로드 실패", e);
+        }
+    }
+
+    /**
+     * S3에서 특정 파일을 삭제합니다.
+     * @param key 삭제할 파일의 S3 경로 (예: images/event/123.jpg)
+     */
+    public void deleteFile(String key) {
+        try {
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+
+            s3Client.deleteObject(deleteObjectRequest);
+        } catch (Exception e) {
+            throw new RuntimeException("S3 파일 삭제 실패: " + key, e);
         }
     }
 }

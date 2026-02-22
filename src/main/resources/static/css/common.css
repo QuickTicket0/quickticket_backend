@@ -65,6 +65,17 @@ input, select, textarea { font-family: inherit; outline: none; }
     transition: background-color 0.2s;
 }
 .btn-search:hover { background-color: #3a6bd6; }
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.btn-group {
+    display: flex;
+    align-items: center;
+}
 /* 등록버튼 */
 .btn-register {
     background-color: #4a80f5;
@@ -77,6 +88,26 @@ input, select, textarea { font-family: inherit; outline: none; }
     transition: background-color 0.2s;
 }
 .btn-register:hover { background-color: #3a6bd6; }
+/* 삭제 버튼 */
+.btn-delete {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #e0e0e0;
+
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    cursor: pointer;
+    margin-left: 8px;
+}
+.btn-delete:hover {
+    background-color: #f8f9fa;
+    border-color: #ccc;
+}
 /* 등록 및 목록 버튼 공통 디자인 */
 .btn-submit, .btn-list {
     width: 90px ;

@@ -133,4 +133,31 @@ public class EventService {
             s3Service.uploadId(file, "images/event", eventEntity.getEventId().toString());
         }
     }
+
+    /**
+     * 선택된 공연들을 DB와 S3에서 일괄 삭제합니다.
+     * @param eventIds 삭제할 공연 ID 리스트
+     */
+    @Transactional
+    public void deleteEvents(List<Long> eventIds) {
+        for (Long id : eventIds) {
+            // 데이터 조회
+            EventEntity event = eventRepository.getEntityByEventId(id)
+                    .orElseThrow(() -> new DomainException(EventErrorCode.NOT_FOUND));
+
+            //  S3 이미지 삭제 루프
+            String[] extensions = {".jpg", ".png", ".jpeg", ".gif", ""}; // 빈 문자열 추가 권장
+            for (String ext : extensions) {
+                String s3Key = "images/event/" + id + ext;
+                try {
+                    s3Service.deleteFile(s3Key);
+                } catch (Exception e) {
+                    continue; // 하나 실패해도 다음 확장자로 진행
+                }
+            }
+
+            // DB에서 데이터 삭제
+            eventRepository.delete(event);
+        }
+    }
 }

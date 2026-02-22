@@ -136,14 +136,20 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
      * @return 해당 기간 내 포함 여부를 확인하는 BooleanExpression
      */
     private BooleanExpression dateBetween(QPerformanceEntity performance, String startDate, String endDate) {
-        if (startDate == null || startDate.isBlank()) return null;
+        // 시작일과 종료일이 모두 없으면 조건문을 아예 생성하지 않음 (전체 검색)
+        if ((startDate == null || startDate.isBlank()) && (endDate == null || endDate.isBlank())) {
+            return null;
+        }
 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-            LocalDateTime start = LocalDate.parse(startDate, formatter).atStartOfDay();
+            LocalDateTime start = (startDate == null || startDate.isBlank())
+                    ? LocalDateTime.of(1900, 1, 1, 0, 0)
+                    : LocalDate.parse(startDate, formatter).atStartOfDay();
+
             LocalDateTime end = (endDate == null || endDate.isBlank())
-                    ? start.with(LocalTime.MAX)
+                    ? LocalDateTime.of(2099, 12, 31, 23, 59)
                     : LocalDate.parse(endDate, formatter).atTime(LocalTime.MAX);
 
             return performance.performanceStartsAt.between(start, end);
@@ -163,7 +169,9 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
      * 이벤트의 1차 카테고리 명이 일치하는지 확인하는 조건절을 생성
      */
     private BooleanExpression categoryEq(QEventEntity event, String category) {
-        return (category != null && !category.isBlank()) ? event.category1.name.eq(category) : null;
+        return (category != null && !category.isBlank())
+                ? event.category1.categoryId.eq(Long.parseLong(category))
+                : null;
     }
 
 }
