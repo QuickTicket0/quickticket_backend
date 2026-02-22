@@ -31,48 +31,85 @@ public class DistributedLockAspect {
         String lockKey = parseKey(joinPoint, distributedLock.key());
         long waitTime = distributedLock.waitTime();
         long leaseTime = distributedLock.leaseTime();
+        var rLock = redissonClient.getLock(lockKey);
 
-        RLock rLock = redissonClient.getLock(lockKey);
-        boolean lockAcquired = false;
-
-        try {
-            lockAcquired = rLock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
-            if (!lockAcquired) {
-                throw new RuntimeException("락 획득 실패 - lockKey: " + lockKey);
-            }
-            return joinPoint.proceed();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("락 획득 중 인터럽트 발생", e);
-        } finally {
-            if (lockAcquired && rLock.isHeldByCurrentThread()) {
-                rLock.unlock();
-            }
-        }
+        return this.lockAndUnlock(
+                lockKey,
+                rLock,
+                joinPoint,
+                waitTime,
+                leaseTime
+        );
     }
 
     @Around("@annotation(distributedReadLock)")
     public Object aroundDistributedReadLock(ProceedingJoinPoint joinPoint, DistributedReadLock distributedReadLock)
             throws Throwable {
 
-        String lockKey = parseKey(joinPoint, distributedReadLock.key());
+        String lockKey = parseKey(joinPoint, distributedReadLock.key()) + "@READ";
         long waitTime = distributedReadLock.waitTime();
         long leaseTime = distributedReadLock.leaseTime();
-
         var rLock = redissonClient.getReadWriteLock(lockKey).readLock();
+
+        return this.lockAndUnlock(
+                lockKey,
+                rLock,
+                joinPoint,
+                waitTime,
+                leaseTime
+        );
+    }
+
+    private Object lockAndUnlock(
+            String lockKey,
+            RLock rLock,
+            ProceedingJoinPoint joinPoint,
+            long waitTime,
+            long leaseTime
+    ) throws Throwable {
         var lockAcquired = false;
 
         try {
-            lockAcquired = rLock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
-            if (!lockAcquired) {
-                throw new RuntimeException("락 획득 실패 - lockKey: " + lockKey);
+            boolean isLockable = LockContextHolder.tryLock(lockKey);
+
+            if (isLockable) {
+                lockAcquired = rLock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+                if (!lockAcquired) {
+                    throw new RuntimeException("락 획득 실패 - lockKey: " + lockKey);
+                }
             }
+
             return joinPoint.proceed();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("락 획득 중 인터럽트 발생", e);
         } finally {
-            if (lockAcquired && rLock.isHeldByCurrentThread()) {
+            LockContextHolder.decrement(lockKey);
+
+            if (
+                lockAcquired
+                && rLock.isHeldByCurrentThread()
+                && LockContextHolder.isUnlockable(lockKey)
+            ) {
+                rLock.unlock();
+            }
+        }
+    }
+
+    @Around("@annotation(propagatedReadLock)")
+    public Object aroundPropagatedReadLock(ProceedingJoinPoint joinPoint, PropagatedReadLock propagatedReadLock)
+            throws Throwable {
+
+        String lockKey = parseKey(joinPoint, propagatedReadLock.key()) + "@READ";
+
+        try {
+            LockContextHolder.setPropagation(lockKey);
+            return joinPoint.proceed();
+        } finally {
+            LockContextHolder.decrement(lockKey);
+
+            if (LockContextHolder.isUnlockable(lockKey)) {
+                var rLock = redissonClient.getLock(lockKey);
                 rLock.unlock();
             }
         }

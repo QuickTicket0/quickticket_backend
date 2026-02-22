@@ -14,6 +14,7 @@ import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepositor
 import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepository;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import com.quickticket.quickticket.shared.aspects.DistributedLock;
+import com.quickticket.quickticket.shared.aspects.PropagatedReadLock;
 import com.quickticket.quickticket.shared.exceptions.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -101,6 +102,7 @@ public class TicketService {
 
     @Transactional
     @DistributedLock(key = "lock:ticket-allocation-for-performance:#dto.performanceId()")
+    @PropagatedReadLock(key = "lock:bulk-insert-queue:ticket-issue")
     public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
         var ticket = ticketIssueRepository.getDomainById(dto.id())
                 .orElseThrow(()->new DomainException(TicketErrorCode.NOT_FOUND));
