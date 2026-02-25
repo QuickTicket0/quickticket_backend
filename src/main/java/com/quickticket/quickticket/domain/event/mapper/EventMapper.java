@@ -21,8 +21,8 @@ import org.mapstruct.MappingTarget;
     }
 )
 public interface EventMapper {
-    @Mapping(target = "id", source = "eventId")
-    Event toDomain(EventEntity entity);
+    @Mapping(target = "id", source = "entity.eventId")
+    Event toDomain(EventEntity entity/*, Long userRatingSum*/);
 
     @Mapping(target = "eventId", ignore = true)
     @Mapping(target = "location", source = "locationEntity")
@@ -32,7 +32,7 @@ public interface EventMapper {
     @Mapping(target = "ageRating", source = "dto.ageRating")
     @Mapping(target = "agentName", source = "dto.agentName")
     @Mapping(target = "views", constant = "0L")
-    @Mapping(target = "userRatingSum", constant = "0L")
+//    @Mapping(target = "userRatingSum", constant = "0L")
     EventEntity toEntity(EventRequest.Create dto, LocationEntity locationEntity, CategoryEntity categoryEntity);
 
     /**

@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticket.repository;
+package com.quickticket.quickticket.domain.ticket.repository.redis;
 
 import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
@@ -6,13 +6,14 @@ import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatId;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.domain.TicketPersistenceStatus;
-import com.quickticket.quickticket.domain.ticket.entity.TicketBulkInsertQueueEntity;
+import com.quickticket.quickticket.domain.ticket.entity.redis.TicketBulkInsertQueueEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.TicketIssueMapper;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import com.quickticket.quickticket.shared.aspects.DistributedReadLock;
 import com.quickticket.quickticket.shared.utils.BaseCustomRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Repository;
@@ -23,18 +24,18 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class TicketBulkInsertQueueRepositoryCustomImpl
-        extends BaseCustomRepository<TicketBulkInsertQueueEntity, Long>
         implements TicketBulkInsertQueueRepositoryCustom {
 
     private final EntityManager em;
+    @Lazy private final TicketBulkInsertQueueRepository ticketBulkRepository;
     private final RedisTemplate redisTemplate;
     private final TicketIssueMapper ticketIssueMapper;
     private final RedisAtomicLong ticketIssueIdGenerator;
 
     @Override
-    @DistributedReadLock(key = "lock:bulk-insert-queue:ticket-issue")
+    @DistributedReadLock(key = "'lock:bulk-insert-queue:ticket-issue'")
     public Optional<Ticket> getDomainById(Long ticketId) {
-        return getEntityById(ticketId).map(entity -> {
+        return ticketBulkRepository.findById(ticketId).map(entity -> {
             var ticket = this.entityToDomain(entity);
             ticket.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
 
@@ -55,14 +56,12 @@ public class TicketBulkInsertQueueRepositoryCustomImpl
 
         switch (domain.getPersistenceStatus()) {
             case NEW -> {
-                em.persist(ticketEntity);
                 redisTemplate.opsForZSet().add("sync:bulk-insert-queue:ticket-issue", ticketEntity.getTicketIssueId(), System.currentTimeMillis());
             }
-            case PENDING_BULK_INSERT -> {
-                ticketEntity = em.merge(ticketEntity);
-            }
+            case PENDING_BULK_INSERT -> {}
             default -> throw new AssertionError("TicketPersistenceStatus가 올바르게 처리되지 않음.");
         }
+        ticketBulkRepository.save(ticketEntity);
 
         domain.setPersistenceStatus(TicketPersistenceStatus.PENDING_BULK_INSERT);
 

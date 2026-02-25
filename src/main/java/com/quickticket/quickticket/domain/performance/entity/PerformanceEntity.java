@@ -23,7 +23,7 @@ public class PerformanceEntity {
     @Column(nullable = false)
     private Long performanceId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @NotNull
     @JoinColumn(nullable = false)
     private EventEntity event;

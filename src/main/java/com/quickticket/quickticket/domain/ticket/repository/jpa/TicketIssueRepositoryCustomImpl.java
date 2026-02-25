@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticket.repository;
+package com.quickticket.quickticket.domain.ticket.repository.jpa;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.payment.seatPayment.service.SeatPaymentService;
@@ -10,10 +10,11 @@ import com.quickticket.quickticket.domain.seat.service.SeatService;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.domain.TicketPersistenceStatus;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
-import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
-import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
-import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
+import com.quickticket.quickticket.domain.ticket.entity.jpa.QTicketIssueEntity;
+import com.quickticket.quickticket.domain.ticket.entity.jpa.QWantingSeatsEntity;
+import com.quickticket.quickticket.domain.ticket.entity.jpa.TicketIssueEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.*;
+import com.quickticket.quickticket.domain.ticket.repository.redis.TicketBulkInsertQueueRepository;
 import com.quickticket.quickticket.shared.aspects.DistributedReadLock;
 import com.quickticket.quickticket.shared.utils.BaseCustomRepository;
 import jakarta.persistence.EntityManager;
@@ -103,7 +104,7 @@ public class TicketIssueRepositoryCustomImpl
      * 조건 검사와 엔티티 업데이트가 모두 하나의 분산 읽기 락의 범위 안에서 수행한다.
      * 그래야 데이터 정합성 문제를 방지할수 있다.
      */
-    @DistributedReadLock(key = "lock:bulk-insert-queue:ticket-issue")
+    @DistributedReadLock(key = "'lock:bulk-insert-queue:ticket-issue'")
     private Ticket _trySaveDomainToBulkOrNull(Ticket domain) {
         if (ticketBulkInsertQueueRepository.existsById(domain.getId())) {
             return ticketBulkInsertQueueRepository.saveDomain(domain);

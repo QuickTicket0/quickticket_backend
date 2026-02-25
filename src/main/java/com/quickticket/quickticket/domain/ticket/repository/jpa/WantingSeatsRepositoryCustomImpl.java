@@ -1,12 +1,12 @@
-package com.quickticket.quickticket.domain.ticket.repository;
+package com.quickticket.quickticket.domain.ticket.repository.jpa;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.quickticket.quickticket.domain.seat.entity.QSeatEntity;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
-import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
-import com.quickticket.quickticket.domain.ticket.entity.QWantingSeatsEntity;
+import com.quickticket.quickticket.domain.ticket.entity.jpa.QTicketIssueEntity;
+import com.quickticket.quickticket.domain.ticket.entity.jpa.QWantingSeatsEntity;
 import com.quickticket.quickticket.domain.ticket.mapper.TicketIssueMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

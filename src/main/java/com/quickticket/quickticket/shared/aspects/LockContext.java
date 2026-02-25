@@ -48,7 +48,10 @@ class LockContext {
     public void decrement() {
         this.scopeDepth--;
 
-        if (this.encloseDepths.getLast() > this.scopeDepth) {
+        if (
+            !this.encloseDepths.isEmpty()
+            && this.encloseDepths.getLast() > this.scopeDepth
+        ) {
             this.encloseDepths.removeLast();
         }
 

@@ -1,7 +1,6 @@
-package com.quickticket.quickticket.domain.ticket.entity;
+package com.quickticket.quickticket.domain.ticket.entity.redis;
 
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
-import com.quickticket.quickticket.shared.generators.RedisSequenceId;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;

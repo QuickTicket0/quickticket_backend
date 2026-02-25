@@ -2,7 +2,7 @@ package com.quickticket.quickticket.domain.payment.seatPayment.entity;
 
 import com.quickticket.quickticket.domain.payment.seatPayment.domain.SeatPaymentIssueStatus;
 import com.quickticket.quickticket.domain.seat.entity.SeatEntity;
-import com.quickticket.quickticket.domain.ticket.entity.TicketIssueEntity;
+import com.quickticket.quickticket.domain.ticket.entity.jpa.TicketIssueEntity;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

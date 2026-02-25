@@ -36,4 +36,5 @@ public class Event {
     private String contactData;
     private Location location;
     private Long views;
+//    private Long userRatingSum;
 }

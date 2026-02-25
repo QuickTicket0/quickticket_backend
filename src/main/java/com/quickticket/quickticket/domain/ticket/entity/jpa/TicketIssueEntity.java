@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticket.entity;
+package com.quickticket.quickticket.domain.ticket.entity.jpa;
 
 import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;

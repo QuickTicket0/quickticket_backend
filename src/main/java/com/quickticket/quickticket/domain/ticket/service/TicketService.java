@@ -9,9 +9,8 @@ import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
 import com.quickticket.quickticket.domain.ticket.dto.TicketRequest;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
-import com.quickticket.quickticket.domain.ticket.mapper.*;
-import com.quickticket.quickticket.domain.ticket.repository.TicketIssueRepository;
-import com.quickticket.quickticket.domain.ticket.repository.WantingSeatsRepository;
+import com.quickticket.quickticket.domain.ticket.repository.jpa.TicketIssueRepository;
+import com.quickticket.quickticket.domain.ticket.repository.jpa.WantingSeatsRepository;
 import com.quickticket.quickticket.domain.user.service.UserService;
 import com.quickticket.quickticket.shared.aspects.DistributedLock;
 import com.quickticket.quickticket.shared.aspects.PropagatedReadLock;
@@ -66,7 +65,7 @@ public class TicketService {
     }
 
     @Transactional
-    @DistributedLock(key = "lock:ticket-allocation-for-performance:#dto.performanceId()")
+    @DistributedLock(key = "'lock:ticket-allocation-for-performance:' + #dto.performanceId()")
     public Ticket createNewTicket(TicketRequest.Ticket dto, Long userId) {
         var waitingNumber = performanceService.getWaitingLengthOfPerformance(dto.performanceId()) + 1;
         var wantingSeats = dto.wantingSeatsId().stream()
@@ -101,8 +100,8 @@ public class TicketService {
     }
 
     @Transactional
-    @DistributedLock(key = "lock:ticket-allocation-for-performance:#dto.performanceId()")
-    @PropagatedReadLock(key = "lock:bulk-insert-queue:ticket-issue")
+    @DistributedLock(key = "'lock:ticket-allocation-for-performance:' + #dto.performanceId()")
+    @PropagatedReadLock(key = "'lock:bulk-insert-queue:ticket-issue'")
     public Ticket cancelTicket(TicketRequest.Cancel dto, Long userId) {
         var ticket = ticketIssueRepository.getDomainById(dto.id())
                 .orElseThrow(()->new DomainException(TicketErrorCode.NOT_FOUND));

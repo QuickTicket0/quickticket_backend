@@ -10,7 +10,7 @@ import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
 import com.quickticket.quickticket.domain.performance.entity.QPerformanceEntity;
 import com.quickticket.quickticket.domain.performance.mapper.PerformanceMapper;
 import com.quickticket.quickticket.domain.ticket.domain.TicketStatus;
-import com.quickticket.quickticket.domain.ticket.entity.QTicketIssueEntity;
+import com.quickticket.quickticket.domain.ticket.entity.jpa.QTicketIssueEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;

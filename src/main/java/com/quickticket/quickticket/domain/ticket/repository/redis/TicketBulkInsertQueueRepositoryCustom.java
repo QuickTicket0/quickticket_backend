@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticket.repository;
+package com.quickticket.quickticket.domain.ticket.repository.redis;
 
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 

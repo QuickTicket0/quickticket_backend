@@ -28,23 +28,21 @@ public class EventEntity {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SeatClassEntity> seatClasses = new ArrayList<>();
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long eventId;
 
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "location_location_id")
     private LocationEntity location;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @NotNull
     @JoinColumn(nullable = false)
     private CategoryEntity category1;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private CategoryEntity category2;
 
@@ -59,10 +57,6 @@ public class EventEntity {
     @NotNull
     @Column(nullable = false)
     private AgeRating ageRating;
-
-    @NotNull
-    @Column(nullable = false)
-    private Long userRatingSum;
 
     @Column(length = 30)
     private String agentName;

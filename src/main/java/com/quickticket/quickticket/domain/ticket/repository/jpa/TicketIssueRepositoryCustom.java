@@ -1,4 +1,4 @@
-package com.quickticket.quickticket.domain.ticket.repository;
+package com.quickticket.quickticket.domain.ticket.repository.jpa;
 
 import com.quickticket.quickticket.domain.ticket.domain.Ticket;
 import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;

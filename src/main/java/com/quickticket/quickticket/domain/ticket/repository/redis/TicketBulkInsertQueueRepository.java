@@ -1,6 +1,6 @@
-package com.quickticket.quickticket.domain.ticket.repository;
+package com.quickticket.quickticket.domain.ticket.repository.redis;
 
-import com.quickticket.quickticket.domain.ticket.entity.TicketBulkInsertQueueEntity;
+import com.quickticket.quickticket.domain.ticket.entity.redis.TicketBulkInsertQueueEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
