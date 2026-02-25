@@ -59,7 +59,8 @@ public class RedisConfig {
 
         var config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
-                .disableCachingNullValues();
+                .disableCachingNullValues()
+                .computePrefixWith(prefix -> prefix + ":");
 
         return RedisCacheManager.builder(factory)
                 .cacheDefaults(config)
