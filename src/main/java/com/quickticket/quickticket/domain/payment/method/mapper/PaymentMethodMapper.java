@@ -6,23 +6,24 @@ import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEnt
 import com.quickticket.quickticket.domain.user.mapper.UserMapper;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(
     componentModel = "spring",
-    builder = @Builder(disableBuilder = true),
-    uses = {
-        UserMapper.class
-    }
+    builder = @Builder(disableBuilder = true)
 )
-public interface PaymentMethodMapper {
-    default PaymentMethod toDomain(PaymentMethodEntity entity) {
+public abstract class PaymentMethodMapper {
+    @Autowired private UserMapper userMapper;
+
+    public PaymentMethod toDomain(PaymentMethodEntity entity) {
         switch (entity.getType()) {
             case null -> {
                 throw new IllegalStateException("PaymentMethodEntity의 type은 null이 될 수 없습니다.");
             }
             case CARD -> {
                 return CardPayment.builder()
+                        .id(entity.getPaymentMethodId())
+                        .user(userMapper.toDomain(entity.getUser()))
                         .cardNumber(entity.getCardNumber())
                         .cvs(entity.getCvs())
                         .expirationPeriod(entity.getExpirationPeriod())
