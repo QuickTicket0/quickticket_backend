@@ -63,14 +63,19 @@ public class EventController {
 
     @GetMapping("/event/{eventId}")
     public String event(Model model, @PathVariable Long eventId) {
-        EventResponse.Details eventDetails =
-                eventService.getResponseDetailsById(eventId);
+        // 이벤트 상세 정보
+        EventResponse.Details eventDetails = eventService.getResponseDetailsById(eventId);
 
-        List<Performance> performances =
-                performanceService.findPerformancesByEventId(eventId);
+        // 회차 정보
+        List<PerformanceResponse.ListItem> performances = performanceService.getPerformancesByEventId(eventId);
+
+        // 좌석 정보
+        List<EventRequest.SeatGrade> seatDetails = seatService.getSeatGradesByEventId(eventId);
+        System.out.println("조회된 공연 회차 수: " + performances.size()); // 로그 확인용
 
         model.addAttribute("event", eventDetails);
         model.addAttribute("performances", performances);
+        model.addAttribute("seats", seatDetails);
 
         return "event";
     }
