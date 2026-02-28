@@ -109,9 +109,15 @@
         </div>
     </div>
 
-    <form id="bookForm" th:action="@{/registTicket}" method="GET">
+    <form id="bookForm" th:action="@{/registerTicket}" method="GET">
         <input type="hidden" name="eventId" th:value="${event?.id}">
         <input type="hidden" name="performanceId" id="selectedPerformanceId">
+        <input type="hidden" name="seatId" id="selectedSeatId">
+
+        <input type="hidden" name="selectedDate" id="hdnDate">
+        <input type="hidden" name="selectedTime" id="hdnTime">
+        <input type="hidden" name="seatName" id="hdnSeatName">
+        <input type="hidden" name="seatPrice" id="hdnPrice">
     </form>
 
     <script th:inline="javascript">
@@ -119,6 +125,11 @@
         const performances = [[${performances}]];
         let selectedPerfId = null;
         let selectedSeatId = null;
+
+        let infoDate = "";
+        let infoTime = "";
+        let infoSeatName = "";
+        let infoPrice = "";
 
         document.addEventListener('DOMContentLoaded', function() {
             if (!performances || performances.length === 0) {
@@ -144,6 +155,7 @@
         // 날짜를 클릭했을때
         function onDateChange(dateStr) {
             selectedPerfId = null;  //이전에 선택했던 회차 정보 초기화
+            infoDate = dateStr;
             updateBookButton(); //버튼 상태 다시 체크
 
             // 좌석영역을 화면에 나타나게함
@@ -169,6 +181,7 @@
                     document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     selectedPerfId = p.id;
+                    infoTime = `${p.nth}회 ${timeString}`; // 시간 정보 저장
                     updateBookButton();
                 };
                 container.appendChild(btn);
@@ -179,19 +192,37 @@
         function selectSeat(element, seatId) {
             document.querySelectorAll('.seat-status-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
+
             selectedSeatId = seatId;
+            // 클릭한 요소 안의 텍스트 추출
+            infoSeatName = element.querySelector('.name').innerText;
+            infoPrice = element.querySelector('.status').innerText.replace('원', '').replace(/,/g, '');
+
             updateBookButton();
         }
 
         // 예매 버튼 클릭전 체크하는 함수
         function updateBookButton() {
             const bookBtn = document.getElementById("bookButton");
+
             if (selectedPerfId && selectedSeatId) {
                 bookBtn.disabled = false;
+
+                // 값 채우기
                 document.getElementById("selectedPerformanceId").value = selectedPerfId;
-                bookBtn.onclick = () => document.getElementById("bookForm").submit();
+                document.getElementById("selectedSeatId").value = selectedSeatId; // 추가
+                document.getElementById("hdnDate").value = infoDate;
+                document.getElementById("hdnTime").value = infoTime;
+                document.getElementById("hdnSeatName").value = infoSeatName;
+                document.getElementById("hdnPrice").value = infoPrice;
+
+                // onclick을 매번 새로 정의하기보다, 함수 연결 확인만 합니다.
+                bookBtn.onclick = function() {
+                    document.getElementById("bookForm").submit();
+                };
             } else {
                 bookBtn.disabled = true;
+                bookBtn.onclick = null; // 비활성화 시 클릭 이벤트 제거
             }
         }
         /*]]>*/

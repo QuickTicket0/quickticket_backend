@@ -61,6 +61,15 @@ public class EventController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * 공연 상세 정보 페이지를 조회
+     * 특정 공연(Event)의 상세 내용, 해당 공연의 모든 회차(날짜/시간) 정보,
+     * 그리고 예약 가능한 좌석 등급 및 가격 정보를 불러와 상세 페이지로 전달
+     *
+     * @param eventId 조회할 공연의 고유 id
+     * @param model   화면에 데이터를 전달하기 위한 객체
+     * @return        공연 상세 페이지 뷰 이름 ("event")
+     */
     @GetMapping("/event/{eventId}")
     public String event(Model model, @PathVariable Long eventId) {
         // 이벤트 상세 정보
@@ -71,7 +80,6 @@ public class EventController {
 
         // 좌석 정보
         List<EventRequest.SeatGrade> seatDetails = seatService.getSeatGradesByEventId(eventId);
-        System.out.println("조회된 공연 회차 수: " + performances.size()); // 로그 확인용
 
         model.addAttribute("event", eventDetails);
         model.addAttribute("performances", performances);

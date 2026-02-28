@@ -76,8 +76,40 @@ public class TicketController {
         return "myPage/myTickets";
     }
 
+    /**
+     * 티켓 예매 페이지로 이동하며 선택한 예매 정보를 전달
+     * 이전 상세 페이지에서 사용자가 선택한 공연 회차, 날짜, 시간, 좌석 정보 등을
+     * 파라미터로 받아 예매 확인 화면에 표시할 수 있도록 모델에 담습니다.
+     *
+     * @param eventId            콘서트 고유 ID
+     * @param performanceId      선택한 회차 ID
+     * @param seatId             선택한 좌석 등급 ID
+     * @param selectedDate       선택한 공연 날짜 (yyyy-MM-dd)
+     * @param selectedTime       선택한 회차 및 시간 정보 (1회 오후 2:00)
+     * @param seatName           선택한 좌석 등급명 (VIP석, 일반석 등)
+     * @param seatPrice          선택한 좌석 가격
+     * @param model              화면에 데이터를 전달하기 위한 객체
+     * @return                   예매 등록 페이지 뷰 이름 ("registerTicket")
+     */
     @GetMapping("/registerTicket")
-    public String registerTicket(Model model) {
+    public String registerTicket(
+            @RequestParam Long eventId,
+            @RequestParam Long performanceId,
+            @RequestParam Long seatId,
+            @RequestParam String selectedDate,
+            @RequestParam String selectedTime,
+            @RequestParam String seatName,
+            @RequestParam int seatPrice,
+            Model model) {
+
+        // 화면(registerTicket.html)에서 사용할 수 있도록 모델에 데이터 바인딩
+        model.addAttribute("eventId", eventId);
+        model.addAttribute("performanceId", performanceId);
+        model.addAttribute("seatId", seatId);
+        model.addAttribute("selectedDate", selectedDate);
+        model.addAttribute("selectedTime", selectedTime);
+        model.addAttribute("seatName", seatName);
+        model.addAttribute("seatPrice", seatPrice);
         return "registerTicket";
     }
 }
