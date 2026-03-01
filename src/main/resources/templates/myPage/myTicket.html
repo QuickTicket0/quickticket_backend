@@ -15,7 +15,12 @@
 
                 <section class="detail-layout top-section">
                     <div class="poster-area">
-                        <img th:src="@{/images/concertImage5.png}" alt="poster">
+                        <div class="poster-box">
+                            <img th:if="${ticket.event != null}"
+                                  th:src="@{/api/images/event/{eventId}(eventId=${ticket.event.id})}"
+                                  th:alt="${ticket.event.name}"
+                                  onerror="this.src='/images/default-poster.png'">
+                        </div>
                     </div>
                     <div class="info-area">
                         <h3 class="sub-title">공연 정보</h3>
@@ -39,7 +44,11 @@
                 </section>
 
                 <section class="detail-layout seat-section">
-                    <object id="seatMap" type="image/svg+xml" th:data="@{/api/files/seatMap/{performanceId}(performanceId=${performance.id})}"></object>
+                    <div id="seatMapPlaceholder" style="width: 550px; height: 300px; background-color: #f4f4f4; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-bottom: 20px;">
+                        <span style="color: #999; font-weight: bold;">좌석 배치도 준비 중입니다</span>
+                    </div>
+                    <!--<object id="seatMap" type="image/svg+xml" th:data="@{/api/files/seatMap/{performanceId}(performanceId=${performance.id})}"></object>-->
+                    <!-- <object id="seatMap" type="image/svg+xml" th:data="@{/api/files/seatMap/{performanceId}(performanceId=${ticket.performance?.id})}"></object>-->
 
                     <div class="seat-info-area" style="width: 100%;">
                         <h3 class="sub-title">좌석 선택 / 결제</h3>
@@ -50,38 +59,48 @@
                             </div>
                             <div class="info-row">
                                 <span class="label">좌석 예매 상태</span>
-                                <span id="status" class="value text-blue">[[${ticket?.status ?: ''}]]</span>
+                                <span id="status" class="value text-blue">[[${ticket.status.description}]]</span>
                             </div>
                             <div class="info-row">
                                 <span class="label">결제된 좌석</span>
                                 <span id="paidSeatContainer" class="value">
-                                [[${ticket?.seatPayments?.size() ?: 0}]]석
-                                (
-                                <th:block th:each="pay, stat : ${ticket?.seatPayments}">
-                                    [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.name ?: ''}]][[${!stat.last ? ', ' : ''}]]
-                                </th:block>
-                                )
-                            </span>
+                                    [[${ticket.seatPayments?.size() ?: 0}]]석
+                                    <span class="seat-detail-text">
+                                        (
+                                        <th:block th:each="pay, stat : ${ticket.seatPayments}">
+                                            <span th:with="seat=${ticket.seats.get(pay.paidSeatId)}">
+                                                [[${seat?.area}]]구역 [[${seat?.name}]][[${!stat.last ? ', ' : ''}]]
+                                            </span>
+                                        </th:block>
+                                        )
+                                    </span>
+                                </span>
                             </div>
                             <div class="info-row">
                                 <span class="label">좌석별 가격</span>
-                                <span id="seatPriceContainer" class="value">
-                                <th:block th:each="pay : ${ticket?.seatPayments}">
-                                    [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.name ?: ''}]]: [[${pay?.amount != null ? #numbers.formatInteger(pay.amount, 0, 'COMMA') : 0}]]원<br>
-                                </th:block>
-                            </span>
+                                <div class="value seat-price-list">
+                                    <th:block th:each="pay : ${ticket?.seatPayments}">
+                                        <div class="seat-detail-item">
+                                            <span class="badge-class">[[${ticket?.seats?.get(pay?.paidSeatId)?.seatClass}]]</span>
+                                            <span class="seat-price-val">
+                                                [[${pay?.amount != null ? #numbers.formatInteger(pay.amount, 0, 'COMMA') : 0}]]원
+                                            </span>
+                                        </div>
+                                    </th:block>
+                                </div>
                             </div>
+
                         </div>
 
                         <h3 class="sub-title">예매 확정 좌석</h3>
                         <div id="confirmedSeatListContainer" class="confirmed-seat-list">
-                            <th:block th:each="pay : ${ticket?.seatPayments}">
+                            <th:block th:each="pay : ${ticket.seatPayments}">
                                 <div class="seat-item-row">
-                                    <span class="seat-loc">좌석번호 [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.name ?: ''}]]</span>
+                                    <span class="seat-loc">좌석번호 [[${ticket.seats.get(pay.paidSeatId)?.name ?: '미정'}]]</span>
                                     <span class="seat-price">
-                                    [[${ticket?.performance?.seats?.get(pay?.paidSeatId)?.seatClass ?: ''}]]
-                                    <span class="price">[[${pay?.amount != null ? #numbers.formatInteger(pay.amount, 0, 'COMMA') : 0}]]원</span>
-                                </span>
+                                        [[${ticket.seats.get(pay.paidSeatId)?.seatClass ?: ''}]]
+                                        <span class="price">[[${pay.amount != null ? #numbers.formatInteger(pay.amount, 0, 'COMMA') : 0}]]원</span>
+                                    </span>
                                 </div>
                             </th:block>
                         </div>
@@ -102,14 +121,15 @@
                         <div class="info-row">
                             <span class="label">결제수단</span>
                             <span id="paymentMethod" class="value">
-                            [[${ticket?.paymentMethod?.methodDetails != null ? ticket.paymentMethod.methodDetails['bankName'] : ''}]]
-                        </span>
+                                [[${ticket?.paymentMethod?.methodDetails != null ? ticket.paymentMethod.methodDetails['bankName'] : ''}]]
+                            </span>
                         </div>
                         <div class="info-row">
                             <span class="label">결제금액</span>
                             <span id="paymentAmount" class="value text-bold">
-                            [[${ticket?.seatPayments != null && !ticket.seatPayments.isEmpty() ? #numbers.formatInteger(ticket.seatPayments[0].amount, 0, 'COMMA') : 0}]]원
-                        </span>
+                                [[${#numbers.formatInteger(#aggregates.sum(ticket.seatPayments.![amount]), 0, 'COMMA')}]]원
+                            </span>
+                        </div>
                         </div>
                     </div>
                 </section>
@@ -119,21 +139,28 @@
         <div th:replace="~{reviewPopup :: reviewModal}"></div>
 
         <script th:src="@{/scripts/seatMap.js}"></script>
-        <script>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const ticket = [[${ticket}]]; // 이 줄을 추가해서 백엔드 데이터를 JS로 넘깁니다.
+            /*]]>*/
+
             const seatMapEl = document.getElementById("seatMap");
             const paidSeatsId = ticket.seatPayments.map(data -> data.paidSeatId);
 
-            seatMapEl.addEventListener("load", () => {
-                processSeatMap(
-                    seatMapEl.contentDocument,
-                    ticket.seats,
-                    ticket.wantingSeatsId,
-                    paidSeatsId
-                );
-            });
+            if (seatMapEl) {
+                const paidSeatsId = ticket.seatPayments.map(data => data.paidSeatId);
+                seatMapEl.addEventListener("load", () => {
+                    processSeatMap(
+                        seatMapEl.contentDocument,
+                        ticket.seats,
+                        ticket.wantingSeatsId,
+                        paidSeatsId
+                    );
+                });
+            }
         </script>
 
-        <script>
+        <script >
             // 리뷰 모달 및 별점
             function openReviewModal() {
                 const modal = document.getElementById('reviewModal');
@@ -168,80 +195,7 @@
             });
         </script>
 
-        <script th:inline="javascript">
-            // 임시 데이터 정의
-            const tempData = {
-                event: { name: "2026 이창섭 단독 콘서트 〈EndAnd〉 - 수원", startsAt: "2026-02-09 / 오후 05:00", nth: "1" },
-                ticket: { id: "1234567", personNumber: 3, status: "예매 확정", reservedAt: "2026-01-15 / 14:30:00" },
-                payment: { method: "신용카드", status: "결제 완료", amount: "410,000" },
-                // 좌석 정보 리스트
-                seats: [
-                    { name: "VIP석", price: "150,000", list: ["A-12", "A-13"] },
-                    { name: "R석", price: "110,000", list: ["C-05"] }
-                ]
-            };
 
-            const setText = (id, val) => {
-                const el = document.getElementById(id);
-                if (el) el.innerText = val;
-            };
-
-            setText("eventName", tempData.event.name);
-            setText("startsAt", tempData.event.startsAt);
-            setText("nth", tempData.event.nth + "회차");
-
-            setText("personNumbers", "총 " + tempData.ticket.personNumber + "석");
-            setText("status", tempData.ticket.status);
-            setText("ticketId", "RES-" + tempData.ticket.id);
-            setText("reservedAt", tempData.ticket.reservedAt);
-
-            setText("amount", tempData.payment.amount + "원 (확정)");
-            setText("paymentMethod", tempData.payment.method);
-            setText("paymentStatus", tempData.payment.status);
-            setText("paymentAmount", tempData.payment.amount + "원");
-
-            // 좌석 리스트
-            const paidSeatBox = document.getElementById("paidSeatContainer");
-            if (paidSeatBox) {
-                let summaryText = `${tempData.ticket.personNumber}석 ( `;
-                tempData.seats.forEach((seat, idx) => {
-                    summaryText += `${seat.name} ${seat.list.length}개`;
-                    if (idx < tempData.seats.length - 1) summaryText += ", ";
-                });
-                summaryText += " )";
-                paidSeatBox.innerText = summaryText;
-            }
-
-            // 좌석별 가격
-            const seatPriceBox = document.getElementById("seatPriceContainer");
-            if (seatPriceBox) {
-                seatPriceBox.innerHTML = "";
-                tempData.seats.forEach(seat => {
-                    seatPriceBox.innerHTML += `${seat.name}: ${seat.price}원<br>`;
-                });
-            }
-
-            // 예매 확정 리스트
-            const detailListBox = document.getElementById("confirmedSeatListContainer");
-            if (detailListBox) {
-                detailListBox.innerHTML = "";
-
-                tempData.seats.forEach(seat => {
-                    seat.list.forEach(seatNum => {
-                        const html = `
-                                <div class="seat-item-row">
-                                    <span class="seat-loc">좌석번호 ${seatNum}</span>
-                                    <span class="seat-price">
-                                        ${seat.name}
-                                        <span class="price">${seat.price}원</span>
-                                    </span>
-                                </div>
-                            `;
-                        detailListBox.innerHTML += html;
-                    });
-                });
-            }
-        </script>
     </main>
 </body>
 </html>

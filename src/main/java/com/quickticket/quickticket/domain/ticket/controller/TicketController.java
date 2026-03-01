@@ -55,24 +55,44 @@ public class TicketController {
         return "cancelTicketSuccess";
     }
 
+    /**
+     * 마이페이지에서 특정 티켓의 상세 정보를 조회
+     * @param model   클라이언트에 데이터를 전달하기 위한 객체
+     * @param ticketId 티켓 고유 ID
+     * @return         티켓 상세 정보를 보여줄 HTML 파일 경로
+     */
     @GetMapping("/myTicket/{ticketId}")
     public String myTicket(
             Model model,
             @PathVariable Long ticketId
     ) {
         TicketResponse.Details details = ticketService.getResponseDetailsById(ticketId);
+
         model.addAttribute("ticket", details);
         return "myPage/myTicket";
     }
 
+    /**
+     * 마이페이지에서 로그인한 사용자의 전체 티켓 예약 목록을 조회
+     * @param model          클라이언트로 데이터를 전달하기 위한 객체
+     * @param user           현재 로그인한 사용자의 정보를 담고 있는 객체
+     * @return               티켓 목록을 보여줄 HTML 파일 경로
+     */
     @GetMapping("/myPage/tickets")
     public String myTickets(
             Model model,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal User user // 로그인을 안하면 null이 들어옴
     ) {
+        // 임시 유저 ID(현재 로그인이 안되어서 임시로 해둠)
+        //Long tempUserId = 3L;
+        //var list = ticketService.getMyTickets(tempUserId);
         var list = ticketService.getMyTickets(user.getId());
-
         model.addAttribute("tickets", list);
+
+        if (list != null) {
+            list.forEach(item -> System.out.println(">>> 티켓 정보: " + item.eventName() + " / " + item.status()));
+        }
+
         return "myPage/myTickets";
     }
 

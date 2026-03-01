@@ -25,6 +25,7 @@ public class PaymentMethodEntity {
     private UserEntity user;
 
     @NotNull
+    @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private PaymentMethodType type;
 

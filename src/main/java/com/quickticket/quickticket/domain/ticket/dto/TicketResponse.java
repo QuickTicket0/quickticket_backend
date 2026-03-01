@@ -16,6 +16,7 @@ import java.util.Map;
 public class TicketResponse {
     @Builder
     public record EventInfo(
+            Long id,
             /// 공연명
             String name,
             /// 공연기간
@@ -28,6 +29,7 @@ public class TicketResponse {
 
     @Builder
     public record PerformanceInfo(
+            Long id,
             Integer nth,
             LocalDateTime ticketingStartsAt,
             LocalDateTime ticketingEndsAt,
@@ -105,6 +107,7 @@ public class TicketResponse {
             String eventName,
             LocalDateTime performanceStartsAt,
             Integer personNumber,
-            LocalDateTime createdAt
+            LocalDateTime createdAt,
+            TicketStatus status // 티켓 상태
     ) {}
 }

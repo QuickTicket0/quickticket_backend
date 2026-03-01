@@ -220,6 +220,16 @@ input[readonly] {
     align-items: center;
     gap: 10px;
 }
+/* 포스터 영역 */
+.poster-area {
+    width: 420px;
+    flex-shrink: 0;
+}
+.poster-box img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 /* 폼 드롭다운의 화살표 위치 조정 */
 .custom-select {
     width: 100%;
