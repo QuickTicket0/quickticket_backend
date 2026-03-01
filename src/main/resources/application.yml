@@ -1,6 +1,9 @@
 spring:
   application:
     name: quickticket
+  threads:
+    virtual:
+      enabled: true
   datasource:
     master:
       driver-class-name: com.mysql.cj.jdbc.Driver
