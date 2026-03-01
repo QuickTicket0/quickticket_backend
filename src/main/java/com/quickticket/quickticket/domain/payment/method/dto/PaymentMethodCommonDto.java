@@ -1,5 +1,6 @@
 package com.quickticket.quickticket.domain.payment.method.dto;
 
+import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethod;
 import com.quickticket.quickticket.domain.payment.method.domain.PaymentMethodType;
 import com.quickticket.quickticket.domain.payment.method.entity.PaymentMethodEntity;
 import jakarta.validation.constraints.NotNull;
@@ -31,5 +32,19 @@ public record PaymentMethodCommonDto(
                 throw new IllegalStateException();
             }
         }
+    }
+
+    /**
+     * 결제 수단 도메인 을 클라이언트에 전달하기 위한 DTO로 변환
+     * @param domain PaymentMethod
+     * @return PaymentMethodCommonDto
+     */
+    public static PaymentMethodCommonDto from(PaymentMethod domain) {
+        if (domain == null) return null;
+
+        return PaymentMethodCommonDto.builder()
+                .methodType(domain.getType())
+                .methodDetails(CardPaymentCommonDto.from(domain))
+                .build();
     }
 }

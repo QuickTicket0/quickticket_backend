@@ -52,10 +52,17 @@ public class TicketIssueRepositoryCustomImpl
             return cache;
         }
 
-        return getEntityById(ticketId).map(ticketEntity -> {
-            var wantingSeatEntities = this.getSeatEntitiesByTicketIssueId(ticketId);
+        var ticketIssue = QTicketIssueEntity.ticketIssueEntity;
 
-            var ticket = ticketIssueMapper.toDomain(ticketEntity, wantingSeatEntities);
+        TicketIssueEntity ticketEntity = queryFactory
+                .selectFrom(ticketIssue)
+                .leftJoin(ticketIssue.paymentMethod).fetchJoin()
+                .where(ticketIssue.ticketIssueId.eq(ticketId))
+                .fetchOne();
+
+        return Optional.ofNullable(ticketEntity).map(entity -> {
+            var wantingSeatEntities = this.getSeatEntitiesByTicketIssueId(ticketId);
+            var ticket = ticketIssueMapper.toDomain(entity, wantingSeatEntities);
             ticket.setPersistenceStatus(TicketPersistenceStatus.PERSISTED);
 
             return ticket;
@@ -151,6 +158,7 @@ public class TicketIssueRepositoryCustomImpl
                         .performanceStartsAt(e.getPerformance().getPerformanceStartsAt())
                         .eventName(e.getPerformance().getEvent().getName())
                         .personNumber(e.getPersonNumber())
+                        .status(e.getStatus())
                         .build()
                 )
                 .collect(Collectors.toList());
@@ -166,6 +174,7 @@ public class TicketIssueRepositoryCustomImpl
                         .performanceStartsAt(performance.getPerformanceStartsAt())
                         .eventName(performance.getEvent().getName())
                         .personNumber(e.getPersonNumber())
+                        .status(e.getStatus())
                         .build();
                 })
                 .toList()
@@ -212,9 +221,10 @@ public class TicketIssueRepositoryCustomImpl
         return queryFactory
                 .select(seat)
                 .from(wantingSeat)
+                .join(wantingSeat.seat, seat)
                 .where(
-                        wantingSeat.ticketIssue.ticketIssueId.eq(ticketId),
-                        wantingSeat.seat.id.seatId.eq(seat.id.seatId)
+                        wantingSeat.ticketIssue.ticketIssueId.eq(ticketId)
+                        //wantingSeat.seat.id.seatId.eq(seat.id.seatId)
                 )
                 .fetch();
     }

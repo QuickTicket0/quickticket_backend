@@ -12,6 +12,7 @@ import com.quickticket.quickticket.domain.ticket.entity.redis.TicketBulkInsertQu
 import com.quickticket.quickticket.domain.ticket.entity.jpa.TicketIssueEntity;
 import com.quickticket.quickticket.domain.user.entity.UserEntity;
 import com.quickticket.quickticket.domain.user.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -32,14 +33,20 @@ import java.util.stream.Collectors;
         SeatMapper.class
     }
 )
+
 public abstract class TicketIssueMapper {
-    @Autowired private SeatMapper seatMapper;
+    @Autowired
+    protected SeatMapper seatMapper;
 
     @Mapping(target = "id", source = "entity.ticketIssueId")
+    @Mapping(target = "performance", source = "entity.performance")
+    @Mapping(target = "paymentMethod", source = "entity.paymentMethod")
     @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
     public abstract Ticket toDomain(TicketIssueEntity entity, List<SeatEntity> wantingSeatEntities);
 
+
     @Mapping(target = "id", source = "entity.ticketIssueId")
+    @Mapping(target = "performance", source = "performance")
     @Mapping(target = "createdAt", source = "entity.createdAt")
     @Mapping(target = "wantingSeats", source = "wantingSeatEntities", qualifiedByName = "wantingSeatEntitiesToDomainMap")
     public abstract Ticket toDomain(

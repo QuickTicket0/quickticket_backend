@@ -1,9 +1,11 @@
 package com.quickticket.quickticket.domain.performance.mapper;
 
+import com.quickticket.quickticket.domain.event.entity.EventEntity;
 import com.quickticket.quickticket.domain.event.mapper.EventMapper;
 import com.quickticket.quickticket.domain.performance.domain.Performance;
 import com.quickticket.quickticket.domain.performance.dto.PerformanceRequest;
 import com.quickticket.quickticket.domain.performance.entity.PerformanceEntity;
+import com.quickticket.quickticket.domain.ticket.dto.TicketResponse;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,7 +21,13 @@ import org.mapstruct.MappingTarget;
 public interface PerformanceMapper {
     @Mapping(target = "id", source = "entity.performanceId")
     @Mapping(target = "nth", source = "entity.performanceNth")
+    @Mapping(target = "event.id", source = "entity.event.eventId")
     Performance toDomain(PerformanceEntity entity, Long ticketWaitingLength);
+
+    @Mapping(target = "id", source = "performanceId")
+    @Mapping(target = "nth", source = "performanceNth")
+    @Mapping(target = "event.id", source = "event.eventId") // 인자가 하나일 때
+    Performance toDomain(PerformanceEntity entity);
 
     @Mapping(target = "performanceId", source = "id")
     @Mapping(target = "performanceNth", source = "nth")
@@ -28,7 +36,12 @@ public interface PerformanceMapper {
     @Mapping(target = "performanceId", ignore = true)
     @Mapping(target = "performanceNth", source = "dto.nth")
     @Mapping(target = "event", source = "eventEntity")
-    PerformanceEntity toEntity(PerformanceRequest.Create dto, com.quickticket.quickticket.domain.event.entity.EventEntity eventEntity);
+    PerformanceEntity toEntity(PerformanceRequest.Create dto, EventEntity eventEntity);
+
+    // PerformanceEntity -> TicketResponse.PerformanceInfo 변환
+    @Mapping(target = "id", source = "performanceId")
+    @Mapping(target = "nth", source = "performanceNth")
+    TicketResponse.PerformanceInfo toPerformanceInfo(PerformanceEntity entity);
 
     /**
      * 콘서트 회차 정보를 업데이트합니다.

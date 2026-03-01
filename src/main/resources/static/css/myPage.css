@@ -494,3 +494,48 @@
     border-radius: 8px;
     background-color: #5d75fa;
 }
+
+/* 좌석 정보 아이템 전체 디자인 조정 */
+.seat-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+/* 좌석 등급 스타일 */
+.badge-class {
+    background: none;
+    border: none;
+    color: #2b6cb0;
+    font-size: 1em;
+    font-weight: 700;
+    position: relative;
+    padding-right: 15px;
+}
+/* 등급 옆에 세로 구분선 추가 */
+.badge-class::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 14px;
+    background-color: #e2e8f0;
+}
+/* 상세 위치 정보 스타일 */
+.seat-loc {
+    flex: 1;
+    color: #475569;
+    font-weight: 400;
+    font-size: 1em;
+}
+
+/* 가격 정보 스타일 */
+.seat-price-val {
+    font-weight: 700;
+    color: #1a202c;
+    font-size: 1.1em;
+}
+.info-row .label {
+    align-self: flex-start;
+}
